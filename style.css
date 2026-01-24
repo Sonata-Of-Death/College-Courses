@@ -31,24 +31,22 @@ body { background-color: var(--bg-color); color: var(--text-primary); transition
 
 /* Navbar */
 .navbar {
-    padding: 1.5rem 2rem;
+    padding: 1rem 2rem; /* Reduced padding slightly for image */
     display: flex; justify-content: space-between; align-items: center;
     background: var(--glass); backdrop-filter: blur(10px);
     position: sticky; top: 0; z-index: 100;
     border-bottom: 1px solid var(--border);
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
-/* Updated Logo Style */
-.logo { 
-    font-size: 1.5rem; 
-    font-weight: bold; 
-    color: var(--white); /* Ensures visibility in both modes */
-    cursor: pointer; /* Makes it look clickable */
-    transition: 0.3s;
-    user-select: none;
+
+/* Logo Image Style */
+.logo-img {
+    height: 50px; /* Fixed height to keep navbar consistent */
+    width: auto;  /* Maintain aspect ratio */
+    cursor: pointer;
+    transition: transform 0.3s ease;
 }
-.logo:hover { transform: scale(1.05); }
-.highlight { color: var(--accent); }
+.logo-img:hover { transform: scale(1.05); }
 
 .nav-links button, .lang-switch {
     background: transparent; border: 1px solid var(--text-secondary); 
