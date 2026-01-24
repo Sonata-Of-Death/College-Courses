@@ -11,6 +11,7 @@
     --danger: #ef4444;
     --success: #10b981;
     --warning: #f59e0b;
+    --ppt-color: #e64a19; /* PowerPoint Color */
 }
 
 .light-mode {
@@ -67,7 +68,7 @@ body { background-color: var(--bg-color); color: var(--text-primary); min-height
     border-left: 5px solid var(--accent); cursor: pointer; border: 1px solid var(--border);
 }
 
-/* Subject & Files - UPDATED LAYOUT */
+/* Subject & Files */
 .subject-header { text-align: center; margin-bottom: 2rem; }
 .tabs-container { display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
 .tab-btn {
@@ -85,17 +86,21 @@ body { background-color: var(--bg-color); color: var(--text-primary); min-height
     display: flex; flex-direction: row; justify-content: space-between; align-items: flex-start;
     gap: 15px;
 }
-.file-info { flex: 1; }
-.file-info h3 { font-size: 1.1rem; color: var(--white); display: flex; align-items: center; gap: 8px; }
+.file-info { flex: 1; min-width: 0; } /* min-width:0 prevents flex item from overflowing */
+.file-info h3 { font-size: 1.1rem; color: var(--white); display: flex; align-items: center; gap: 10px; }
 .file-type { font-size: 0.8rem; color: var(--text-secondary); display: block; margin-top: 4px; }
 
-/* WARNING BOX FIX */
+/* WARNING BOX FIX - UPDATED */
 .warning-box {
-    margin-top: 8px; padding: 8px;
+    margin-top: 8px; padding: 8px 12px;
     background: rgba(245, 158, 11, 0.1); border-radius: 6px;
     color: #f59e0b; font-size: 0.9rem; font-weight: bold;
-    display: flex; align-items: start; gap: 8px;
-    line-height: 1.5; border: 1px solid rgba(245, 158, 11, 0.3);
+    display: flex; align-items: flex-start; gap: 10px;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+.warning-box span {
+    flex: 1; /* Allows text to take available space */
+    line-height: 1.5;
 }
 
 /* BUTTONS FIX */
@@ -104,7 +109,7 @@ body { background-color: var(--bg-color); color: var(--text-primary); min-height
     padding: 8px 12px; border-radius: 6px; text-decoration: none;
     font-weight: bold; cursor: pointer; border: none; font-size: 0.9rem;
     display: inline-flex; align-items: center; gap: 6px;
-    white-space: nowrap; /* Prevents text wrapping */
+    white-space: nowrap;
     height: 38px;
 }
 .btn-view { background: rgba(16, 185, 129, 0.1); color: var(--success); }
