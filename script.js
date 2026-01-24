@@ -71,15 +71,20 @@ function setupEventListeners() {
         renderCurrentView(); 
     });
 
-    // NEW: Logo Click -> Home
-    const logo = document.querySelector('.logo');
-    logo.style.cursor = 'pointer'; // Make it look clickable
-    logo.addEventListener('click', () => {
-        // Safety: Stop any running quiz timer
-        if(quizTimerInterval) clearInterval(quizTimerInterval);
-        appState.quiz.active = false;
-        renderHome();
-    });
+    // NEW: Logo Click -> Home Logic
+    const logo = document.getElementById('app-logo');
+    if(logo) {
+        logo.addEventListener('click', () => {
+            // Safety: Stop any running quiz timer
+            if(typeof quizTimerInterval !== 'undefined' && quizTimerInterval) {
+                clearInterval(quizTimerInterval);
+            }
+            // Reset State
+            appState.quiz.active = false;
+            // Go Home
+            renderHome();
+        });
+    }
 }
 
 // --- Smart Router ---
