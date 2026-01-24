@@ -225,17 +225,25 @@ function getTabContent(subject, type) {
     return `<p>Coming Soon.</p>`;
 }
 
-// Fixed Helper to render file list items (Includes PPT fix & Bidi Layout)
+// Fixed Helper to render file list items (Includes PPT icon logic & Bidi Fix)
 function renderFileList(files) {
     if (!files || files.length === 0) return '<p style="text-align:center; color:var(--text-secondary);">No files available.</p>';
     
     return files.map(file => {
         // --- PPT DIRECT DOWNLOAD FIX ---
         let downloadLink = file.link;
+        let iconClass = 'fa-file-pdf';
+        let iconStyle = 'color:var(--text-primary)';
+        
+        // Detect if it's a presentation
+        const isPPT = file.type === 'PPT' || file.link.includes('presentation');
+        
         const idMatch = file.link.match(/\/d\/([a-zA-Z0-9_-]+)/);
         if(idMatch && idMatch[1]) {
-            if (file.type === 'PPT' || file.link.includes('presentation')) {
+            if (isPPT) {
                 downloadLink = `https://docs.google.com/presentation/d/${idMatch[1]}/export/pptx`;
+                iconClass = 'fa-file-powerpoint';
+                iconStyle = 'color:var(--ppt-color)'; // Uses new variable
             } else {
                 downloadLink = `https://drive.google.com/uc?export=download&id=${idMatch[1]}`;
             }
@@ -244,9 +252,9 @@ function renderFileList(files) {
         return `
         <div class="file-item">
             <div class="file-info">
-                <h3><i class="fas fa-file-pdf" style="color:var(--text-primary);"></i> ${file.title}</h3>
+                <h3><i class="fas ${iconClass}" style="${iconStyle}"></i> ${file.title}</h3>
                 <span class="file-type">${file.type}</span>
-                ${file.note ? `<div class="warning-box"><i class="fas fa-exclamation-triangle"></i><span>${file.note}</span></div>` : ''}
+                ${file.note ? `<div class="warning-box"><i class="fas fa-exclamation-triangle"></i><span dir="auto">${file.note}</span></div>` : ''}
             </div>
             <div class="file-actions">
                 <button class="btn-view" onclick="openPdf('${file.link}')"><i class="fas fa-eye"></i> ${t('view')}</button>
