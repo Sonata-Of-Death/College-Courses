@@ -100,7 +100,7 @@ function renderCurrentView() {
         case 'quizResult': 
             renderQuizResult(); 
             break;
-        case 'admin': // FIXED: Admin state persistence
+        case 'admin': 
             renderAdminLogin();
             break;
         default: renderHome();
