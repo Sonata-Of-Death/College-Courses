@@ -5,13 +5,13 @@ const langBtn = document.querySelector('.lang-switch');
 
 // Global State
 let appState = {
-    view: 'home', // home, year, term, dashboard, subject, quiz, quizResult, admin
+    view: 'home', 
     major: null,
     year: null,
     term: null,
     currentSubjectId: null,
     activeTab: null,
-    summaryLang: null, // New State for Summary Sub-view (ar or en)
+    summaryLang: null, 
     lang: 'en',
     quiz: {
         active: false,
@@ -73,9 +73,7 @@ function setupEventListeners() {
     const logo = document.getElementById('app-logo');
     if(logo) {
         logo.addEventListener('click', () => {
-            if(typeof quizTimerInterval !== 'undefined' && quizTimerInterval) {
-                clearInterval(quizTimerInterval);
-            }
+            if(typeof quizTimerInterval !== 'undefined' && quizTimerInterval) clearInterval(quizTimerInterval);
             appState.quiz.active = false;
             renderHome();
         });
@@ -98,17 +96,13 @@ function renderCurrentView() {
             if (appState.quiz.active) renderQuestion(appState.quiz.currentQuestionIndex);
             else renderCurrentView('subject'); 
             break;
-        case 'quizResult': 
-            renderQuizResult(); 
-            break;
-        case 'admin': 
-            renderAdminLogin();
-            break;
+        case 'quizResult': renderQuizResult(); break;
+        case 'admin': renderAdminLogin(); break;
         default: renderHome();
     }
 }
 
-// --- Views (Standard) ---
+// --- Views ---
 function renderHome() {
     appState.view = 'home';
     container.innerHTML = `
@@ -205,7 +199,7 @@ function renderDashboard() {
 
 function openSubject(id) {
     appState.currentSubjectId = id;
-    appState.summaryLang = null; // Reset summary state
+    appState.summaryLang = null; 
     const sub = db.subjects.find(s => s.id === id);
     if(sub) renderSubjectView(sub, sub.material[0]);
 }
@@ -213,9 +207,6 @@ function openSubject(id) {
 function renderSubjectView(subject, activeTab) {
     appState.view = 'subject';
     appState.activeTab = activeTab;
-    
-    // If switching tabs (not clicking download/view), reset summary filter
-    // We handle this inside setSummaryLang now
     
     const subName = appState.lang === 'en' ? subject.name_en : subject.name_ar;
     const tabsHtml = subject.material.map(mat => `
@@ -234,7 +225,7 @@ function renderSubjectView(subject, activeTab) {
 }
 
 function switchTab(id, tab) {
-    appState.summaryLang = null; // Reset summary selection when switching tabs
+    appState.summaryLang = null;
     renderSubjectViewWithId(id, tab);
 }
 
@@ -249,15 +240,12 @@ function setSummaryLang(lang) {
     renderSubjectView(sub, 'summary');
 }
 
-// --- Content Rendering Logic (Updated) ---
+// --- Content Rendering Logic ---
 function getTabContent(subject, type) {
     if (!subject.content || !subject.content[type]) return `<p style="text-align:center;">Empty.</p>`;
 
-    // 1. Handling Split Summaries (Arabic / English)
+    // 1. Handling Split Summaries
     if (type === 'summary' && !Array.isArray(subject.content.summary)) {
-        // It is an object with {ar: [], en: []}
-        
-        // If no language selected yet, show selection buttons
         if (appState.summaryLang === null) {
             return `
                 <div class="grid-center" style="margin-top:0;">
@@ -273,7 +261,6 @@ function getTabContent(subject, type) {
             `;
         }
 
-        // Render the selected list
         const files = appState.summaryLang === 'ar' ? (subject.content.summary.ar || []) : (subject.content.summary.en || []);
         
         return `
@@ -302,30 +289,50 @@ function getTabContent(subject, type) {
     return `<p>Coming Soon.</p>`;
 }
 
-// Helper to render file list items (Updated with Direct Download & Notes)
+// Helper to render file list items (Fixed: Layout & PPT Download)
 function renderFileList(files) {
     if (!files || files.length === 0) return '<p style="text-align:center; color:var(--text-secondary);">No files available.</p>';
     
     return files.map(file => {
-        // Generate Direct Download Link
+        // --- SMART DOWNLOAD LINK GENERATOR ---
         let downloadLink = file.link;
         if(file.link.includes('drive.google.com')) {
-            const idMatch = file.link.match(/\/d\/(.+?)\//);
+            const idMatch = file.link.match(/\/d\/([a-zA-Z0-9_-]+)/);
             if(idMatch && idMatch[1]) {
-                downloadLink = `https://drive.google.com/uc?export=download&id=${idMatch[1]}`;
+                if (file.link.includes('/presentation/')) {
+                    // Force PPTX download for slides
+                    downloadLink = `https://docs.google.com/presentation/d/${idMatch[1]}/export/pptx`;
+                } else {
+                    // Standard file download
+                    downloadLink = `https://drive.google.com/uc?export=download&id=${idMatch[1]}`;
+                }
             }
         }
 
+        // --- FIXED UI LAYOUT ---
         return `
-        <div class="file-item">
-            <div class="file-info">
-                <h3><i class="fas fa-file-pdf" style="color:var(--text-primary); margin-right:10px;"></i> ${file.title}</h3>
-                <span>${file.type}</span>
-                ${file.note ? `<div style="color:#f59e0b; font-size:0.85rem; margin-top:5px; font-weight:bold; display:flex; align-items:center; gap:5px;"><i class="fas fa-exclamation-triangle"></i> ${file.note}</div>` : ''}
+        <div class="file-item" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:nowrap; gap:10px;">
+            <div class="file-info" style="flex:1; min-width:0;">
+                <h3 style="color:var(--text-primary); margin-right:10px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                    <i class="fas fa-file-pdf" style="color:var(--text-primary); margin-right:10px;"></i> ${file.title}
+                </h3>
+                <span style="display:block; margin-top:5px;">${file.type}</span>
+                
+                ${file.note ? `
+                    <div style="color:#f59e0b; font-size:0.85rem; margin-top:5px; font-weight:bold; display:flex; align-items:flex-start; gap:5px; line-height:1.4;">
+                        <i class="fas fa-exclamation-triangle" style="margin-top:3px;"></i> 
+                        <span style="unicode-bidi: isolate;">${file.note}</span>
+                    </div>
+                ` : ''}
             </div>
-            <div>
-                <button class="btn-view" onclick="openPdf('${file.link}')"><i class="fas fa-eye"></i> ${t('view')}</button>
-                <a href="${downloadLink}" class="btn-download"><i class="fas fa-download"></i> ${t('download')}</a>
+            
+            <div style="display:flex; gap:5px; flex-shrink:0;">
+                <button class="btn-view" onclick="openPdf('${file.link}')" style="white-space:nowrap;">
+                    <i class="fas fa-eye"></i> ${t('view')}
+                </button>
+                <a href="${downloadLink}" class="btn-download" style="white-space:nowrap;">
+                    <i class="fas fa-download"></i> ${t('download')}
+                </a>
             </div>
         </div>
         `;
@@ -536,7 +543,7 @@ function formatTime(seconds) {
 
 // Admin Logic
 function renderAdminLogin() {
-    appState.view = 'admin'; // FIXED: Set View State
+    appState.view = 'admin';
     container.innerHTML = `
         <div class="login-box">
             <h2 style="color:var(--white); margin-bottom:1rem;">${t('adminAccess')}</h2>
@@ -558,5 +565,4 @@ function checkAdmin() {
     }
 }
 
-// Run
 document.addEventListener('DOMContentLoaded', init);
