@@ -11,6 +11,7 @@ let appState = {
     term: null,
     currentSubjectId: null,
     activeTab: null,
+    summaryLang: null, // New State for Summary Sub-view (ar or en)
     lang: 'en',
     quiz: {
         active: false,
@@ -32,7 +33,7 @@ const translations = {
         resultTitle: "Quiz Completed!", timeTaken: "Time Taken", backCourse: "Back to Course",
         yourAns: "Your Answer", correctAns: "Correct Answer", reason: "Reason",
         flagAlertTitle: "Review Required", flagAlertMsg: "You have flagged questions: ", flagAlertAction: "Submit Anyway", flagAlertBack: "Return to Quiz",
-        arSec: "Arabic Section", enSec: "English Section"
+        arSec: "Arabic Section", enSec: "English Section", backToSelection: "Back to Selection"
     },
     ar: {
         welcomeTitle: "مرحباً بك في", welcomeSpan: "قاعدة معرفة حاسبات DNU", welcomeSub: "", selectTrack: "اختر المسار الأكاديمي للمتابعة", back: "رجوع", selectYear: "اختر السنة الدراسية", selectTerm: "اختر الفصل الدراسي", year: "السنة", term1: "الترم الأول", term2: "الترم الثاني", t1Range: "سبتمبر - يناير", t2Range: "فبراير - يونيو", clickAccess: "اضغط للوصول للمحتوى", noSubjects: "لا توجد مواد متاحة.", adminAccess: "دخول المشرفين", login: "دخول", accessDenied: "بيانات خاطئة",
@@ -42,7 +43,7 @@ const translations = {
         resultTitle: "تم إنهاء الاختبار!", timeTaken: "الوقت المستغرق", backCourse: "عودة للمادة",
         yourAns: "إجابتك", correctAns: "الإجابة الصحيحة", reason: "السبب",
         flagAlertTitle: "تنبيه مراجعة", flagAlertMsg: "لديك أسئلة محددة للمراجعة أرقام: ", flagAlertAction: "تسليم على أي حال", flagAlertBack: "عودة للاختبار",
-        arSec: "القسم العربي", enSec: "القسم الإنجليزي"
+        arSec: "القسم العربي", enSec: "القسم الإنجليزي", backToSelection: "العودة للاختيار"
     }
 };
 
@@ -204,6 +205,7 @@ function renderDashboard() {
 
 function openSubject(id) {
     appState.currentSubjectId = id;
+    appState.summaryLang = null; // Reset summary state
     const sub = db.subjects.find(s => s.id === id);
     if(sub) renderSubjectView(sub, sub.material[0]);
 }
@@ -212,9 +214,12 @@ function renderSubjectView(subject, activeTab) {
     appState.view = 'subject';
     appState.activeTab = activeTab;
     
+    // If switching tabs (not clicking download/view), reset summary filter
+    // We handle this inside setSummaryLang now
+    
     const subName = appState.lang === 'en' ? subject.name_en : subject.name_ar;
     const tabsHtml = subject.material.map(mat => `
-        <button class="tab-btn ${mat === activeTab ? 'active' : ''}" onclick="renderSubjectViewWithId('${subject.id}', '${mat}')">
+        <button class="tab-btn ${mat === activeTab ? 'active' : ''}" onclick="switchTab('${subject.id}', '${mat}')">
             ${t(mat) || mat}
         </button>
     `).join('');
@@ -228,9 +233,20 @@ function renderSubjectView(subject, activeTab) {
     `;
 }
 
+function switchTab(id, tab) {
+    appState.summaryLang = null; // Reset summary selection when switching tabs
+    renderSubjectViewWithId(id, tab);
+}
+
 function renderSubjectViewWithId(id, tab) {
     const sub = db.subjects.find(s => s.id === id);
     renderSubjectView(sub, tab);
+}
+
+function setSummaryLang(lang) {
+    appState.summaryLang = lang;
+    const sub = db.subjects.find(s => s.id === appState.currentSubjectId);
+    renderSubjectView(sub, 'summary');
 }
 
 // --- Content Rendering Logic (Updated) ---
@@ -240,22 +256,38 @@ function getTabContent(subject, type) {
     // 1. Handling Split Summaries (Arabic / English)
     if (type === 'summary' && !Array.isArray(subject.content.summary)) {
         // It is an object with {ar: [], en: []}
-        let html = '';
-        const arList = subject.content.summary.ar || [];
-        const enList = subject.content.summary.en || [];
-
-        if (arList.length > 0) {
-            html += `<h3 style="color:var(--text-primary); margin: 1rem 0; border-bottom: 1px solid var(--border); padding-bottom: 5px;">${t('arSec')}</h3>` + renderFileList(arList);
-        }
-        if (enList.length > 0) {
-            html += `<h3 style="color:var(--text-primary); margin: 1rem 0; border-bottom: 1px solid var(--border); padding-bottom: 5px;">${t('enSec')}</h3>` + renderFileList(enList);
-        }
         
-        if (html === '') return `<p style="text-align:center;">Empty.</p>`;
-        return `<div class="file-list">${html}</div>`;
+        // If no language selected yet, show selection buttons
+        if (appState.summaryLang === null) {
+            return `
+                <div class="grid-center" style="margin-top:0;">
+                    <div class="selection-card" onclick="setSummaryLang('ar')" style="width:200px; padding:1.5rem;">
+                        <i class="fas fa-book-open card-icon"></i>
+                        <h3>${t('arSec')}</h3>
+                    </div>
+                    <div class="selection-card" onclick="setSummaryLang('en')" style="width:200px; padding:1.5rem;">
+                        <i class="fas fa-book-open card-icon"></i>
+                        <h3>${t('enSec')}</h3>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Render the selected list
+        const files = appState.summaryLang === 'ar' ? (subject.content.summary.ar || []) : (subject.content.summary.en || []);
+        
+        return `
+            <button class="btn-back" style="background:var(--accent); color:white; border:none;" onclick="setSummaryLang(null)">
+                <i class="fas fa-arrow-up"></i> ${t('backToSelection')}
+            </button>
+            <h3 style="color:var(--text-primary); margin: 1rem 0; padding-bottom: 5px;">
+                ${appState.summaryLang === 'ar' ? t('arSec') : t('enSec')}
+            </h3>
+            <div class="file-list">${renderFileList(files)}</div>
+        `;
     }
 
-    // 2. Standard Array Lists (Lecs, Labs, Core Material, Old Summary)
+    // 2. Standard Array Lists
     if (['lecs', 'summary', 'core_material', 'chapters', 'labs_interactive', 'labs'].includes(type)) {
         return `<div class="file-list">${renderFileList(subject.content[type])}</div>`;
     }
@@ -270,10 +302,21 @@ function getTabContent(subject, type) {
     return `<p>Coming Soon.</p>`;
 }
 
-// Helper to render file list items (Updated to support Notes/Warnings)
+// Helper to render file list items (Updated with Direct Download & Notes)
 function renderFileList(files) {
-    if (!files || files.length === 0) return '';
-    return files.map(file => `
+    if (!files || files.length === 0) return '<p style="text-align:center; color:var(--text-secondary);">No files available.</p>';
+    
+    return files.map(file => {
+        // Generate Direct Download Link
+        let downloadLink = file.link;
+        if(file.link.includes('drive.google.com')) {
+            const idMatch = file.link.match(/\/d\/(.+?)\//);
+            if(idMatch && idMatch[1]) {
+                downloadLink = `https://drive.google.com/uc?export=download&id=${idMatch[1]}`;
+            }
+        }
+
+        return `
         <div class="file-item">
             <div class="file-info">
                 <h3><i class="fas fa-file-pdf" style="color:var(--text-primary); margin-right:10px;"></i> ${file.title}</h3>
@@ -282,10 +325,11 @@ function renderFileList(files) {
             </div>
             <div>
                 <button class="btn-view" onclick="openPdf('${file.link}')"><i class="fas fa-eye"></i> ${t('view')}</button>
-                <a href="${file.link}" target="_blank" class="btn-download"><i class="fas fa-download"></i> ${t('download')}</a>
+                <a href="${downloadLink}" class="btn-download"><i class="fas fa-download"></i> ${t('download')}</a>
             </div>
         </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 // --- Quiz Logic ---
