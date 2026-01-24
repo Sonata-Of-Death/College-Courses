@@ -3,16 +3,15 @@ const container = document.getElementById('app-container');
 const themeBtn = document.getElementById('theme-toggle');
 const langBtn = document.querySelector('.lang-switch');
 
-// Global State (The Brain)
+// Global State
 let appState = {
-    view: 'home', // home, year, term, dashboard, subject, quiz, quizResult
+    view: 'home', // home, year, term, dashboard, subject, quiz, quizResult, admin
     major: null,
     year: null,
     term: null,
     currentSubjectId: null,
     activeTab: null,
     lang: 'en',
-    // Quiz State Persistence
     quiz: {
         active: false,
         questions: [],
@@ -32,7 +31,8 @@ const translations = {
         qNum: "Question", flag: "Flag for Review", prev: "Prev", next: "Next", submit: "Submit",
         resultTitle: "Quiz Completed!", timeTaken: "Time Taken", backCourse: "Back to Course",
         yourAns: "Your Answer", correctAns: "Correct Answer", reason: "Reason",
-        flagAlertTitle: "Review Required", flagAlertMsg: "You have flagged questions: ", flagAlertAction: "Submit Anyway", flagAlertBack: "Return to Quiz"
+        flagAlertTitle: "Review Required", flagAlertMsg: "You have flagged questions: ", flagAlertAction: "Submit Anyway", flagAlertBack: "Return to Quiz",
+        arSec: "Arabic Section", enSec: "English Section"
     },
     ar: {
         welcomeTitle: "مرحباً بك في", welcomeSpan: "قاعدة معرفة حاسبات DNU", welcomeSub: "", selectTrack: "اختر المسار الأكاديمي للمتابعة", back: "رجوع", selectYear: "اختر السنة الدراسية", selectTerm: "اختر الفصل الدراسي", year: "السنة", term1: "الترم الأول", term2: "الترم الثاني", t1Range: "سبتمبر - يناير", t2Range: "فبراير - يونيو", clickAccess: "اضغط للوصول للمحتوى", noSubjects: "لا توجد مواد متاحة.", adminAccess: "دخول المشرفين", login: "دخول", accessDenied: "بيانات خاطئة",
@@ -41,7 +41,8 @@ const translations = {
         qNum: "سؤال", flag: "تحديد للمراجعة", prev: "السابق", next: "التالي", submit: "تسليم",
         resultTitle: "تم إنهاء الاختبار!", timeTaken: "الوقت المستغرق", backCourse: "عودة للمادة",
         yourAns: "إجابتك", correctAns: "الإجابة الصحيحة", reason: "السبب",
-        flagAlertTitle: "تنبيه مراجعة", flagAlertMsg: "لديك أسئلة محددة للمراجعة أرقام: ", flagAlertAction: "تسليم على أي حال", flagAlertBack: "عودة للاختبار"
+        flagAlertTitle: "تنبيه مراجعة", flagAlertMsg: "لديك أسئلة محددة للمراجعة أرقام: ", flagAlertAction: "تسليم على أي حال", flagAlertBack: "عودة للاختبار",
+        arSec: "القسم العربي", enSec: "القسم الإنجليزي"
     }
 };
 
@@ -62,26 +63,19 @@ function setupEventListeners() {
     });
 
     langBtn.addEventListener('click', () => {
-        // Toggle Language
         appState.lang = appState.lang === 'en' ? 'ar' : 'en';
         langBtn.textContent = appState.lang.toUpperCase();
         document.body.dir = appState.lang === 'ar' ? 'rtl' : 'ltr';
-        
-        // Re-render based on EXACT current state
         renderCurrentView(); 
     });
 
-    // NEW: Logo Click -> Home Logic
     const logo = document.getElementById('app-logo');
     if(logo) {
         logo.addEventListener('click', () => {
-            // Safety: Stop any running quiz timer
             if(typeof quizTimerInterval !== 'undefined' && quizTimerInterval) {
                 clearInterval(quizTimerInterval);
             }
-            // Reset State
             appState.quiz.active = false;
-            // Go Home
             renderHome();
         });
     }
@@ -103,15 +97,17 @@ function renderCurrentView() {
             if (appState.quiz.active) renderQuestion(appState.quiz.currentQuestionIndex);
             else renderCurrentView('subject'); 
             break;
-        case 'quizResult': // NEW STATE: Handles Result Page persistence
+        case 'quizResult': 
             renderQuizResult(); 
+            break;
+        case 'admin': // FIXED: Admin state persistence
+            renderAdminLogin();
             break;
         default: renderHome();
     }
 }
 
-// --- Views ---
-
+// --- Views (Standard) ---
 function renderHome() {
     appState.view = 'home';
     container.innerHTML = `
@@ -228,8 +224,6 @@ function renderSubjectView(subject, activeTab) {
         <div class="subject-header"><h1>${subName}</h1></div>
         <div class="tabs-container">${tabsHtml}</div>
         <div id="tab-content" class="content-area">${getTabContent(subject, activeTab)}</div>
-        
-        <!-- Modal Placeholders -->
         <div id="app-modal" class="modal-overlay"></div>
     `;
 }
@@ -239,28 +233,34 @@ function renderSubjectViewWithId(id, tab) {
     renderSubjectView(sub, tab);
 }
 
+// --- Content Rendering Logic (Updated) ---
 function getTabContent(subject, type) {
     if (!subject.content || !subject.content[type]) return `<p style="text-align:center;">Empty.</p>`;
 
-    if (['lecs', 'summary', 'core_material', 'chapters'].includes(type)) {
-        return `
-            <div class="file-list">
-                ${subject.content[type].map(file => `
-                    <div class="file-item">
-                        <div class="file-info">
-                            <h3><i class="fas fa-file-pdf" style="color:var(--text-primary); margin-right:10px;"></i> ${file.title}</h3>
-                            <span>${file.type}</span>
-                        </div>
-                        <div>
-                            <button class="btn-view" onclick="openPdf('${file.link}')"><i class="fas fa-eye"></i> ${t('view')}</button>
-                            <a href="${file.link}" target="_blank" class="btn-download"><i class="fas fa-download"></i> ${t('download')}</a>
-                        </div>
-                    </div>
-                `).join('')}
-            </div>
-        `;
+    // 1. Handling Split Summaries (Arabic / English)
+    if (type === 'summary' && !Array.isArray(subject.content.summary)) {
+        // It is an object with {ar: [], en: []}
+        let html = '';
+        const arList = subject.content.summary.ar || [];
+        const enList = subject.content.summary.en || [];
+
+        if (arList.length > 0) {
+            html += `<h3 style="color:var(--text-primary); margin: 1rem 0;">${t('arSec')}</h3>` + renderFileList(arList);
+        }
+        if (enList.length > 0) {
+            html += `<h3 style="color:var(--text-primary); margin: 1rem 0;">${t('enSec')}</h3>` + renderFileList(enList);
+        }
+        
+        if (html === '') return `<p style="text-align:center;">Empty.</p>`;
+        return `<div class="file-list">${html}</div>`;
     }
 
+    // 2. Standard Array Lists (Lecs, Labs, Core Material, Old Summary)
+    if (['lecs', 'summary', 'core_material', 'chapters', 'labs_interactive', 'labs'].includes(type)) {
+        return `<div class="file-list">${renderFileList(subject.content[type])}</div>`;
+    }
+
+    // 3. Quiz
     if (type === 'quiz') {
         return `<div style="text-align:center;">
             <h2 style="color:var(--white); margin-bottom:1rem;">${t('quizReady')}</h2>
@@ -270,6 +270,23 @@ function getTabContent(subject, type) {
     return `<p>Coming Soon.</p>`;
 }
 
+// Helper to render file list items
+function renderFileList(files) {
+    if (!files || files.length === 0) return '';
+    return files.map(file => `
+        <div class="file-item">
+            <div class="file-info">
+                <h3><i class="fas fa-file-pdf" style="color:var(--text-primary); margin-right:10px;"></i> ${file.title}</h3>
+                <span>${file.type}</span>
+            </div>
+            <div>
+                <button class="btn-view" onclick="openPdf('${file.link}')"><i class="fas fa-eye"></i> ${t('view')}</button>
+                <a href="${file.link}" target="_blank" class="btn-download"><i class="fas fa-download"></i> ${t('download')}</a>
+            </div>
+        </div>
+    `).join('');
+}
+
 // --- Quiz Logic ---
 let quizTimerInterval = null;
 
@@ -277,7 +294,6 @@ function startQuiz() {
     const sub = db.subjects.find(s => s.id === appState.currentSubjectId);
     if(!sub.content.quiz) return;
 
-    // Force Quiz State
     appState.view = 'quiz';
     appState.quiz = {
         active: true,
@@ -306,7 +322,6 @@ function renderQuestion(index) {
     const q = questions[index];
     const isFlagged = appState.quiz.flagged.has(index);
     
-    // UPDATED: Replaced inline "color:white" with "color:var(--white)"
     const html = `
         <div class="quiz-container">
             <div class="quiz-top-bar">
@@ -339,7 +354,6 @@ function renderQuestion(index) {
                     : `<button class="btn-nav btn-submit" onclick="attemptSubmit()">${t('submit')}</button>`}
             </div>
         </div>
-        
         <div id="alert-modal" class="modal-overlay"></div>
     `;
     
@@ -356,7 +370,6 @@ function saveAnswer(qIndex, ansIndex) {
     appState.quiz.userAnswers[qIndex] = ansIndex;
 }
 
-// --- Submit Logic ---
 function attemptSubmit() {
     const flags = Array.from(appState.quiz.flagged).map(i => i + 1);
     if (flags.length > 0) {
@@ -369,7 +382,6 @@ function attemptSubmit() {
 function showFlagAlert(flags) {
     const modal = document.getElementById('alert-modal');
     if(!modal) return;
-    
     modal.innerHTML = `
         <div class="alert-content">
             <h2 style="color:var(--warning); margin-bottom:1rem;">${t('flagAlertTitle')}</h2>
@@ -388,10 +400,7 @@ function showFlagAlert(flags) {
 
 function closeFlagAlert() {
     const modal = document.getElementById('alert-modal');
-    if(modal) {
-        modal.style.display = 'none';
-        modal.innerHTML = '';
-    }
+    if(modal) { modal.style.display = 'none'; modal.innerHTML = ''; }
 }
 
 function forceSubmit() {
@@ -402,7 +411,7 @@ function forceSubmit() {
 function finalizeQuiz() {
     clearInterval(quizTimerInterval);
     appState.quiz.active = false;
-    appState.view = 'quizResult'; // Lock View State to Result
+    appState.view = 'quizResult';
     renderQuizResult();
 }
 
@@ -417,7 +426,6 @@ function renderQuizResult() {
         
         if(!isCorrect) {
             const explanation = appState.lang === 'ar' ? (q.explanation_ar || q.explanation_en) : q.explanation_en;
-            // UPDATED: Replaced inline "color:white" with "color:var(--white)" in result card
             reportHtml += `
                 <div class="result-card force-ltr">
                     <h4 style="color:var(--white); margin-bottom:5px;">Q${index+1}: ${q.question}</h4>
@@ -434,23 +442,18 @@ function renderQuizResult() {
     });
 
     const percentage = Math.round((score / questions.length) * 100);
-    
-    // UPDATED: Replaced inline "color:white" with "color:var(--white)" in results header
     container.innerHTML = `
         <div class="quiz-container" style="text-align:center;">
             <h2 style="color:var(--white);">${t('resultTitle')}</h2>
             <div style="font-size:3rem; color:${percentage >= 50 ? '#10b981' : '#dc2626'}; margin:1rem 0;">${percentage}%</div>
             <p style="color:gray;">${t('timeTaken')}: ${formatTime(appState.quiz.time)}</p>
-            
             <button class="btn-back" onclick="exitQuiz()" style="margin-top:1rem;">${t('backCourse')}</button>
-            
             <div style="text-align:left; margin-top:2rem;">${reportHtml}</div>
         </div>
     `;
 }
 
 function exitQuiz() {
-    // Manually route back to subject
     const sub = db.subjects.find(s => s.id === appState.currentSubjectId);
     if(sub) renderSubjectView(sub, sub.material[0]);
     else renderDashboard();
@@ -461,7 +464,6 @@ function openPdf(link) {
     const modal = document.getElementById('app-modal');
     let embedLink = link;
     if(link.includes('drive.google.com') && link.includes('/view')) embedLink = link.replace('/view', '/preview');
-    
     modal.innerHTML = `
         <div class="modal-content">
             <div class="modal-header">
@@ -489,7 +491,7 @@ function formatTime(seconds) {
 
 // Admin Logic
 function renderAdminLogin() {
-    // UPDATED: Replaced inline "color:white" with "color:var(--white)"
+    appState.view = 'admin'; // FIXED: Set View State
     container.innerHTML = `
         <div class="login-box">
             <h2 style="color:var(--white); margin-bottom:1rem;">${t('adminAccess')}</h2>
