@@ -70,6 +70,16 @@ function setupEventListeners() {
         // Re-render based on EXACT current state
         renderCurrentView(); 
     });
+
+    // NEW: Logo Click -> Home
+    const logo = document.querySelector('.logo');
+    logo.style.cursor = 'pointer'; // Make it look clickable
+    logo.addEventListener('click', () => {
+        // Safety: Stop any running quiz timer
+        if(quizTimerInterval) clearInterval(quizTimerInterval);
+        appState.quiz.active = false;
+        renderHome();
+    });
 }
 
 // --- Smart Router ---
