@@ -38,8 +38,18 @@ body { background-color: var(--bg-color); color: var(--text-primary); transition
     border-bottom: 1px solid var(--border);
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
-.logo { font-size: 1.5rem; font-weight: bold; color: var(--accent); }
+/* Updated Logo Style */
+.logo { 
+    font-size: 1.5rem; 
+    font-weight: bold; 
+    color: var(--white); /* Ensures visibility in both modes */
+    cursor: pointer; /* Makes it look clickable */
+    transition: 0.3s;
+    user-select: none;
+}
+.logo:hover { transform: scale(1.05); }
 .highlight { color: var(--accent); }
+
 .nav-links button, .lang-switch {
     background: transparent; border: 1px solid var(--text-secondary); 
     color: var(--text-primary); padding: 5px 10px; border-radius: 5px; 
