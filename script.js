@@ -245,10 +245,10 @@ function getTabContent(subject, type) {
         const enList = subject.content.summary.en || [];
 
         if (arList.length > 0) {
-            html += `<h3 style="color:var(--text-primary); margin: 1rem 0;">${t('arSec')}</h3>` + renderFileList(arList);
+            html += `<h3 style="color:var(--text-primary); margin: 1rem 0; border-bottom: 1px solid var(--border); padding-bottom: 5px;">${t('arSec')}</h3>` + renderFileList(arList);
         }
         if (enList.length > 0) {
-            html += `<h3 style="color:var(--text-primary); margin: 1rem 0;">${t('enSec')}</h3>` + renderFileList(enList);
+            html += `<h3 style="color:var(--text-primary); margin: 1rem 0; border-bottom: 1px solid var(--border); padding-bottom: 5px;">${t('enSec')}</h3>` + renderFileList(enList);
         }
         
         if (html === '') return `<p style="text-align:center;">Empty.</p>`;
@@ -270,7 +270,7 @@ function getTabContent(subject, type) {
     return `<p>Coming Soon.</p>`;
 }
 
-// Helper to render file list items
+// Helper to render file list items (Updated to support Notes/Warnings)
 function renderFileList(files) {
     if (!files || files.length === 0) return '';
     return files.map(file => `
@@ -278,6 +278,7 @@ function renderFileList(files) {
             <div class="file-info">
                 <h3><i class="fas fa-file-pdf" style="color:var(--text-primary); margin-right:10px;"></i> ${file.title}</h3>
                 <span>${file.type}</span>
+                ${file.note ? `<div style="color:#f59e0b; font-size:0.85rem; margin-top:5px; font-weight:bold; display:flex; align-items:center; gap:5px;"><i class="fas fa-exclamation-triangle"></i> ${file.note}</div>` : ''}
             </div>
             <div>
                 <button class="btn-view" onclick="openPdf('${file.link}')"><i class="fas fa-eye"></i> ${t('view')}</button>
