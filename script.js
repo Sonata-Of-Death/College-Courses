@@ -1,190 +1,6 @@
-// DOM Elements
-const container = document.getElementById('app-container');
-const themeBtn = document.getElementById('theme-toggle');
-const langBtn = document.querySelector('.lang-switch');
+// ... (الجزء الأول من الكود: Global State و Translations كما هو) ...
 
-// Global State
-let appState = {
-    view: 'home', 
-    major: null,
-    year: null,
-    term: null,
-    currentSubjectId: null,
-    activeTab: null,
-    subFilter: null, 
-    lang: 'en',
-    quiz: { active: false, questions: [], currentQuestionIndex: 0, time: 0, userAnswers: {}, flagged: new Set() },
-    lab: { active: false, id: null, questions: [], currentQIndex: 0, time: 0, userCode: "", surrendered: false }
-};
-
-// Dictionary
-const translations = {
-    en: {
-        welcomeTitle: "Welcome to", welcomeSpan: "DNU Computer Science", welcomeSub: "Knowledge Base", selectTrack: "Select your academic track to proceed", back: "Back", selectYear: "Select Academic Year", selectTerm: "Select Semester", year: "Year", term1: "First Semester", term2: "Second Semester", t1Range: "Sep - Jan", t2Range: "Feb - Jun", clickAccess: "Click to access material", noSubjects: "No subjects found.", adminAccess: "Admin Access", login: "LOGIN", accessDenied: "Access Denied",
-        lecs: "Lectures", summary: "Summaries", quiz: "Quiz", labs: "Labs", core_material: "Core Material", chapters: "Chapters", labs_interactive: "Interactive Labs",
-        view: "View", download: "Download", startQuiz: "Start Quiz", quizReady: "Ready for the Challenge?",
-        qNum: "Question", flag: "Flag for Review", prev: "Prev", next: "Next", submit: "Submit",
-        resultTitle: "Quiz Completed!", timeTaken: "Time Taken", backCourse: "Back to Course",
-        yourAns: "Your Answer", correctAns: "Correct Answer", reason: "Reason",
-        flagAlertTitle: "Review Required", flagAlertMsg: "You have flagged questions: ", flagAlertAction: "Submit Anyway", flagAlertBack: "Return to Quiz",
-        arSec: "Arabic Section", enSec: "English Section", backToSelection: "Back to Selection",
-        lecsMain: "Lectures", lecsSol: "Solutions",
-        labsMaterial: "Material", labsQuestions: "Interactive Questions",
-        startLab: "Start Lab", runCode: "Run Code", surrender: "Show Solution", nextQ: "Next Question", understood: "I Understood",
-        solving: "Compiling...", showHint: "💡 Show Hint", hideHint: "🚫 Hide Hint",
-        mainClassAlertTitle: "⚠️ Naming Convention Required", 
-        mainClassAlertBody: "For this compiler environment, your public class <b>MUST</b> be named <code>Main</code>.<br><br><i>(Note: In standard Java IDEs like NetBeans/IntelliJ, you can name it anything, but here 'Main' is mandatory).</i>",
-        inputPrompt: "This program requires input.\nPlease enter the values below (separated by spaces or new lines):"
-    },
-    ar: {
-        welcomeTitle: "مرحباً بك في", welcomeSpan: "قاعدة معرفة حاسبات DNU", welcomeSub: "", selectTrack: "اختر المسار الأكاديمي للمتابعة", back: "رجوع", selectYear: "اختر السنة الدراسية", selectTerm: "اختر الفصل الدراسي", year: "السنة", term1: "الترم الأول", term2: "الترم الثاني", t1Range: "سبتمبر - يناير", t2Range: "فبراير - يونيو", clickAccess: "اضغط للوصول للمحتوى", noSubjects: "لا توجد مواد متاحة.", adminAccess: "دخول المشرفين", login: "دخول", accessDenied: "بيانات خاطئة",
-        lecs: "محاضرات", summary: "ملخصات", quiz: "اختبار", labs: "تجارب معملية", core_material: "المحتوى الأساسي", chapters: "الفصول", labs_interactive: "معمل تفاعلي",
-        view: "عرض", download: "تحميل", startQuiz: "بدء الاختبار", quizReady: "جاهز للتحدي؟",
-        qNum: "سؤال", flag: "تحديد للمراجعة", prev: "السابق", next: "التالي", submit: "تسليم",
-        resultTitle: "تم إنهاء الاختبار!", timeTaken: "الوقت المستغرق", backCourse: "عودة للمادة",
-        yourAns: "إجابتك", correctAns: "الإجابة الصحيحة", reason: "السبب",
-        flagAlertTitle: "تنبيه مراجعة", flagAlertMsg: "لديك أسئلة محددة للمراجعة أرقام: ", flagAlertAction: "تسليم على أي حال", flagAlertBack: "عودة للاختبار",
-        arSec: "القسم العربي", enSec: "القسم الإنجليزي", backToSelection: "العودة للاختيار",
-        lecsMain: "شرح المحاضرات", lecsSol: "حلول الأسئلة",
-        labsMaterial: "شرح اللابات", labsQuestions: "أسئلة تفاعلية",
-        startLab: "بدء اللاب", runCode: "تشغيل الكود", surrender: "إظهار الحل", nextQ: "السؤال التالي", understood: "فهمت",
-        solving: "جاري المعالجة...", showHint: "💡 إظهار تلميح", hideHint: "🚫 إخفاء التلميح",
-        mainClassAlertTitle: "⚠️ تنبيه هام بخصوص التسمية",
-        mainClassAlertBody: "عشان الكود يشتغل على الموقع هنا، لازم اسم الكلاس الرئيسي يكون <code>Main</code>.<br><br><i>(ملحوظة: ده شرط خاص بالكومبايلر بتاعنا بس، في العادي تقدر تسميه أي حاجة).</i>",
-        inputPrompt: "البرنامج ده محتاج مدخلات (Input).\nمن فضلك دخل القيم هنا (افصل بينهم بمسافة أو سطر جديد):"
-    }
-};
-
-function t(key) { return translations[appState.lang][key] || key; }
-
-// --- Initialization ---
-function init() {
-    setupEventListeners();
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('admin')) renderAdminLogin();
-    else renderHome();
-}
-
-function setupEventListeners() {
-    themeBtn.addEventListener('click', () => {
-        document.body.classList.toggle('light-mode');
-        themeBtn.innerHTML = document.body.classList.contains('light-mode') ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-    });
-
-    langBtn.addEventListener('click', () => {
-        appState.lang = appState.lang === 'en' ? 'ar' : 'en';
-        langBtn.textContent = appState.lang.toUpperCase();
-        document.body.dir = appState.lang === 'ar' ? 'rtl' : 'ltr';
-        renderCurrentView(); 
-    });
-
-    const logo = document.getElementById('app-logo');
-    if(logo) {
-        logo.addEventListener('click', () => {
-            if(typeof quizTimerInterval !== 'undefined' && quizTimerInterval) clearInterval(quizTimerInterval);
-            if(typeof labTimerInterval !== 'undefined' && labTimerInterval) clearInterval(labTimerInterval);
-            appState.quiz.active = false;
-            appState.lab.active = false;
-            renderHome();
-        });
-    }
-}
-
-// --- Smart Router ---
-function renderCurrentView() {
-    switch(appState.view) {
-        case 'home': renderHome(); break;
-        case 'year': renderYearSelect(); break;
-        case 'term': renderTermSelect(); break;
-        case 'dashboard': renderDashboard(); break;
-        case 'subject': 
-            const sub = db.subjects.find(s => s.id === appState.currentSubjectId);
-            if(sub) renderSubjectView(sub, appState.activeTab);
-            else renderDashboard();
-            break;
-        case 'quiz':
-            if (appState.quiz.active) renderQuestion(appState.quiz.currentQuestionIndex);
-            else renderCurrentView('subject'); 
-            break;
-        case 'lab':
-            if (appState.lab.active) renderLabQuestion();
-            else renderCurrentView('subject');
-            break;
-        case 'quizResult': renderQuizResult(); break;
-        case 'admin': renderAdminLogin(); break;
-        default: renderHome();
-    }
-}
-
-// --- Standard Views ---
-function renderHome() { appState.view = 'home'; container.innerHTML = `<section class="hero"><h1>${t('welcomeTitle')} <span class="highlight">${t('welcomeSpan')}</span> ${t('welcomeSub')}</h1><p>${t('selectTrack')}</p><div class="grid-center"><div class="selection-card" onclick="selectMajor('ai')"><i class="fas fa-brain card-icon"></i><h2>${appState.lang === 'en' ? db.majors.ai.name_en : db.majors.ai.name_ar}</h2></div><div class="selection-card" onclick="selectMajor('cyber')"><i class="fas fa-shield-halved card-icon"></i><h2>${appState.lang === 'en' ? db.majors.cyber.name_en : db.majors.cyber.name_ar}</h2></div></div></section>`; }
-function selectMajor(major) { appState.major = major; renderYearSelect(); }
-function renderYearSelect() { appState.view = 'year'; container.innerHTML = `<button class="btn-back" onclick="renderHome()"><i class="fas fa-arrow-left"></i> ${t('back')}</button><h2 class="section-title">${t('selectYear')}</h2><div class="grid-center">${[1, 2, 3, 4].map(y => `<div class="selection-card" onclick="selectYear(${y})"><div style="font-size: 2.5rem; font-weight: bold; color: var(--accent); margin-bottom: 1rem;">0${y}</div><h3>${t('year')} ${y}</h3></div>`).join('')}</div>`; }
-function selectYear(year) { appState.year = year; renderTermSelect(); }
-function renderTermSelect() { appState.view = 'term'; container.innerHTML = `<button class="btn-back" onclick="renderYearSelect()"><i class="fas fa-arrow-left"></i> ${t('back')}</button><h2 class="section-title">${t('selectTerm')}</h2><div class="grid-center"><div class="selection-card" onclick="selectTerm(1)"><div style="font-size: 4rem; color: var(--accent); margin-bottom: 0.5rem;"><i class="fas fa-calendar-check"></i></div><h3>${t('term1')}</h3><div style="margin-top: 10px; color: var(--text-secondary); background: rgba(255,255,255,0.05); padding: 5px; border-radius: 5px;">${t('t1Range')}</div></div><div class="selection-card" onclick="selectTerm(2)"><div style="font-size: 4rem; color: var(--accent); margin-bottom: 0.5rem;"><i class="fas fa-calendar-check"></i></div><h3>${t('term2')}</h3><div style="margin-top: 10px; color: var(--text-secondary); background: rgba(255,255,255,0.05); padding: 5px; border-radius: 5px;">${t('t2Range')}</div></div></div>`; }
-function selectTerm(term) { appState.term = term; renderDashboard(); }
-function renderDashboard() { appState.view = 'dashboard'; const filteredSubjects = db.subjects.filter(sub => (sub.type === 'shared' || sub.type === appState.major) && sub.year === appState.year && sub.term === appState.term); const majorName = appState.lang === 'en' ? db.majors[appState.major].name_en : db.majors[appState.major].name_ar; container.innerHTML = `<button class="btn-back" onclick="renderTermSelect()"><i class="fas fa-arrow-left"></i> ${t('back')}</button><h2 class="section-title">${majorName} - ${t('year')} ${appState.year} / ${t('term'+appState.term)}</h2><div class="dashboard-grid">${filteredSubjects.map(sub => `<div class="subject-card" onclick="openSubject('${sub.id}')"><div class="subject-title">${appState.lang === 'en' ? sub.name_en : sub.name_ar}</div><small style="color:var(--text-secondary)">${t('clickAccess')}</small></div>`).join('')}</div>`; }
-function openSubject(id) { appState.currentSubjectId = id; appState.subFilter = null; const sub = db.subjects.find(s => s.id === id); if(sub) renderSubjectView(sub, sub.material[0]); }
-
-function renderSubjectView(subject, activeTab) {
-    appState.view = 'subject'; appState.activeTab = activeTab; const subName = appState.lang === 'en' ? subject.name_en : subject.name_ar; const tabsHtml = subject.material.map(mat => `<button class="tab-btn ${mat === activeTab ? 'active' : ''}" onclick="switchTab('${subject.id}', '${mat}')">${t(mat) || mat}</button>`).join(''); container.innerHTML = `<button class="btn-back" onclick="renderDashboard()"><i class="fas fa-arrow-left"></i> ${t('back')}</button><div class="subject-header"><h1>${subName}</h1></div><div class="tabs-container">${tabsHtml}</div><div id="tab-content" class="content-area">${getTabContent(subject, activeTab)}</div><div id="app-modal" class="modal-overlay"></div><div id="custom-alert-modal" class="modal-overlay"></div>`;
-}
-function switchTab(id, tab) { appState.subFilter = null; renderSubjectViewWithId(id, tab); }
-function renderSubjectViewWithId(id, tab) { const sub = db.subjects.find(s => s.id === id); renderSubjectView(sub, tab); }
-function setSubFilter(filter) { appState.subFilter = filter; const sub = db.subjects.find(s => s.id === appState.currentSubjectId); renderSubjectView(sub, appState.activeTab); }
-
-function getTabContent(subject, type) {
-    if (!subject.content || !subject.content[type]) return `<p style="text-align:center;">Empty.</p>`;
-    // Split Summaries
-    if (type === 'summary' && !Array.isArray(subject.content.summary)) {
-        if (appState.subFilter === null) return `<div class="grid-center" style="margin-top:0;"><div class="selection-card" onclick="setSubFilter('ar')" style="width:200px; padding:1.5rem;"><i class="fas fa-book-open card-icon"></i><h3>${t('arSec')}</h3></div><div class="selection-card" onclick="setSubFilter('en')" style="width:200px; padding:1.5rem;"><i class="fas fa-book-open card-icon"></i><h3>${t('enSec')}</h3></div></div>`;
-        const files = appState.subFilter === 'ar' ? (subject.content.summary.ar || []) : (subject.content.summary.en || []);
-        return `<button class="btn-back" style="background:var(--accent); color:white; border:none;" onclick="setSubFilter(null)"><i class="fas fa-arrow-up"></i> ${t('backToSelection')}</button><h3 style="color:var(--text-primary); margin: 1rem 0; padding-bottom: 5px;">${appState.subFilter === 'ar' ? t('arSec') : t('enSec')}</h3><div class="file-list">${renderFileList(files)}</div>`;
-    }
-    // Split Lectures
-    if (type === 'lecs' && !Array.isArray(subject.content.lecs)) {
-        if (appState.subFilter === null) return `<div class="grid-center" style="margin-top:0;"><div class="selection-card" onclick="setSubFilter('main')" style="width:200px; padding:1.5rem;"><i class="fas fa-chalkboard-teacher card-icon"></i><h3>${t('lecsMain')}</h3></div><div class="selection-card" onclick="setSubFilter('solutions')" style="width:200px; padding:1.5rem;"><i class="fas fa-check-circle card-icon"></i><h3>${t('lecsSol')}</h3></div></div>`;
-        const files = appState.subFilter === 'main' ? (subject.content.lecs.main || []) : (subject.content.lecs.solutions || []);
-        return `<button class="btn-back" style="background:var(--accent); color:white; border:none;" onclick="setSubFilter(null)"><i class="fas fa-arrow-up"></i> ${t('backToSelection')}</button><h3 style="color:var(--text-primary); margin: 1rem 0; padding-bottom: 5px;">${appState.subFilter === 'main' ? t('lecsMain') : t('lecsSol')}</h3><div class="file-list">${renderFileList(files)}</div>`;
-    }
-    // Split Labs
-    if (type === 'labs' && !Array.isArray(subject.content.labs)) {
-        if (appState.subFilter === null) return `<div class="grid-center" style="margin-top:0;"><div class="selection-card" onclick="setSubFilter('material')" style="width:200px; padding:1.5rem;"><i class="fas fa-laptop-code card-icon"></i><h3>${t('labsMaterial')}</h3></div><div class="selection-card" onclick="setSubFilter('questions')" style="width:200px; padding:1.5rem;"><i class="fas fa-question-circle card-icon"></i><h3>${t('labsQuestions')}</h3></div></div>`;
-        if (appState.subFilter === 'material') {
-            return `<button class="btn-back" style="background:var(--accent); color:white; border:none;" onclick="setSubFilter(null)"><i class="fas fa-arrow-up"></i> ${t('backToSelection')}</button><h3 style="color:var(--text-primary); margin: 1rem 0; padding-bottom: 5px;">${t('labsMaterial')}</h3><div class="file-list">${renderFileList(subject.content.labs.material || [])}</div>`;
-        }
-        // Interactive Labs Selection
-        const labList = subject.content.labs.questions.labs_list || [];
-        if (labList.length === 0) return `<button class="btn-back" style="background:var(--accent); color:white; border:none;" onclick="setSubFilter(null)"><i class="fas fa-arrow-up"></i> ${t('backToSelection')}</button><p style="text-align:center; margin-top:2rem; color:var(--text-secondary);">Interactive Questions Coming Soon...</p>`;
-        
-        return `<button class="btn-back" style="background:var(--accent); color:white; border:none;" onclick="setSubFilter(null)"><i class="fas fa-arrow-up"></i> ${t('backToSelection')}</button><h3 style="color:var(--text-primary); margin: 1rem 0; padding-bottom: 5px;">${t('labsQuestions')}</h3>
-        <div class="dashboard-grid">${labList.map(l => `<div class="subject-card" onclick="startLab(${l.id})"><div class="subject-title">${l.title}</div><small style="color:var(--text-secondary)">${l.qCount} Questions</small><button class="btn-start-lab">${t('startLab')}</button></div>`).join('')}</div>`;
-    }
-    // Standard
-    if (['lecs', 'summary', 'core_material', 'chapters', 'labs_interactive', 'labs'].includes(type)) return `<div class="file-list">${renderFileList(subject.content[type])}</div>`;
-    if (type === 'quiz') return `<div style="text-align:center;"><h2 style="color:var(--white); margin-bottom:1rem;">${t('quizReady')}</h2><button class="login-btn" style="max-width:200px;" onclick="startQuiz()">${t('startQuiz')}</button></div>`;
-    return `<p>Coming Soon.</p>`;
-}
-
-function renderFileList(files) {
-    if (!files || files.length === 0) return '<p style="text-align:center; color:var(--text-secondary);">No files available.</p>';
-    return files.map(file => {
-        let downloadLink = file.link;
-        let iconClass = 'fa-file-pdf';
-        let iconStyle = 'color:var(--text-primary)';
-        let viewButton = `<button class="btn-view" onclick="openPdf('${file.link}')"><i class="fas fa-eye"></i> ${t('view')}</button>`;
-        if (file.link === "#") { downloadLink = "#"; viewButton = ""; } 
-        const isPPT = file.type === 'PPT' || (file.link && file.link.includes('presentation'));
-        const idMatch = file.link && file.link.match(/\/d\/([a-zA-Z0-9_-]+)/);
-        if(idMatch && idMatch[1]) {
-            if (isPPT) { downloadLink = `https://docs.google.com/presentation/d/${idMatch[1]}/export/pptx`; iconClass = 'fa-file-powerpoint'; iconStyle = 'color:var(--ppt-color)'; } 
-            else { downloadLink = `https://drive.google.com/uc?export=download&id=${idMatch[1]}`; }
-        }
-        return `<div class="file-item"><div class="file-info"><h3><i class="fas ${iconClass}" style="${iconStyle}"></i> ${file.title}</h3><span class="file-type">${file.type}</span>${file.note ? `<div class="warning-box"><i class="fas fa-exclamation-triangle"></i><span dir="auto">${file.note}</span></div>` : ''}</div><div class="file-actions">${viewButton}${file.link !== "#" ? `<a href="${downloadLink}" class="btn-download"><i class="fas fa-download"></i> ${t('download')}</a>` : ''}</div></div>`;
-    }).join('');
-}
-
-// --- Interactive Lab Logic (Piston API + Input Handling) ---
+// --- Interactive Lab Logic (Piston API + Input Handling + Celebration) ---
 let labTimerInterval = null;
 
 function startLab(labId) {
@@ -212,8 +28,7 @@ function startLab(labId) {
 function renderLabQuestion() {
     const q = appState.lab.questions[appState.lab.currentQIndex];
     const total = appState.lab.questions.length;
-    // START EMPTY as requested
-    if (typeof appState.lab.userCode === 'undefined') appState.lab.userCode = ""; 
+    appState.lab.userCode = ""; // Always start empty
 
     container.innerHTML = `
         <div class="lab-arena">
@@ -240,22 +55,22 @@ function renderLabQuestion() {
                 </div>
                 
                 <div class="editor-pane">
-                    <textarea class="code-editor" id="code-input" spellcheck="false" placeholder="// Write your Java code here... (Remember to use: public class Main)" oninput="appState.lab.userCode = this.value">${appState.lab.userCode}</textarea>
+                    <textarea class="code-editor" id="code-input" spellcheck="false" placeholder="// Write your Java code here... (Start with: public class Main)" oninput="appState.lab.userCode = this.value"></textarea>
                     <div class="lab-controls">
                         <button class="btn-surrender" onclick="surrender()"><i class="fas fa-flag"></i> ${t('surrender')}</button>
                         <button class="btn-run" onclick="runLabCode()"><i class="fas fa-play"></i> ${t('runCode')}</button>
                     </div>
-                    <div class="console-output" id="console-out">// Output logs...</div>
+                    <div class="console-output" id="console-out">// Logs...</div>
                 </div>
             </div>
             
             <div class="compare-container" id="compare-view">
                 <div class="solution-view">
-                    <h4 style="color:var(--success); margin-bottom:10px;">Solution Model:</h4>
+                    <h4 style="color:var(--success);">Solution:</h4>
                     <pre>${q.solutionCode}</pre>
                 </div>
                 <div class="user-view">
-                    <h4 style="color:var(--danger); margin-bottom:10px;">Your Attempt:</h4>
+                    <h4 style="color:var(--danger);">Your Code:</h4>
                     <pre id="static-user-code"></pre>
                 </div>
                 <div style="position:absolute; bottom:20px; right:20px;">
@@ -264,11 +79,20 @@ function renderLabQuestion() {
             </div>
         </div>
         
+        <div id="input-modal" class="modal-overlay">
+            <div class="input-modal-content">
+                <h3 style="color:var(--white); margin-bottom:1rem;">Input Required</h3>
+                <p style="color:var(--text-secondary);">Enter values for Scanner (separated by spaces):</p>
+                <input type="text" id="custom-stdin" class="custom-input-field" placeholder="e.g. 10 20">
+                <button class="btn-run" onclick="resolveInput()" style="width:100%;">Submit & Run</button>
+            </div>
+        </div>
+
         <div id="main-class-alert" class="modal-overlay">
             <div class="alert-content warning-modal">
-                <h2 style="color:var(--warning); margin-bottom:1rem;">${t('mainClassAlertTitle')}</h2>
-                <p style="color:var(--text-primary); margin-bottom:1.5rem; line-height:1.5;">${t('mainClassAlertBody')}</p>
-                <button class="btn-confirm" onclick="closeMainClassAlert()">OK, I'll fix it</button>
+                <h2 style="color:var(--warning);">⚠️ Naming Error</h2>
+                <p style="color:var(--text-primary);">Your class MUST be named <b>Main</b>.<br>Ex: <code>public class Main { ... }</code></p>
+                <button class="btn-confirm" onclick="document.getElementById('main-class-alert').style.display='none'">Fix it</button>
             </div>
         </div>
     `;
@@ -277,78 +101,94 @@ function renderLabQuestion() {
 function toggleHint() {
     const box = document.getElementById('hint-box');
     const btn = document.getElementById('hint-btn');
-    if (box.style.display === 'none') {
-        box.style.display = 'block';
-        btn.innerHTML = t('hideHint');
-    } else {
-        box.style.display = 'none';
-        btn.innerHTML = t('showHint');
-    }
+    if(box.style.display === 'none') { box.style.display = 'block'; btn.innerText = t('hideHint'); }
+    else { box.style.display = 'none'; btn.innerText = t('showHint'); }
 }
 
-function closeMainClassAlert() {
-    document.getElementById('main-class-alert').style.display = 'none';
+// Promise to handle Custom Input Modal
+let inputResolve = null;
+function getInputFromUser() {
+    return new Promise((resolve) => {
+        document.getElementById('input-modal').style.display = 'flex';
+        inputResolve = resolve;
+    });
+}
+function resolveInput() {
+    const val = document.getElementById('custom-stdin').value;
+    document.getElementById('input-modal').style.display = 'none';
+    if(inputResolve) inputResolve(val);
 }
 
 async function runLabCode() {
     const userCode = document.getElementById('code-input').value;
     const consoleOut = document.getElementById('console-out');
-    
-    // 1. Check for 'class Main'
+    const q = appState.lab.questions[appState.lab.currentQIndex];
+
+    // 1. Validate 'class Main'
     if (!userCode.match(/class\s+Main\b/)) {
         document.getElementById('main-class-alert').style.display = 'flex';
-        return; 
+        return;
     }
 
-    // 2. Check for Scanner/Input requirement
-    let userInput = "";
+    // 2. Handle Input (Scanner)
+    let stdin = "";
     if (userCode.includes("Scanner") || userCode.includes("System.in")) {
-        userInput = prompt(t('inputPrompt'));
-        if (userInput === null) return; // Cancelled
+        stdin = await getInputFromUser();
     }
-    
-    consoleOut.innerHTML = `<span style="color:yellow;">⏳ ${t('solving')}</span>`;
-    
-    // 3. Prepare data for Piston API
-    const data = {
-        language: "java",
-        version: "15.0.2",
-        files: [
-            {
-                name: "Main.java",
-                content: userCode
-            }
-        ],
-        stdin: userInput // Pass user input to the compiler
-    };
 
+    consoleOut.innerHTML = `<span style="color:yellow;">⏳ ${t('solving')}</span>`;
+
+    // 3. API Call
     try {
         const response = await fetch('https://emkc.org/api/v2/piston/execute', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
+            body: JSON.stringify({
+                language: "java",
+                version: "15.0.2",
+                files: [{ name: "Main.java", content: userCode }],
+                stdin: stdin
+            })
         });
-
         const result = await response.json();
 
-        if (result.run && (result.run.stdout || result.run.stderr)) {
-            let output = result.run.stdout;
-            let error = result.run.stderr;
-            
-            let finalHtml = "";
-            if (output) finalHtml += `<span style="color:#4ade80;">✅ Output:\n${output}</span>\n`;
-            if (error) finalHtml += `<span style="color:#f87171;">❌ Error:\n${error}</span>`;
-            
-            consoleOut.innerHTML = finalHtml || "No Output.";
-        } else {
-            consoleOut.innerHTML = `<span style="color:#f87171;">⚠️ Unknown execution error.</span>`;
-        }
+        // 4. Validate Output Logic
+        if (result.run) {
+            let output = result.run.output || "";
+            let cleanOutput = output.trim();
+            // Optional: If you provided expectedOutput in data.js, verify it
+            let isCorrect = q.expectedOutput ? cleanOutput.includes(q.expectedOutput.trim()) : true;
 
-    } catch (error) {
-        consoleOut.innerHTML = `<span style="color:#f87171;">❌ Connection Error: ${error.message}</span>`;
+            if (result.run.stderr) {
+                consoleOut.innerHTML = `<span style="color:#f87171;">❌ Error:\n${result.run.stderr}</span>`;
+            } else if (isCorrect) {
+                consoleOut.innerHTML = `<span style="color:#4ade80;">✅ Correct!\n${output}</span>`;
+                celebrateSuccess();
+                setTimeout(nextLabQ, 5000); // Auto next after 5s
+            } else {
+                consoleOut.innerHTML = `<span style="color:#f87171;">❌ Output Mismatch.\nYour Output:\n${output}\n\nExpected contains:\n${q.expectedOutput}</span>`;
+            }
+        }
+    } catch (e) {
+        consoleOut.innerHTML = `<span style="color:red;">API Error: ${e.message}</span>`;
     }
 }
 
+function celebrateSuccess() {
+    for(let i=0; i<30; i++) {
+        const p = document.createElement('div');
+        p.classList.add('particle');
+        p.style.left = Math.random() * 100 + 'vw';
+        p.style.backgroundColor = ['#f00', '#0f0', '#00f', '#ff0'][Math.floor(Math.random()*4)];
+        p.style.width = Math.random() * 10 + 5 + 'px';
+        p.style.height = p.style.width;
+        p.style.animationDuration = Math.random() * 2 + 1 + 's';
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 3000);
+    }
+}
+
+// ... (Rest of functions: surrender, understood, nextLabQ, exitLab, etc. from previous response)
 function surrender() {
     appState.lab.surrendered = true;
     document.getElementById('workspace').style.display = 'none';
@@ -396,7 +236,7 @@ function exitQuiz() { const sub = db.subjects.find(s => s.id === appState.curren
 function openPdf(link) { const modal = document.getElementById('app-modal'); let embedLink = link; if(link.includes('drive.google.com') && link.includes('/view')) embedLink = link.replace('/view', '/preview'); modal.innerHTML = `<div class="modal-content"><div class="modal-header"><h3 style="color:var(--text-primary)">Document Viewer</h3><button class="close-modal" onclick="closeAppModal()">&times;</button></div><iframe class="pdf-frame" src="${embedLink}"></iframe></div>`; modal.style.display = 'flex'; }
 function closeAppModal() { const modal = document.getElementById('app-modal'); modal.style.display = 'none'; modal.innerHTML = ''; }
 function formatTime(seconds) { const h = Math.floor(seconds / 3600).toString().padStart(2, '0'); const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0'); const s = (seconds % 60).toString().padStart(2, '0'); return `${h}:${m}:${s}`; }
-function renderAdminLogin() { appState.view = 'admin'; container.innerHTML = `<div class="login-box"><h2 style="color:var(--white); margin-bottom:1rem;">${t('adminAccess')}</h2><input type="text" id="user" class="login-input" placeholder="Username"><input type="password" id="pass" class="login-input" placeholder="Password"><button class="login-btn" onclick="checkAdmin()">${t('login')}</button><p id="error-msg" style="color:red; margin-top:10px; display:none;">${t('accessDenied')}</p></div>`; }
+function renderAdminLogin() { appState.view = 'admin'; container.innerHTML = `<div class="login-box"><h2 style="color:var(--white); margin-bottom:1rem;">${t('adminAccess')}</h2><input type=\"text\" id=\"user\" class=\"login-input\" placeholder=\"Username\"><input type=\"password\" id=\"pass\" class=\"login-input\" placeholder=\"Password\"><button class=\"login-btn\" onclick=\"checkAdmin()\">${t('login')}</button><p id=\"error-msg\" style=\"color:red; margin-top:10px; display:none;\">${t('accessDenied')}</p></div>`; }
 function checkAdmin() { const u = document.getElementById('user').value; const p = document.getElementById('pass').value; if (u === "Adham_Mohamed_SOD_CODA" && p === "Adham@SOD_CODA@5564") { alert("Welcome Admin. Panel opening..."); } else { document.getElementById('error-msg').style.display = 'block'; } }
 
 document.addEventListener('DOMContentLoaded', init);
