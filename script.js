@@ -11,32 +11,36 @@ let appState = {
     term: null,
     currentSubjectId: null,
     activeTab: null,
-    summaryLang: null, 
+    subFilter: null, // Unified state for sub-sections (ar/en or main/solutions)
     lang: 'en',
     quiz: { active: false, questions: [], currentQuestionIndex: 0, time: 0, userAnswers: {}, flagged: new Set() }
 };
 
-// Dictionary (Updated with Solutions)
+// Dictionary
 const translations = {
     en: {
         welcomeTitle: "Welcome to", welcomeSpan: "DNU Computer Science", welcomeSub: "Knowledge Base", selectTrack: "Select your academic track to proceed", back: "Back", selectYear: "Select Academic Year", selectTerm: "Select Semester", year: "Year", term1: "First Semester", term2: "Second Semester", t1Range: "Sep - Jan", t2Range: "Feb - Jun", clickAccess: "Click to access material", noSubjects: "No subjects found.", adminAccess: "Admin Access", login: "LOGIN", accessDenied: "Access Denied",
-        lecs: "Lectures", summary: "Summaries", solutions: "Solutions", quiz: "Quiz", labs: "Labs", core_material: "Core Material", chapters: "Chapters", labs_interactive: "Interactive Labs",
+        lecs: "Lectures", summary: "Summaries", quiz: "Quiz", labs: "Labs", core_material: "Core Material", chapters: "Chapters", labs_interactive: "Interactive Labs",
         view: "View", download: "Download", startQuiz: "Start Quiz", quizReady: "Ready for the Challenge?",
         qNum: "Question", flag: "Flag for Review", prev: "Prev", next: "Next", submit: "Submit",
         resultTitle: "Quiz Completed!", timeTaken: "Time Taken", backCourse: "Back to Course",
         yourAns: "Your Answer", correctAns: "Correct Answer", reason: "Reason",
         flagAlertTitle: "Review Required", flagAlertMsg: "You have flagged questions: ", flagAlertAction: "Submit Anyway", flagAlertBack: "Return to Quiz",
-        arSec: "Arabic Section", enSec: "English Section", backToSelection: "Back to Selection"
+        // Sub-sections
+        arSec: "Arabic Section", enSec: "English Section", backToSelection: "Back to Selection",
+        lecsMain: "Lectures", lecsSol: "Solutions"
     },
     ar: {
         welcomeTitle: "مرحباً بك في", welcomeSpan: "قاعدة معرفة حاسبات DNU", welcomeSub: "", selectTrack: "اختر المسار الأكاديمي للمتابعة", back: "رجوع", selectYear: "اختر السنة الدراسية", selectTerm: "اختر الفصل الدراسي", year: "السنة", term1: "الترم الأول", term2: "الترم الثاني", t1Range: "سبتمبر - يناير", t2Range: "فبراير - يونيو", clickAccess: "اضغط للوصول للمحتوى", noSubjects: "لا توجد مواد متاحة.", adminAccess: "دخول المشرفين", login: "دخول", accessDenied: "بيانات خاطئة",
-        lecs: "محاضرات", summary: "ملخصات", solutions: "حلول الأسئلة", quiz: "اختبار", labs: "تجارب معملية", core_material: "المحتوى الأساسي", chapters: "الفصول", labs_interactive: "معمل تفاعلي",
+        lecs: "محاضرات", summary: "ملخصات", quiz: "اختبار", labs: "تجارب معملية", core_material: "المحتوى الأساسي", chapters: "الفصول", labs_interactive: "معمل تفاعلي",
         view: "عرض", download: "تحميل", startQuiz: "بدء الاختبار", quizReady: "جاهز للتحدي؟",
         qNum: "سؤال", flag: "تحديد للمراجعة", prev: "السابق", next: "التالي", submit: "تسليم",
         resultTitle: "تم إنهاء الاختبار!", timeTaken: "الوقت المستغرق", backCourse: "عودة للمادة",
         yourAns: "إجابتك", correctAns: "الإجابة الصحيحة", reason: "السبب",
         flagAlertTitle: "تنبيه مراجعة", flagAlertMsg: "لديك أسئلة محددة للمراجعة أرقام: ", flagAlertAction: "تسليم على أي حال", flagAlertBack: "عودة للاختبار",
-        arSec: "القسم العربي", enSec: "القسم الإنجليزي", backToSelection: "العودة للاختيار"
+        // Sub-sections
+        arSec: "القسم العربي", enSec: "القسم الإنجليزي", backToSelection: "العودة للاختيار",
+        lecsMain: "شرح المحاضرات", lecsSol: "حلول الأسئلة"
     }
 };
 
@@ -176,7 +180,7 @@ function renderDashboard() {
     `;
 }
 
-function openSubject(id) { appState.currentSubjectId = id; appState.summaryLang = null; const sub = db.subjects.find(s => s.id === id); if(sub) renderSubjectView(sub, sub.material[0]); }
+function openSubject(id) { appState.currentSubjectId = id; appState.subFilter = null; const sub = db.subjects.find(s => s.id === id); if(sub) renderSubjectView(sub, sub.material[0]); }
 
 function renderSubjectView(subject, activeTab) {
     appState.view = 'subject';
@@ -194,30 +198,51 @@ function renderSubjectView(subject, activeTab) {
     `;
 }
 
-function switchTab(id, tab) { appState.summaryLang = null; renderSubjectViewWithId(id, tab); }
+function switchTab(id, tab) { appState.subFilter = null; renderSubjectViewWithId(id, tab); }
 function renderSubjectViewWithId(id, tab) { const sub = db.subjects.find(s => s.id === id); renderSubjectView(sub, tab); }
-function setSummaryLang(lang) { appState.summaryLang = lang; const sub = db.subjects.find(s => s.id === appState.currentSubjectId); renderSubjectView(sub, 'summary'); }
+function setSubFilter(filter) { appState.subFilter = filter; const sub = db.subjects.find(s => s.id === appState.currentSubjectId); renderSubjectView(sub, appState.activeTab); }
 
 function getTabContent(subject, type) {
     if (!subject.content || !subject.content[type]) return `<p style="text-align:center;">Empty.</p>`;
+
+    // --- CASE 1: SPLIT SUMMARIES (AR / EN) ---
     if (type === 'summary' && !Array.isArray(subject.content.summary)) {
-        if (appState.summaryLang === null) {
+        if (appState.subFilter === null) {
             return `
                 <div class="grid-center" style="margin-top:0;">
-                    <div class="selection-card" onclick="setSummaryLang('ar')" style="width:200px; padding:1.5rem;"><i class="fas fa-book-open card-icon"></i><h3>${t('arSec')}</h3></div>
-                    <div class="selection-card" onclick="setSummaryLang('en')" style="width:200px; padding:1.5rem;"><i class="fas fa-book-open card-icon"></i><h3>${t('enSec')}</h3></div>
+                    <div class="selection-card" onclick="setSubFilter('ar')" style="width:200px; padding:1.5rem;"><i class="fas fa-book-open card-icon"></i><h3>${t('arSec')}</h3></div>
+                    <div class="selection-card" onclick="setSubFilter('en')" style="width:200px; padding:1.5rem;"><i class="fas fa-book-open card-icon"></i><h3>${t('enSec')}</h3></div>
                 </div>
             `;
         }
-        const files = appState.summaryLang === 'ar' ? (subject.content.summary.ar || []) : (subject.content.summary.en || []);
+        const files = appState.subFilter === 'ar' ? (subject.content.summary.ar || []) : (subject.content.summary.en || []);
         return `
-            <button class="btn-back" style="background:var(--accent); color:white; border:none;" onclick="setSummaryLang(null)"><i class="fas fa-arrow-up"></i> ${t('backToSelection')}</button>
-            <h3 style="color:var(--text-primary); margin: 1rem 0; padding-bottom: 5px;">${appState.summaryLang === 'ar' ? t('arSec') : t('enSec')}</h3>
+            <button class="btn-back" style="background:var(--accent); color:white; border:none;" onclick="setSubFilter(null)"><i class="fas fa-arrow-up"></i> ${t('backToSelection')}</button>
+            <h3 style="color:var(--text-primary); margin: 1rem 0; padding-bottom: 5px;">${appState.subFilter === 'ar' ? t('arSec') : t('enSec')}</h3>
             <div class="file-list">${renderFileList(files)}</div>
         `;
     }
-    // Added 'solutions' to valid content types
-    if (['lecs', 'summary', 'solutions', 'core_material', 'chapters', 'labs_interactive', 'labs'].includes(type)) {
+
+    // --- CASE 2: SPLIT LECTURES (MAIN / SOLUTIONS) ---
+    if (type === 'lecs' && !Array.isArray(subject.content.lecs)) {
+        if (appState.subFilter === null) {
+            return `
+                <div class="grid-center" style="margin-top:0;">
+                    <div class="selection-card" onclick="setSubFilter('main')" style="width:200px; padding:1.5rem;"><i class="fas fa-chalkboard-teacher card-icon"></i><h3>${t('lecsMain')}</h3></div>
+                    <div class="selection-card" onclick="setSubFilter('solutions')" style="width:200px; padding:1.5rem;"><i class="fas fa-check-circle card-icon"></i><h3>${t('lecsSol')}</h3></div>
+                </div>
+            `;
+        }
+        const files = appState.subFilter === 'main' ? (subject.content.lecs.main || []) : (subject.content.lecs.solutions || []);
+        return `
+            <button class="btn-back" style="background:var(--accent); color:white; border:none;" onclick="setSubFilter(null)"><i class="fas fa-arrow-up"></i> ${t('backToSelection')}</button>
+            <h3 style="color:var(--text-primary); margin: 1rem 0; padding-bottom: 5px;">${appState.subFilter === 'main' ? t('lecsMain') : t('lecsSol')}</h3>
+            <div class="file-list">${renderFileList(files)}</div>
+        `;
+    }
+
+    // --- STANDARD ARRAYS ---
+    if (['lecs', 'summary', 'core_material', 'chapters', 'labs_interactive', 'labs'].includes(type)) {
         return `<div class="file-list">${renderFileList(subject.content[type])}</div>`;
     }
     if (type === 'quiz') {
@@ -226,16 +251,19 @@ function getTabContent(subject, type) {
     return `<p>Coming Soon.</p>`;
 }
 
-// Helper to render file list items
+// Fixed Helper to render file list items (Includes PPT icon logic & Bidi Fix)
 function renderFileList(files) {
     if (!files || files.length === 0) return '<p style="text-align:center; color:var(--text-secondary);">No files available.</p>';
     
     return files.map(file => {
+        // --- PPT DIRECT DOWNLOAD FIX ---
         let downloadLink = file.link;
         let iconClass = 'fa-file-pdf';
         let iconStyle = 'color:var(--text-primary)';
         
+        // Detect if it's a presentation
         const isPPT = file.type === 'PPT' || file.link.includes('presentation');
+        
         const idMatch = file.link.match(/\/d\/([a-zA-Z0-9_-]+)/);
         if(idMatch && idMatch[1]) {
             if (isPPT) {
