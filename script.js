@@ -31,7 +31,10 @@ const translations = {
         lecsMain: "Lectures", lecsSol: "Solutions",
         labsMaterial: "Material", labsQuestions: "Interactive Questions",
         startLab: "Start Lab", runCode: "Run Code", surrender: "Show Solution", nextQ: "Next Question", understood: "I Understood",
-        solving: "Compiling..."
+        solving: "Compiling...", showHint: "💡 Show Hint", hideHint: "🚫 Hide Hint",
+        mainClassAlertTitle: "⚠️ Naming Convention Required", 
+        mainClassAlertBody: "For this compiler environment, your public class <b>MUST</b> be named <code>Main</code>.<br><br><i>(Note: In standard Java IDEs like NetBeans/IntelliJ, you can name it anything, but here 'Main' is mandatory).</i>",
+        inputPrompt: "This program requires input.\nPlease enter the values below (separated by spaces or new lines):"
     },
     ar: {
         welcomeTitle: "مرحباً بك في", welcomeSpan: "قاعدة معرفة حاسبات DNU", welcomeSub: "", selectTrack: "اختر المسار الأكاديمي للمتابعة", back: "رجوع", selectYear: "اختر السنة الدراسية", selectTerm: "اختر الفصل الدراسي", year: "السنة", term1: "الترم الأول", term2: "الترم الثاني", t1Range: "سبتمبر - يناير", t2Range: "فبراير - يونيو", clickAccess: "اضغط للوصول للمحتوى", noSubjects: "لا توجد مواد متاحة.", adminAccess: "دخول المشرفين", login: "دخول", accessDenied: "بيانات خاطئة",
@@ -45,7 +48,10 @@ const translations = {
         lecsMain: "شرح المحاضرات", lecsSol: "حلول الأسئلة",
         labsMaterial: "شرح اللابات", labsQuestions: "أسئلة تفاعلية",
         startLab: "بدء اللاب", runCode: "تشغيل الكود", surrender: "إظهار الحل", nextQ: "السؤال التالي", understood: "فهمت",
-        solving: "جاري المعالجة..."
+        solving: "جاري المعالجة...", showHint: "💡 إظهار تلميح", hideHint: "🚫 إخفاء التلميح",
+        mainClassAlertTitle: "⚠️ تنبيه هام بخصوص التسمية",
+        mainClassAlertBody: "عشان الكود يشتغل على الموقع هنا، لازم اسم الكلاس الرئيسي يكون <code>Main</code>.<br><br><i>(ملحوظة: ده شرط خاص بالكومبايلر بتاعنا بس، في العادي تقدر تسميه أي حاجة).</i>",
+        inputPrompt: "البرنامج ده محتاج مدخلات (Input).\nمن فضلك دخل القيم هنا (افصل بينهم بمسافة أو سطر جديد):"
     }
 };
 
@@ -110,7 +116,7 @@ function renderCurrentView() {
     }
 }
 
-// --- Standard Views (Home, Year, Term, Dashboard) ---
+// --- Standard Views ---
 function renderHome() { appState.view = 'home'; container.innerHTML = `<section class="hero"><h1>${t('welcomeTitle')} <span class="highlight">${t('welcomeSpan')}</span> ${t('welcomeSub')}</h1><p>${t('selectTrack')}</p><div class="grid-center"><div class="selection-card" onclick="selectMajor('ai')"><i class="fas fa-brain card-icon"></i><h2>${appState.lang === 'en' ? db.majors.ai.name_en : db.majors.ai.name_ar}</h2></div><div class="selection-card" onclick="selectMajor('cyber')"><i class="fas fa-shield-halved card-icon"></i><h2>${appState.lang === 'en' ? db.majors.cyber.name_en : db.majors.cyber.name_ar}</h2></div></div></section>`; }
 function selectMajor(major) { appState.major = major; renderYearSelect(); }
 function renderYearSelect() { appState.view = 'year'; container.innerHTML = `<button class="btn-back" onclick="renderHome()"><i class="fas fa-arrow-left"></i> ${t('back')}</button><h2 class="section-title">${t('selectYear')}</h2><div class="grid-center">${[1, 2, 3, 4].map(y => `<div class="selection-card" onclick="selectYear(${y})"><div style="font-size: 2.5rem; font-weight: bold; color: var(--accent); margin-bottom: 1rem;">0${y}</div><h3>${t('year')} ${y}</h3></div>`).join('')}</div>`; }
@@ -121,7 +127,7 @@ function renderDashboard() { appState.view = 'dashboard'; const filteredSubjects
 function openSubject(id) { appState.currentSubjectId = id; appState.subFilter = null; const sub = db.subjects.find(s => s.id === id); if(sub) renderSubjectView(sub, sub.material[0]); }
 
 function renderSubjectView(subject, activeTab) {
-    appState.view = 'subject'; appState.activeTab = activeTab; const subName = appState.lang === 'en' ? subject.name_en : subject.name_ar; const tabsHtml = subject.material.map(mat => `<button class="tab-btn ${mat === activeTab ? 'active' : ''}" onclick="switchTab('${subject.id}', '${mat}')">${t(mat) || mat}</button>`).join(''); container.innerHTML = `<button class="btn-back" onclick="renderDashboard()"><i class="fas fa-arrow-left"></i> ${t('back')}</button><div class="subject-header"><h1>${subName}</h1></div><div class="tabs-container">${tabsHtml}</div><div id="tab-content" class="content-area">${getTabContent(subject, activeTab)}</div><div id="app-modal" class="modal-overlay"></div>`;
+    appState.view = 'subject'; appState.activeTab = activeTab; const subName = appState.lang === 'en' ? subject.name_en : subject.name_ar; const tabsHtml = subject.material.map(mat => `<button class="tab-btn ${mat === activeTab ? 'active' : ''}" onclick="switchTab('${subject.id}', '${mat}')">${t(mat) || mat}</button>`).join(''); container.innerHTML = `<button class="btn-back" onclick="renderDashboard()"><i class="fas fa-arrow-left"></i> ${t('back')}</button><div class="subject-header"><h1>${subName}</h1></div><div class="tabs-container">${tabsHtml}</div><div id="tab-content" class="content-area">${getTabContent(subject, activeTab)}</div><div id="app-modal" class="modal-overlay"></div><div id="custom-alert-modal" class="modal-overlay"></div>`;
 }
 function switchTab(id, tab) { appState.subFilter = null; renderSubjectViewWithId(id, tab); }
 function renderSubjectViewWithId(id, tab) { const sub = db.subjects.find(s => s.id === id); renderSubjectView(sub, tab); }
@@ -178,7 +184,7 @@ function renderFileList(files) {
     }).join('');
 }
 
-// --- Interactive Lab Logic (REAL COMPILER via API) ---
+// --- Interactive Lab Logic (Piston API + Input Handling) ---
 let labTimerInterval = null;
 
 function startLab(labId) {
@@ -206,12 +212,8 @@ function startLab(labId) {
 function renderLabQuestion() {
     const q = appState.lab.questions[appState.lab.currentQIndex];
     const total = appState.lab.questions.length;
-    if (!appState.lab.userCode) appState.lab.userCode = `public class Main {
-    public static void main(String[] args) {
-        // Write your code here
-        
-    }
-}`;
+    // START EMPTY as requested
+    if (typeof appState.lab.userCode === 'undefined') appState.lab.userCode = ""; 
 
     container.innerHTML = `
         <div class="lab-arena">
@@ -225,15 +227,20 @@ function renderLabQuestion() {
                 <div class="problem-pane">
                     <h4 style="color:var(--accent); margin-bottom:1rem;">Task:</h4>
                     <p style="color:var(--text-primary); line-height:1.6; font-size:1.1rem;">${q.prompt}</p>
-                    <div style="margin-top:2rem; background:rgba(0,0,0,0.2); padding:1rem; border-radius:5px;">
-                        <strong style="color:var(--text-secondary);">Hint:</strong> <br>
-                        <span style="color:var(--text-secondary);">${q.hint}</span>
+                    
+                    <div style="margin-top:2rem;">
+                        <button class="btn-view" style="width:100%; justify-content:center;" onclick="toggleHint()" id="hint-btn">
+                            ${t('showHint')}
+                        </button>
+                        <div id="hint-box" style="display:none; margin-top:10px; background:rgba(0,0,0,0.2); padding:1rem; border-radius:5px;">
+                            <strong style="color:var(--text-secondary);">Hint:</strong> <br>
+                            <span style="color:var(--text-secondary);">${q.hint}</span>
+                        </div>
                     </div>
                 </div>
                 
                 <div class="editor-pane">
-                    <div class="info-note">⚠️ Important: Your class must be named <b>Main</b> (e.g., public class Main { ... })</div>
-                    <textarea class="code-editor" id="code-input" spellcheck="false" oninput="appState.lab.userCode = this.value">${appState.lab.userCode}</textarea>
+                    <textarea class="code-editor" id="code-input" spellcheck="false" placeholder="// Write your Java code here... (Remember to use: public class Main)" oninput="appState.lab.userCode = this.value">${appState.lab.userCode}</textarea>
                     <div class="lab-controls">
                         <button class="btn-surrender" onclick="surrender()"><i class="fas fa-flag"></i> ${t('surrender')}</button>
                         <button class="btn-run" onclick="runLabCode()"><i class="fas fa-play"></i> ${t('runCode')}</button>
@@ -256,17 +263,53 @@ function renderLabQuestion() {
                 </div>
             </div>
         </div>
+        
+        <div id="main-class-alert" class="modal-overlay">
+            <div class="alert-content warning-modal">
+                <h2 style="color:var(--warning); margin-bottom:1rem;">${t('mainClassAlertTitle')}</h2>
+                <p style="color:var(--text-primary); margin-bottom:1.5rem; line-height:1.5;">${t('mainClassAlertBody')}</p>
+                <button class="btn-confirm" onclick="closeMainClassAlert()">OK, I'll fix it</button>
+            </div>
+        </div>
     `;
+}
+
+function toggleHint() {
+    const box = document.getElementById('hint-box');
+    const btn = document.getElementById('hint-btn');
+    if (box.style.display === 'none') {
+        box.style.display = 'block';
+        btn.innerHTML = t('hideHint');
+    } else {
+        box.style.display = 'none';
+        btn.innerHTML = t('showHint');
+    }
+}
+
+function closeMainClassAlert() {
+    document.getElementById('main-class-alert').style.display = 'none';
 }
 
 async function runLabCode() {
     const userCode = document.getElementById('code-input').value;
     const consoleOut = document.getElementById('console-out');
     
-    // 1. Display loading message
-    consoleOut.innerHTML = `<span style="color:yellow;">⏳ Compiling & Running via Piston API...</span>`;
+    // 1. Check for 'class Main'
+    if (!userCode.match(/class\s+Main\b/)) {
+        document.getElementById('main-class-alert').style.display = 'flex';
+        return; 
+    }
+
+    // 2. Check for Scanner/Input requirement
+    let userInput = "";
+    if (userCode.includes("Scanner") || userCode.includes("System.in")) {
+        userInput = prompt(t('inputPrompt'));
+        if (userInput === null) return; // Cancelled
+    }
     
-    // 2. Prepare data for server
+    consoleOut.innerHTML = `<span style="color:yellow;">⏳ ${t('solving')}</span>`;
+    
+    // 3. Prepare data for Piston API
     const data = {
         language: "java",
         version: "15.0.2",
@@ -275,36 +318,34 @@ async function runLabCode() {
                 name: "Main.java",
                 content: userCode
             }
-        ]
+        ],
+        stdin: userInput // Pass user input to the compiler
     };
 
     try {
-        // 3. Call Piston API
         const response = await fetch('https://emkc.org/api/v2/piston/execute', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         });
 
         const result = await response.json();
 
-        // 4. Handle result
-        if (result.run && result.run.output) {
-            let output = result.run.output;
+        if (result.run && (result.run.stdout || result.run.stderr)) {
+            let output = result.run.stdout;
+            let error = result.run.stderr;
             
-            if (result.run.stderr) {
-                consoleOut.innerHTML = `<span style="color:#f87171;">❌ Error:\n${result.run.stderr}</span>`;
-            } else {
-                consoleOut.innerHTML = `<span style="color:#4ade80;">✅ Output:\n${output}</span>`;
-            }
+            let finalHtml = "";
+            if (output) finalHtml += `<span style="color:#4ade80;">✅ Output:\n${output}</span>\n`;
+            if (error) finalHtml += `<span style="color:#f87171;">❌ Error:\n${error}</span>`;
+            
+            consoleOut.innerHTML = finalHtml || "No Output.";
         } else {
-            consoleOut.innerHTML = `<span style="color:#f87171;">⚠️ Connection Error or Unknown Response.</span>`;
+            consoleOut.innerHTML = `<span style="color:#f87171;">⚠️ Unknown execution error.</span>`;
         }
 
     } catch (error) {
-        consoleOut.innerHTML = `<span style="color:#f87171;">❌ API Error: ${error.message}</span>`;
+        consoleOut.innerHTML = `<span style="color:#f87171;">❌ Connection Error: ${error.message}</span>`;
     }
 }
 
@@ -327,7 +368,7 @@ function nextLabQ() {
         appState.lab.surrendered = false;
         renderLabQuestion();
     } else {
-        alert("Lab Completed!");
+        alert("Lab Completed! Great job.");
         exitLab();
     }
 }
