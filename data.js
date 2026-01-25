@@ -2,7 +2,8 @@
 // PART 1: MAJORS & SHARED SUBJECTS (GROUP A)
 // ======================================================
 
-const db = {
+// Changed 'const' to 'var' to prevent "Identifier 'db' has already been declared" errors during reloads
+var db = {
     majors: {
         ai: { name_en: "Artificial Intelligence", name_ar: "الذكاء الاصطناعي", icon: "fa-brain" },
         cyber: { name_en: "Cyber Security", name_ar: "الأمن السيبراني", icon: "fa-shield-halved" }
@@ -564,5 +565,5 @@ const db = {
                 quiz: []
             } 
         }
+    ]
 };
-
