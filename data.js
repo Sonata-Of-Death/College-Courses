@@ -319,21 +319,24 @@ const db = {
                                 type: "code",
                                 prompt: "Write a Java program that returns the Celsius value 'C' for a given temperature measured in Fahrenheit 'F'. Use the formula: C = 5 * (F - 32) / 9.",
                                 hint: "Use Scanner to read double input. Formula: 5.0 * (f - 32) / 9.0",
-                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner input = new Scanner(System.in);\n        System.out.print(\"Enter temp in Fahrenheit: \");\n        double f = input.nextDouble();\n        double c = 5.0 * (f - 32) / 9.0;\n        System.out.println(\"Temp \" + f + \" in Fahrenheit = \" + c + \" Celsius\");\n    }\n}"
+                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner input = new Scanner(System.in);\n        System.out.print(\"Enter temp in Fahrenheit: \");\n        double f = input.nextDouble();\n        double c = 5.0 * (f - 32) / 9.0;\n        System.out.println(\"Temp \" + f + \" in Fahrenheit = \" + c + \" Celsius\");\n    }\n}",
+                                validationKeywords: ["Fahrenheit", "Celsius", "="]
                             },
                             {
                                 id: 2,
                                 type: "code",
                                 prompt: "Write a Java program to evaluate the distance S in vertical motion under gravity given S = ut - 0.5*g*t^2. (g=9.8). Read u (initial velocity) and t (time).",
                                 hint: "Use Math.pow(t, 2) for t squared.",
-                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner input = new Scanner(System.in);\n        System.out.print(\"Enter u and t: \");\n        double u = input.nextDouble();\n        double t = input.nextDouble();\n        double g = 9.8;\n        double s = (u*t) - (0.5 * g * Math.pow(t, 2));\n        System.out.println(\"Distance = \" + s);\n    }\n}"
+                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner input = new Scanner(System.in);\n        System.out.print(\"Enter u and t: \");\n        double u = input.nextDouble();\n        double t = input.nextDouble();\n        double g = 9.8;\n        double s = (u*t) - (0.5 * g * Math.pow(t, 2));\n        System.out.println(\"Distance = \" + s);\n    }\n}",
+                                validationKeywords: ["Distance", "="]
                             },
                             {
                                 id: 3,
                                 type: "code",
                                 prompt: "Write a program to calculate the volume and surface area of a sphere given its radius r. (Vol = 4/3 * pi * r^3, Area = 4 * pi * r^2)",
                                 hint: "Use Math.PI and Math.pow(). Use 4.0/3.0 for decimal division.",
-                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner input = new Scanner(System.in);\n        double r = input.nextDouble();\n        double vol = (4.0/3.0) * Math.PI * Math.pow(r, 3);\n        double area = 4.0 * Math.PI * Math.pow(r, 2);\n        System.out.println(\"Volume: \" + vol + \"\\nArea: \" + area);\n    }\n}"
+                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner input = new Scanner(System.in);\n        double r = input.nextDouble();\n        double vol = (4.0/3.0) * Math.PI * Math.pow(r, 3);\n        double area = 4.0 * Math.PI * Math.pow(r, 2);\n        System.out.println(\"Volume: \" + vol + \"\\nArea: \" + area);\n    }\n}",
+                                validationKeywords: ["Volume", "Area"]
                             }
                         ],
 
@@ -343,14 +346,16 @@ const db = {
                                 type: "code",
                                 prompt: "Write a program to solve a quadratic equation ax^2 + bx + c = 0. Print 'Two roots', 'One root', or 'No real roots' based on the discriminant.",
                                 hint: "Discriminant = b^2 - 4ac",
-                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        double a = sc.nextDouble(), b = sc.nextDouble(), c = sc.nextDouble();\n        double d = Math.pow(b, 2) - 4*a*c;\n        if (d > 0) System.out.println(\"Two roots\");\n        else if (d == 0) System.out.println(\"One root\");\n        else System.out.println(\"No real roots\");\n    }\n}"
+                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        double a = sc.nextDouble(), b = sc.nextDouble(), c = sc.nextDouble();\n        double d = Math.pow(b, 2) - 4*a*c;\n        if (d > 0) System.out.println(\"Two roots\");\n        else if (d == 0) System.out.println(\"One root\");\n        else System.out.println(\"No real roots\");\n    }\n}",
+                                validationKeywords: ["root"]
                             },
                             {
                                 id: 2,
                                 type: "code",
                                 prompt: "Write a program to characterize an earthquake based on Richter scale number n using if-else. (<5: Little, 5-5.5: Some, 5.5-6.5: Serious, 6.5-7.5: Disaster, >7.5: Catastrophe)",
                                 hint: "Use an if-else if ladder.",
-                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        double n = sc.nextDouble();\n        if (n < 5.0) System.out.println(\"Little damage\");\n        else if (n < 5.5) System.out.println(\"Some damage\");\n        else if (n < 6.5) System.out.println(\"Serious damage\");\n        else if (n < 7.5) System.out.println(\"Disaster\");\n        else System.out.println(\"Catastrophe\");\n    }\n}"
+                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        double n = sc.nextDouble();\n        if (n < 5.0) System.out.println(\"Little damage\");\n        else if (n < 5.5) System.out.println(\"Some damage\");\n        else if (n < 6.5) System.out.println(\"Serious damage\");\n        else if (n < 7.5) System.out.println(\"Disaster\");\n        else System.out.println(\"Catastrophe\");\n    }\n}",
+                                validationKeywords: ["damage", "Disaster", "Catastrophe"]
                             }
                         ],
 
@@ -360,21 +365,24 @@ const db = {
                                 type: "code",
                                 prompt: "Write a program that asks for a number (1-7) and prints the weekday name (1=Saturday) using switch statement.",
                                 hint: "switch(day) { case 1: ... }",
-                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int day = sc.nextInt();\n        switch(day) {\n            case 1: System.out.println(\"Saturday\"); break;\n            case 2: System.out.println(\"Sunday\"); break;\n            case 3: System.out.println(\"Monday\"); break;\n            case 4: System.out.println(\"Tuesday\"); break;\n            case 5: System.out.println(\"Wednesday\"); break;\n            case 6: System.out.println(\"Thursday\"); break;\n            case 7: System.out.println(\"Friday\"); break;\n            default: System.out.println(\"Invalid\");\n        }\n    }\n}"
+                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int day = sc.nextInt();\n        switch(day) {\n            case 1: System.out.println(\"Saturday\"); break;\n            case 2: System.out.println(\"Sunday\"); break;\n            case 3: System.out.println(\"Monday\"); break;\n            case 4: System.out.println(\"Tuesday\"); break;\n            case 5: System.out.println(\"Wednesday\"); break;\n            case 6: System.out.println(\"Thursday\"); break;\n            case 7: System.out.println(\"Friday\"); break;\n            default: System.out.println(\"Invalid\");\n        }\n    }\n}",
+                                validationKeywords: ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
                             },
                             {
                                 id: 2,
                                 type: "code",
                                 prompt: "Write a program that reads a month number (1-12) and prints the Season (Winter, Spring, Summer, Fall) using switch.",
                                 hint: "Group cases: case 12: case 1: case 2: ...",
-                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int m = sc.nextInt();\n        switch(m) {\n            case 12: case 1: case 2: System.out.println(\"Winter\"); break;\n            case 3: case 4: case 5: System.out.println(\"Spring\"); break;\n            case 6: case 7: case 8: System.out.println(\"Summer\"); break;\n            case 9: case 10: case 11: System.out.println(\"Fall\"); break;\n            default: System.out.println(\"Invalid\");\n        }\n    }\n}"
+                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int m = sc.nextInt();\n        switch(m) {\n            case 12: case 1: case 2: System.out.println(\"Winter\"); break;\n            case 3: case 4: case 5: System.out.println(\"Spring\"); break;\n            case 6: case 7: case 8: System.out.println(\"Summer\"); break;\n            case 9: case 10: case 11: System.out.println(\"Fall\"); break;\n            default: System.out.println(\"Invalid\");\n        }\n    }\n}",
+                                validationKeywords: ["Winter", "Spring", "Summer", "Fall"]
                             },
                             {
                                 id: 3,
                                 type: "code",
                                 prompt: "Generate two random integer numbers between a and b.",
                                 hint: "Formula: a + (int)(Math.random() * ((b - a) + 1))",
-                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int a = sc.nextInt();\n        int b = sc.nextInt();\n        int r1 = a + (int)(Math.random() * ((b - a) + 1));\n        System.out.println(r1);\n    }\n}"
+                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int a = sc.nextInt();\n        int b = sc.nextInt();\n        int r1 = a + (int)(Math.random() * ((b - a) + 1));\n        System.out.println(r1);\n    }\n}",
+                                validationKeywords: []
                             }
                         ],
 
