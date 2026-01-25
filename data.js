@@ -6,7 +6,7 @@ const db = {
     subjects: [
         // --- SHARED SUBJECTS (TERM 1) ---
 
-        // 1. Business Administration
+        // 1. Business Administration (جاهز)
         { 
             id: "bus", name_en: "Business Administration", name_ar: "إدارة أعمال", 
             type: "shared", year: 1, term: 1, material: ["lecs", "summary", "quiz"],
@@ -57,7 +57,7 @@ const db = {
             }
         },
 
-        // 2. English (UPDATED: Single Summary List, Split Lectures)
+        // 2. English (جاهز)
         { 
             id: "eng", name_en: "English", name_ar: "لغة إنجليزية", 
             type: "shared", year: 1, term: 1, material: ["lecs", "summary", "quiz"], 
@@ -100,7 +100,7 @@ const db = {
             } 
         },
 
-        // 3. Creative Thinking
+        // 3. Creative Thinking (جاهز)
         { 
             id: "cre", name_en: "Creative Thinking", name_ar: "تفكير إبداعي", 
             type: "shared", year: 1, term: 1, material: ["lecs", "summary", "quiz"], 
@@ -148,11 +148,45 @@ const db = {
             } 
         },
 
-        // 4. Math 0
+        // 4. Math 0 (UPDATED WITH REAL DATA)
         { 
             id: "m0", name_en: "Math 0", name_ar: "رياضيات 0", 
             type: "shared", year: 1, term: 1, material: ["lecs", "summary", "quiz"], 
-            content: { lecs: [], summary: { ar: [], en: [] }, quiz: [] } 
+            content: {
+                lecs: [
+                    { title: "lecture 1", link: "https://drive.google.com/file/d/1RF1eThH4_fohT3gEWFPINHBkm_7z6A-Z/view?usp=drive_link", type: "PDF" },
+                    { title: "lecture 2", link: "https://drive.google.com/file/d/1avLGvuiYa21ukYin_8EMUbq1pEagMh7r/view?usp=drive_link", type: "PDF" },
+                    { title: "lecture 3", link: "https://drive.google.com/file/d/1mkPPuSPF8Anaapw2kLNZiPW1vS6z2kOE/view?usp=drive_link", type: "PDF" },
+                    { title: "lecture 4", link: "https://drive.google.com/file/d/1bBBRsvbFlMlCOOvYI0H8ybistFGhtUVI/view?usp=drive_link", type: "PDF" },
+                    { title: "lecture 5", link: "https://drive.google.com/file/d/15uoMggAVOOVpTIOHAzvEDQHZzUiY5dhp/view?usp=drive_link", type: "PDF" },
+                    { title: "lecture 6", link: "https://drive.google.com/file/d/1miskxqRU9r-iQxH5xnjcVDTyf6kPo5bC/view?usp=drive_link", type: "PDF" },
+                    { title: "lecture 7", link: "https://drive.google.com/file/d/1NQB_Vhcdrr9zYta5AfZgqQRzcodJM6-N/view?usp=drive_link", type: "PDF" },
+                    { title: "lecture 8", link: "https://drive.google.com/file/d/1UPRQo-1sGdfDSoSeIorr5KQQnNh56swv/view?usp=drive_link", type: "PDF" }
+                ],
+                summary: { 
+                    ar: [
+                        { title: "ماث0 محاضرة 1", link: "https://drive.google.com/file/d/1tGxGUk82VcOM_4M-ETT5ZyO0hXYPU9ZF/view?usp=drive_link", type: "PDF" },
+                        { title: "ماث0 محاضرة 2", link: "https://drive.google.com/file/d/1KUgt_v833k0KA4x8ryunnAFlHvVaoJol/view?usp=drive_link", type: "PDF" },
+                        { title: "ماث0 محاضرة 3", link: "https://drive.google.com/file/d/1VJ9Mnss4STN7YG2wuHGIsetr0tYLrItI/view?usp=drive_link", type: "PDF" },
+                        { title: "ماث0 محاضرة 4", link: "https://drive.google.com/file/d/1G9zIRSIqBaZ4-QADcR0LfOG_YyK6yxS1/view?usp=drive_link", type: "PDF" },
+                        { title: "ماث0 محاضرة 5", link: "https://drive.google.com/file/d/1ipKOpcdoIRirtz75KFffCU79tJjnZo7B/view?usp=drive_link", type: "PDF" },
+                        { title: "ماث0 محاضرة 6", link: "https://drive.google.com/file/d/1NSKAzMVwbSw3ReBQkISnRuCJx_9G1Dr4/view?usp=drive_link", type: "PDF" },
+                        { title: "ماث0 محاضرة 7", link: "https://drive.google.com/file/d/1ZmKHoHi54DJ-7ug1_QFRze0JDijEqWxh/view?usp=drive_link", type: "PDF" },
+                        { title: "ماث0 محاضرة 8", link: "https://drive.google.com/file/d/1XrVzFBdq5dqtb5x4LHSoREXr8zPpHHQ_/view?usp=drive_link", type: "PDF" }
+                    ], 
+                    en: [
+                        { title: "Math0 Lecture 1", link: "https://drive.google.com/file/d/1YdUOYKQUCwwLkmzM5NKLQA8vnnLqrAkh/view?usp=drive_link", type: "PDF" },
+                        { title: "Math0 Lecture 2", link: "https://drive.google.com/file/d/1VHPjHjtBxoGgM9vU3dc4X_eX1OssXbfq/view?usp=drive_link", type: "PDF" },
+                        { title: "Math0 Lecture 3", link: "https://drive.google.com/file/d/1iMdRNRQuw498w3lF_e5O3Nnu6vRYQnCg/view?usp=drive_link", type: "PDF" },
+                        { title: "Math0 Lecture 4", link: "https://drive.google.com/file/d/1NrYxfLOGdSKqEPcto9JBXDMg11r_r0AM/view?usp=drive_link", type: "PDF" },
+                        { title: "Math0 Lecture 5", link: "https://drive.google.com/file/d/1FsoawJyuZgQsYHqOXXoSEe5JlLi6zM55/view?usp=drive_link", type: "PDF" },
+                        { title: "Math0 Lecture 6", link: "https://drive.google.com/file/d/1wEz1Zz6J1Xd_C8NdwV8a2YHyAI3dsHV2/view?usp=drive_link", type: "PDF" },
+                        { title: "Math0 Lecture 7", link: "https://drive.google.com/file/d/1JzBAV7MW24dxudMEngpZxLHBy9nUGVHl/view?usp=drive_link", type: "PDF" },
+                        { title: "Math0 Lecture 8", link: "https://drive.google.com/file/d/1OqLTjArZnG2VFBnA9ykoUDz1xsyA1ssD/view?usp=drive_link", type: "PDF" }
+                    ] 
+                },
+                quiz: []
+            } 
         },
 
         // 5. Physics
@@ -162,12 +196,25 @@ const db = {
             content: { lecs: [], summary: { ar: [], en: [] }, quiz: [] } 
         },
         
-        // 6. Math 1
+        // 6. Math 1 (UPDATED WITH REAL DATA)
         { 
             id: "m1", name_en: "Math 1", name_ar: "رياضيات 1", 
             type: "shared", year: 1, term: 1, material: ["core_material", "quiz"], 
             sections: ["Differentiation", "Integration"],
-            content: { core_material: [], quiz: [] } 
+            content: { 
+                core_material: [
+                    { title: "Calculus 1", link: "https://drive.google.com/file/d/1OVzzy8gWm-hDzm9ZwolnRDjDRYZznAsZ/view?usp=drive_link", type: "PDF" },
+                    { title: "Calculus 2", link: "https://drive.google.com/file/d/1jYS3wEBKfKEW0hTa8fHCcP4rNHvTVD2m/view?usp=drive_link", type: "PDF" },
+                    { title: "Calculus 3", link: "https://drive.google.com/file/d/1kz_Oggf6WaRuxZ7_fnNajgJNX9uImRZ7/view?usp=drive_link", type: "PDF" },
+                    { title: "Calculus 4", link: "https://drive.google.com/file/d/18kP88qP_Xz51f2CbRmJCXunhbk1b4BDz/view?usp=drive_link", type: "PDF" },
+                    { title: "Calculus 5", link: "https://drive.google.com/file/d/1Qt6NMQBU5P4tmzkRZN0xqpsUbnTgpkTL/view?usp=drive_link", type: "PDF" },
+                    { title: "Calculus 6", link: "https://drive.google.com/file/d/1Wa0eNcvjD7nWpa3885XiIJWThT9UR8De/view?usp=drive_link", type: "PDF" },
+                    { title: "Integration 1", link: "https://drive.google.com/file/d/1hvb9knJdiy1QZQ-yYPVDhT1vQlG22edA/view?usp=drive_link", type: "PDF" },
+                    { title: "Integration 2", link: "https://drive.google.com/file/d/1HR_n_kRKomqB7fgf8hNHlfjMVkYHE3wn/view?usp=drive_link", type: "PDF" },
+                    { title: "Integration 3", link: "https://drive.google.com/file/d/1G1QgtfpKgOSX2aUU1_CRnROjJlDf3AT9/view?usp=drive_link", type: "PDF" }
+                ],
+                quiz: []
+            } 
         },
 
         // 7. Programming
@@ -179,7 +226,7 @@ const db = {
 
         // --- AI SPECIFIC ---
 
-        // 8. Networks
+        // 8. Networks (جاهز)
         { 
             id: "net", name_en: "Networks", name_ar: "شبكات", 
             type: "ai", year: 1, term: 1, material: ["lecs", "summary", "labs", "quiz"], 
@@ -224,7 +271,7 @@ const db = {
 
         // --- CYBER SPECIFIC ---
 
-        // 9. Electronics
+        // 9. Electronics (جاهز)
         { 
             id: "elec", name_en: "Electronics", name_ar: "كهربية", 
             type: "cyber", year: 1, term: 1, material: ["lecs", "summary", "quiz"], 
@@ -256,8 +303,8 @@ const db = {
                         { title: "Electronics Lecture 2", link: "https://drive.google.com/file/d/1-fMz12nTw8iu3S-HdEpI8furpT02Z3eu/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Circuit diagrams are MISSING. Check original slides." },
                         { title: "Electronics Lecture 3", link: "https://drive.google.com/file/d/1jeG_hZ9QsnC7oK10ZFzFk9flF0Y1CLDK/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Circuit diagrams are MISSING. Check original slides." },
                         { title: "Electronics Lecture 4", link: "https://drive.google.com/file/d/1G2h24fZDec-rcO_Ko1IsYr3g3HO2ZOfK/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Circuit diagrams are MISSING. Check original slides." },
-                        { title: "Electronics Lecture 5", link: "https://drive.google.com/file/d/1YneDbeaXo_zZB7PZvYMD42ROSXvUiMdn/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Circuit diagrams are MISSING. Check original slides." },
-                        { title: "Electronics Lecture 6", link: "https://drive.google.com/file/d/1djoN9AciHheLMIv-XuuOICBDCiAih-SR/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Circuit diagrams are MISSING. Check original slides." },
+                        { title: "Electronics Lecture 5", link: "https://drive.google.com/file/d/1YneDbeaXo_zZB7PZvYMD42ROSXvUiMdn/view?usp=drive_link", type: "PDF" },
+                        { title: "Electronics Lecture 6", link: "https://drive.google.com/file/d/1djoN9AciHheLMIv-XuuOICBDCiAih-SR/view?usp=drive_link", type: "PDF" },
                         { title: "Electronics Lecture 7", link: "https://drive.google.com/file/d/12Ud-GCkLenOTWmzmwpRCAsvfQKMnfu1f/view?usp=drive_link", type: "PDF" },
                         { title: "Electronics Lecture 8", link: "https://drive.google.com/file/d/1SGl6uMC_OJO1QhnVYrPjeiHYzQvOBKKW/view?usp=drive_link", type: "PDF" },
                         { title: "Electronics SS", link: "https://drive.google.com/file/d/1Vb9nSkoJ0gev4tw_jqd1W-bhMULABDw6/view?usp=drive_link", type: "PDF", note: "Warning: For quick review only. Use full summaries for complete study." }
