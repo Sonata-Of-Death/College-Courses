@@ -4,24 +4,22 @@ const db = {
         cyber: { name_en: "Cyber Security", name_ar: "الأمن السيبراني", icon: "fa-shield-halved" }
     },
     subjects: [
-        // ======================================================
-        // 1. BUSINESS ADMINISTRATION
-        // ======================================================
+        // 1. Business Administration
         { 
             id: "bus", name_en: "Business Administration", name_ar: "إدارة أعمال", 
             type: "shared", year: 1, term: 1, material: ["lecs", "summary", "quiz"],
             content: {
                 lecs: [
-                    { title: "Business Administration 1", link: "https://drive.google.com/file/d/1SfIG8hN63n4TRZhapxoW80s7ne18_BuM/view?usp=drive_link", type: "PDF" },
-                    { title: "Business Administration 2", link: "https://drive.google.com/file/d/1fnKpjoeIOtT6CHmDIrJdDWX2yvKxxQzY/view?usp=drive_link", type: "PDF" },
-                    { title: "Business Administration 3", link: "https://drive.google.com/file/d/1n2iWy6kfiirCuavxrLY6-pOOC63K4sue/view?usp=drive_link", type: "PDF" },
-                    { title: "Business Administration 4", link: "https://drive.google.com/file/d/1uW_9OA5UN_nvCSk_xZHiYhQLMA1zO9RW/view?usp=drive_link", type: "PDF" },
-                    { title: "Business Administration 5", link: "https://drive.google.com/file/d/14YyXXbXpHhpSKCQbgtW8okePfUFlGoNc/view?usp=drive_link", type: "PDF" },
-                    { title: "Business Administration 6", link: "https://drive.google.com/file/d/1dh7CHKscRTSv1e2HbYextQ9-zOXWgrIz/view?usp=drive_link", type: "PDF" },
-                    { title: "Business Administration 7", link: "https://drive.google.com/file/d/1eyPLzNI_C0si8xS3C-fWPvX-bfWqWPyT/view?usp=drive_link", type: "PDF" },
-                    { title: "Business Administration 8", link: "https://drive.google.com/file/d/11T-BBEpOu5pLMu_3zek7lysdjJWQshvg/view?usp=drive_link", type: "PDF" },
-                    { title: "Business Administration 9", link: "https://drive.google.com/file/d/17gb6z07pY-DZMIzCaqMQ2SxRT4pXtzGt/view?usp=drive_link", type: "PDF" },
-                    { title: "Business Administration 10", link: "https://drive.google.com/file/d/1JVhV_Iwv5jK0Rwdyu5Le0bfEEaWEp2lS/view?usp=drive_link", type: "PDF" }
+                    { title: "Lecture 1", link: "https://drive.google.com/file/d/1SfIG8hN63n4TRZhapxoW80s7ne18_BuM/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 2", link: "https://drive.google.com/file/d/1fnKpjoeIOtT6CHmDIrJdDWX2yvKxxQzY/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 3", link: "https://drive.google.com/file/d/1n2iWy6kfiirCuavxrLY6-pOOC63K4sue/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 4", link: "https://drive.google.com/file/d/1uW_9OA5UN_nvCSk_xZHiYhQLMA1zO9RW/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 5", link: "https://drive.google.com/file/d/14YyXXbXpHhpSKCQbgtW8okePfUFlGoNc/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 6", link: "https://drive.google.com/file/d/1dh7CHKscRTSv1e2HbYextQ9-zOXWgrIz/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 7", link: "https://drive.google.com/file/d/1eyPLzNI_C0si8xS3C-fWPvX-bfWqWPyT/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 8", link: "https://drive.google.com/file/d/11T-BBEpOu5pLMu_3zek7lysdjJWQshvg/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 9", link: "https://drive.google.com/file/d/17gb6z07pY-DZMIzCaqMQ2SxRT4pXtzGt/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 10", link: "https://drive.google.com/file/d/1JVhV_Iwv5jK0Rwdyu5Le0bfEEaWEp2lS/view?usp=drive_link", type: "PDF" }
                 ],
                 summary: {
                     ar: [
@@ -54,12 +52,9 @@ const db = {
                     ]
                 },
                 quiz: []
-            }
-        },
+            },
 
-        // ======================================================
-        // 2. ENGLISH
-        // ======================================================
+        // 2. English
         { 
             id: "eng", name_en: "English", name_ar: "لغة إنجليزية", 
             type: "shared", year: 1, term: 1, material: ["lecs", "summary", "quiz"], 
@@ -101,9 +96,7 @@ const db = {
                 quiz: []
             },
 
-        // ======================================================
-        // 3. CREATIVE THINKING
-        // ======================================================
+        // 3. Creative Thinking
         { 
             id: "cre", name_en: "Creative Thinking", name_ar: "تفكير إبداعي", 
             type: "shared", year: 1, term: 1, material: ["lecs", "summary", "quiz"], 
@@ -150,9 +143,7 @@ const db = {
                 quiz: []
             },
 
-        // ======================================================
-        // 4. MATH 0
-        // ======================================================
+        // 4. Math 0
         { 
             id: "m0", name_en: "Math 0", name_ar: "رياضيات 0", 
             type: "shared", year: 1, term: 1, material: ["lecs", "summary", "quiz"], 
@@ -192,9 +183,7 @@ const db = {
                 quiz: []
             },
 
-        // ======================================================
-        // 5. PHYSICS
-        // ======================================================
+        // 5. Physics
         { 
             id: "phy", name_en: "Physics", name_ar: "فيزياء", 
             type: "shared", year: 1, term: 1, material: ["lecs", "summary", "quiz"], 
@@ -223,7 +212,7 @@ const db = {
                         { title: "Lecture 2", link: "https://drive.google.com/file/d/1DcZOHWti5fRrSGpIcXO8u6tnh9Vs16T_/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Diagrams MISSING." },
                         { title: "Lecture 3", link: "https://drive.google.com/file/d/1jl8O9I7RhR6QTF81_B0Jeufd0K9pf9rt/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Diagrams MISSING." },
                         { title: "Lecture 4", link: "https://drive.google.com/file/d/1OSFgPS3aO9A8j9D0BPQjWt4A8ARzq_bY/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Diagrams MISSING." },
-                        { title: "Lecture 5", link: "https://drive.google.com/file/d/1utMmZao8ruskEwtg4WteYnujcRYsEn7W/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Diagrams MISSING." },
+                        { title: "Lecture 5", link: "https://drive.google.com/file/d/1utMmZao8ruskEwtg4WteYnujcRYsEn7W/view?usp=drive_link", type: "PDF" },
                         { title: "Lecture 6", link: "https://drive.google.com/file/d/1fIgFMU8C-rwPrnsuwSbkMzXhJNmO3GdO/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Diagrams MISSING." },
                         { title: "Vectors", link: "https://drive.google.com/file/d/17vYwS9RyFQq-Enf-B_JPIJdkYtubmix6/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Diagrams MISSING." }
                     ]
@@ -231,9 +220,7 @@ const db = {
                 quiz: []
             },
         
-        // ======================================================
-        // 6. MATH 1
-        // ======================================================
+        // 6. Math 1
         { 
             id: "m1", name_en: "Math 1", name_ar: "رياضيات 1", 
             type: "shared", year: 1, term: 1, material: ["core_material", "quiz"], 
@@ -254,9 +241,7 @@ const db = {
             } 
         },
 
-        // ======================================================
-        // 7. PROGRAMMING (CORRECTED CODE BLOCK SYNTAX)
-        // ======================================================
+        // 7. Programming
         { 
             id: "prog", name_en: "Programming", name_ar: "برمجة", 
             type: "shared", year: 1, term: 1, material: ["chapters", "lecs", "summary", "labs", "quiz"], 
@@ -325,8 +310,8 @@ const db = {
                             {
                                 id: 1,
                                 type: "code",
-                                prompt: "Write a Java program that converts Fahrenheit to Celsius. (Enter 68)",
-                                hint: "C = 5 * (F - 32) / 9",
+                                prompt: "Write a Java program that returns the Celsius value 'C' for a given temperature measured in Fahrenheit 'F'. Use the formula: C = 5 * (F - 32) / 9.",
+                                hint: "Use Scanner to read double input. Formula: 5.0 * (f - 32) / 9.0",
                                 expectedOutput: "Temp 68.0 in Fahrenheit = 20.0 Celsius",
                                 solutionCode: `import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner input = new Scanner(System.in);\n        //System.out.print("Enter temp in Fahrenheit: ");\n        double f = input.nextDouble();\n        double c = 5.0 * (f - 32) / 9.0;\n        System.out.println("Temp " + f + " in Fahrenheit = " + c + " Celsius");\n    }\n}`
                             },
@@ -435,7 +420,7 @@ const db = {
                                 type: "code",
                                 prompt: "Print numbers from 100 down to 0, decreasing by 7 each step.",
                                 hint: "Loop logic: for(int i=100; i>=0; i-=7)",
-                                expectedOutput: "100 93 86 79 72 65 58 51 44 37 30 23 16 9 2",
+                                expectedOutput: "100 93 86 79 72 65 58 51 44 37 30 23 16 9 2 ",
                                 solutionCode: `public class Main {\n    public static void main(String[] args) {\n        for(int i=100; i>=0; i-=7) System.out.print(i + " ");\n    }\n}`
                             }
                         ],
@@ -490,8 +475,6 @@ const db = {
                 quiz: []
             },
 
-        // --- AI SPECIFIC ---
-
         // 8. Networks
         { 
             id: "net", name_en: "Networks", name_ar: "شبكات", 
@@ -532,10 +515,7 @@ const db = {
                     { title: "Lab 8: Cisco Packet Tracer DHCP", link: "https://drive.google.com/file/d/16UrpAW2CR5oagCKd6RIQSZRXWYSUH4LF/view?usp=drive_link", type: "PDF" }
                 ],
                 quiz: []
-            } 
-        },
-
-        // --- CYBER SPECIFIC ---
+            },
 
         // 9. Electronics
         { 
@@ -571,8 +551,8 @@ const db = {
                         { title: "Electronics Lecture 4", link: "https://drive.google.com/file/d/1G2h24fZDec-rcO_Ko1IsYr3g3HO2ZOfK/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Circuit diagrams are MISSING. Check original slides." },
                         { title: "Electronics Lecture 5", link: "https://drive.google.com/file/d/1YneDbeaXo_zZB7PZvYMD42ROSXvUiMdn/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Circuit diagrams are MISSING. Check original slides." },
                         { title: "Electronics Lecture 6", link: "https://drive.google.com/file/d/1djoN9AciHheLMIv-XuuOICBDCiAih-SR/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Circuit diagrams are MISSING. Check original slides." },
-                        { title: "Electronics Lecture 7", link: "https://drive.google.com/file/d/12Ud-GCkLenOTWmzmwpRCAsvfQKMnfu1f/view?usp=drive_link", type: "PDF" },
-                        { title: "Electronics Lecture 8", link: "https://drive.google.com/file/d/1SGl6uMC_OJO1QhnVYrPjeiHYzQvOBKKW/view?usp=drive_link", type: "PDF" },
+                        { title: "Electronics Lecture 7", link: "https://drive.google.com/file/d/12Ud-GCkLenOTWmzmwpRCAsvfQKMnfu1f/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Circuit diagrams are MISSING. Check original slides." },
+                        { title: "Electronics Lecture 8", link: "https://drive.google.com/file/d/1SGl6uMC_OJO1QhnVYrPjeiHYzQvOBKKW/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Circuit diagrams are MISSING. Check original slides." },
                         { title: "Electronics SS", link: "https://drive.google.com/file/d/1Vb9nSkoJ0gev4tw_jqd1W-bhMULABDw6/view?usp=drive_link", type: "PDF" }, note: "Warning: For quick review only. Use full summaries for complete study." }
                     ] 
                 },
