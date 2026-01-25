@@ -6,7 +6,7 @@ const db = {
     subjects: [
         // --- SHARED SUBJECTS (TERM 1) ---
 
-        // 1. Business Administration (UPDATED)
+        // 1. Business Administration
         { 
             id: "bus", name_en: "Business Administration", name_ar: "إدارة أعمال", 
             type: "shared", year: 1, term: 1, material: ["lecs", "summary", "quiz"],
@@ -57,14 +57,48 @@ const db = {
             }
         },
 
-        // 2. English
+        // 2. English (UPDATED WITH REAL DATA & SOLUTIONS)
         { 
             id: "eng", name_en: "English", name_ar: "لغة إنجليزية", 
-            type: "shared", year: 1, term: 1, material: ["lecs", "summary", "quiz"], 
-            content: { lecs: [], summary: [], quiz: [] } 
+            type: "shared", year: 1, term: 1, material: ["lecs", "summary", "solutions", "quiz"], 
+            content: {
+                lecs: [
+                    { title: "Lecture 1", link: "https://drive.google.com/file/d/1FiX8j3z2Xu2Mnp6q_sS2MCIILg8wg5Zr/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 2", link: "https://drive.google.com/file/d/1AbCUjmHlQR0Ny79x0SybVlqY3x8Curmc/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 3", link: "https://drive.google.com/file/d/1wcar7lhIwpk6KN8xOH-wlp6vpz3tymlk/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 4", link: "https://drive.google.com/file/d/1MULMksYxmsxZ7199QBmd8eaLNxanAGP9/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 5", link: "https://drive.google.com/file/d/1LBLJUnPN25DDsFeqFcL7Bemlw8lRrEHD/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 6", link: "https://drive.google.com/file/d/1LpcKBTJUor-jZb4W-JVz79HOrw6wTqU0/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 7", link: "https://drive.google.com/file/d/1noT5w343ZPdh5CsXg0cIyMeqXEnbb3fE/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 8", link: "https://drive.google.com/file/d/1nE9prljNFDrNHp3NTwpV3fBUqctySldz/view?usp=drive_link", type: "PDF" },
+                    { title: "Glossary", link: "https://drive.google.com/file/d/1xTDinSc4KRZ3gtUvrbgw_nnqzQHcatwU/view?usp=drive_link", type: "PDF" }
+                ],
+                solutions: [
+                    { title: "Lecture 1 Solutions", link: "https://drive.google.com/file/d/1P-JSc4jmb3P0pimH9iDaVnBtjvdc1Q8M/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 2 Solutions", link: "https://drive.google.com/file/d/1t-id7IaWRfGUnf4H3etnylk3UCHilpMq/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 3 Solutions", link: "https://drive.google.com/file/d/18fKe6qX8Of5JIwFc-lssExu4wrvNUSEO/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 4 Solutions", link: "https://drive.google.com/file/d/1C8wLDNR_SkWoUDdAdvhM7apo9QoGhPqB/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 5 Solutions", link: "https://drive.google.com/file/d/1sjuj1oAHZapjJ71HU7AO6qsnCe7oYa-u/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 6 Solutions", link: "https://drive.google.com/file/d/1m_8Djw2p2iEqyOI6-Nl9tpbQG8emCdoC/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 7 Solutions", link: "https://drive.google.com/file/d/1eO9eAjA_ObAbSEBAcejjQBWskQXKGFWv/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 8 Solutions", link: "https://drive.google.com/file/d/1RgREzEiAKWxYpz3Sso4zaC6NtpizjxKs/view?usp=drive_link", type: "PDF" }
+                ],
+                summary: [
+                    { title: "English L1 Summary", link: "https://drive.google.com/file/d/1_FPxe3GK0Ewr8rTvMxeVYmL-4ih6vHGB/view?usp=drive_link", type: "PDF" },
+                    { title: "English L2 Summary", link: "https://drive.google.com/file/d/1kEn6tbw5EMGOX3YgnMJ4au6g26x3i-El/view?usp=sharing", type: "PDF" },
+                    { title: "English L3 Summary", link: "https://drive.google.com/file/d/1RNBLcjXGr4j9dC3y1EqwI4lyt5JDPtCW/view?usp=drive_link", type: "PDF" },
+                    { title: "English L4 Summary", link: "https://drive.google.com/file/d/19g2aFDI66XVduvIvxeVzlnOswgtNA_m8/view?usp=drive_link", type: "PDF" },
+                    { title: "English L5 Summary", link: "https://drive.google.com/file/d/1ndB_03EUYvKoAfqP5NaH0OTHDug7Sl_3/view?usp=drive_link", type: "PDF" },
+                    { title: "English L6 Summary", link: "https://drive.google.com/file/d/10jA8M_Q0_akVXOLgRL8hyDxx0CQWBI13/view?usp=drive_link", type: "PDF" },
+                    { title: "English L7 Summary", link: "https://drive.google.com/file/d/1KR7pu94TL29hE3jqhXdRcaOiuPpxybKQ/view?usp=drive_link", type: "PDF" },
+                    { title: "English L8 Summary", link: "https://drive.google.com/file/d/1UhZo5NfsovbXWewJcdiAhT28nm_e8jKK/view?usp=drive_link", type: "PDF" },
+                    { title: "English SS (Super Summary)", link: "https://drive.google.com/file/d/1M1Jd3Afrxpjo5BWsGJJNvh27QNfRI6bj/view?usp=drive_link", type: "PDF", note: "Warning: For quick review only. Use full summaries for complete study." }
+                ],
+                quiz: []
+            } 
         },
 
-        // 3. Creative Thinking (UPDATED WITH REAL DATA)
+        // 3. Creative Thinking (UPDATED)
         { 
             id: "cre", name_en: "Creative Thinking", name_ar: "تفكير إبداعي", 
             type: "shared", year: 1, term: 1, material: ["lecs", "summary", "quiz"], 
@@ -143,7 +177,7 @@ const db = {
 
         // --- AI SPECIFIC ---
 
-        // 8. Networks (UPDATED)
+        // 8. Networks
         { 
             id: "net", name_en: "Networks", name_ar: "شبكات", 
             type: "ai", year: 1, term: 1, material: ["lecs", "summary", "labs", "quiz"], 
@@ -188,7 +222,7 @@ const db = {
 
         // --- CYBER SPECIFIC ---
 
-        // 9. Electronics (UPDATED)
+        // 9. Electronics
         { 
             id: "elec", name_en: "Electronics", name_ar: "كهربية", 
             type: "cyber", year: 1, term: 1, material: ["lecs", "summary", "quiz"], 
@@ -220,7 +254,7 @@ const db = {
                         { title: "Electronics Lecture 2", link: "https://drive.google.com/file/d/1-fMz12nTw8iu3S-HdEpI8furpT02Z3eu/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Circuit diagrams are MISSING. Check original slides." },
                         { title: "Electronics Lecture 3", link: "https://drive.google.com/file/d/1jeG_hZ9QsnC7oK10ZFzFk9flF0Y1CLDK/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Circuit diagrams are MISSING. Check original slides." },
                         { title: "Electronics Lecture 4", link: "https://drive.google.com/file/d/1G2h24fZDec-rcO_Ko1IsYr3g3HO2ZOfK/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Circuit diagrams are MISSING. Check original slides." },
-                        { title: "Electronics Lecture 5", link: "https://drive.google.com/file/d/1YneDbeaXo_zZB7PZvYMD42ROSXvUiMdn/view?usp=drive_link", type: "PDF" },
+                        { title: "Electronics Lecture 5", link: "https://drive.google.com/file/d/1YneDbeaXo_zZB7PZvYMD42ROSXvUiMdn/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Circuit diagrams are MISSING. Check original slides." },
                         { title: "Electronics Lecture 6", link: "https://drive.google.com/file/d/1djoN9AciHheLMIv-XuuOICBDCiAih-SR/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Circuit diagrams are MISSING. Check original slides." },
                         { title: "Electronics Lecture 7", link: "https://drive.google.com/file/d/12Ud-GCkLenOTWmzmwpRCAsvfQKMnfu1f/view?usp=drive_link", type: "PDF" },
                         { title: "Electronics Lecture 8", link: "https://drive.google.com/file/d/1SGl6uMC_OJO1QhnVYrPjeiHYzQvOBKKW/view?usp=drive_link", type: "PDF" },
