@@ -11,7 +11,7 @@ let appState = {
     term: null,
     currentSubjectId: null,
     activeTab: null,
-    subFilter: null, // Unified state for sub-sections (ar/en or main/solutions)
+    subFilter: null, 
     lang: 'en',
     quiz: { active: false, questions: [], currentQuestionIndex: 0, time: 0, userAnswers: {}, flagged: new Set() }
 };
