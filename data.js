@@ -5,6 +5,8 @@ const db = {
     },
     subjects: [
         // --- SHARED SUBJECTS (TERM 1) ---
+
+        // 1. Business Administration (UPDATED)
         { 
             id: "bus", name_en: "Business Administration", name_ar: "إدارة أعمال", 
             type: "shared", year: 1, term: 1, material: ["lecs", "summary", "quiz"],
@@ -54,32 +56,85 @@ const db = {
                 quiz: []
             }
         },
+
+        // 2. English
         { 
             id: "eng", name_en: "English", name_ar: "لغة إنجليزية", 
             type: "shared", year: 1, term: 1, material: ["lecs", "summary", "quiz"], 
             content: { lecs: [], summary: [], quiz: [] } 
         },
+
+        // 3. Creative Thinking (UPDATED WITH REAL DATA)
         { 
             id: "cre", name_en: "Creative Thinking", name_ar: "تفكير إبداعي", 
             type: "shared", year: 1, term: 1, material: ["lecs", "summary", "quiz"], 
-            content: { lecs: [], summary: { ar: [], en: [] }, quiz: [] } 
+            content: {
+                lecs: [
+                    { title: "Lecture 1", link: "https://drive.google.com/file/d/1J2rI-iDRSMIDB_Uw-V15PXgpFPwpZNCP/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 2", link: "https://drive.google.com/file/d/1mjTGYV2fxLSr7oh3haFz4QiwghbOSLck/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 3", link: "https://drive.google.com/file/d/17q9-9qNUPyC0SdR7qnLKHqz9c_qhRDBc/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 4", link: "https://drive.google.com/file/d/1cWXu3tpCsDfg6Z0oBo64HEkpJeU24rgw/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 5", link: "https://drive.google.com/file/d/1NxEhJvW7iWYyfaqiT1vr5g0Vl9Y6yH5M/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 6", link: "https://drive.google.com/file/d/1sUquE7zldkBz9B94ifmtaW89Xq75UBNg/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 7", link: "https://drive.google.com/file/d/1bPFlw4VgILE5hDsXcg7a3A3Tph6tAFSR/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 8", link: "https://drive.google.com/file/d/11HHkIyLxph1zsY5li4OUoD2iUWOb7U26/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 9", link: "https://drive.google.com/file/d/1Mchmdp9nQK1XTTz5HeGIIajXiFvQTcBw/view?usp=drive_link", type: "PDF" }
+                ],
+                summary: { 
+                    ar: [
+                        { title: "تفكير ابداعي 1", link: "https://drive.google.com/file/d/1qvHujkUvLBbckgs9dOjF0JCtvNCbahN3/view?usp=drive_link", type: "PDF" },
+                        { title: "تفكير ابداعي 2", link: "https://drive.google.com/file/d/1pGXk277k-nfZvgCdOBqbXJwJUtVLu0Z4/view?usp=drive_link", type: "PDF" },
+                        { title: "تفكير ابداعي 3", link: "https://drive.google.com/file/d/1LS-XMS-cGAHMGV6d67lE0ImsgFmZSQEz/view?usp=drive_link", type: "PDF" },
+                        { title: "تفكير ابداعي 4", link: "https://drive.google.com/file/d/10pfMpOwP-u5iaKI6-rOfH8JkQFFnVJK3/view?usp=drive_link", type: "PDF" },
+                        { title: "تفكير ابداعي 5", link: "https://drive.google.com/file/d/1GUN70YDuRC9UVpJAd_6S3ASIwWJoNsdl/view?usp=drive_link", type: "PDF" },
+                        { title: "تفكير ابداعي 6", link: "https://drive.google.com/file/d/1MpGcKDKtQPnvS_PSQqo3Tas6wCkxFp9W/view?usp=drive_link", type: "PDF" },
+                        { title: "تفكير ابداعي 7", link: "https://drive.google.com/file/d/1FVwHgg_SYMs-yqY-NcQkOeb3zXAsCwKC/view?usp=drive_link", type: "PDF" },
+                        { title: "تفكير ابداعي 8", link: "https://drive.google.com/file/d/1pQVgeTF414Hyc64C8KUuVfOGxvdNl2xK/view?usp=drive_link", type: "PDF" },
+                        { title: "تفكير ابداعي 9", link: "https://drive.google.com/file/d/1GKxkzjWolAalkOpy47lcAQOMeWWfR-vj/view?usp=drive_link", type: "PDF" },
+                        { title: "تفكير ابداعي ملخص الملخص", link: "https://drive.google.com/file/d/1WXSB18Uy6cvDMtk7kN21Re3PCW2YoEKR/view?usp=drive_link", type: "PDF", note: "تحذير: للمراجعة السريعة فقط. اعتمد على الملخصات الكاملة للفهم." },
+                        { title: "تفكير ابداعي كل المقارنات", link: "https://drive.google.com/file/d/14G5xHl-Fhub8MJvX_lqRYPHitoyDV2q7/view?usp=drive_link", type: "PDF", note: "مفيد: تجميع شامل لكل مقارنات المنهج." }
+                    ], 
+                    en: [
+                        { title: "Creative Thinking Lecture 1", link: "https://drive.google.com/file/d/1_OXUkRvaXZJ46N4hEWeNyP6BxsM2xAkp/view?usp=drive_link", type: "PDF" },
+                        { title: "Creative Thinking Lecture 2", link: "https://drive.google.com/file/d/1VtCUOpxNjXcNs4d624HCkLdLo0fKGTz3/view?usp=drive_link", type: "PDF" },
+                        { title: "Creative Thinking Lecture 3", link: "https://drive.google.com/file/d/1PaBw6TPm68oCYAN8bZlaES3nEgXyKxNN/view?usp=drive_link", type: "PDF" },
+                        { title: "Creative Thinking Lecture 4", link: "https://drive.google.com/file/d/16SMiUK0y-cXUS3VdH2DVw7T-Ym8FpBAw/view?usp=drive_link", type: "PDF" },
+                        { title: "Creative Thinking Lecture 5", link: "https://drive.google.com/file/d/1e3YO_S6npn5sF7Dhs5ARUbbG5o-zF0-R/view?usp=drive_link", type: "PDF" },
+                        { title: "Creative Thinking Lecture 6", link: "https://drive.google.com/file/d/1XHRPmjhqny_eibgDcQ_peaorsiYc-sFW/view?usp=drive_link", type: "PDF" },
+                        { title: "Creative Thinking Lecture 7", link: "https://drive.google.com/file/d/1g1TDUL2wE2wqNaaimRUrgtOEmItSNiEa/view?usp=drive_link", type: "PDF" },
+                        { title: "Creative Thinking Lecture 8", link: "https://drive.google.com/file/d/1Mqik26GmfdB0MteTOiBgYPGXVSitLPkN/view?usp=drive_link", type: "PDF" },
+                        { title: "Creative Thinking Lecture 9", link: "https://drive.google.com/file/d/1st4-iYTnGrI5F5X9DWhKftsOzlDV_X8R/view?usp=drive_link", type: "PDF" },
+                        { title: "Creative Thinking SS", link: "https://drive.google.com/file/d/1UufaftTaieq9rw3UrgfYhhmMmD6SWLfW/view?usp=drive_link", type: "PDF", note: "Warning: For quick review only. Use full summaries for complete study." },
+                        { title: "Creative Thinking All comparisons", link: "https://drive.google.com/file/d/1mjrbQ24jGC-yf3YnDls2Kw2FYay6gkhJ/view?usp=drive_link", type: "PDF", note: "Useful: Collection of all course comparisons." }
+                    ] 
+                },
+                quiz: []
+            } 
         },
+
+        // 4. Math 0
         { 
             id: "m0", name_en: "Math 0", name_ar: "رياضيات 0", 
             type: "shared", year: 1, term: 1, material: ["lecs", "summary", "quiz"], 
             content: { lecs: [], summary: { ar: [], en: [] }, quiz: [] } 
         },
+
+        // 5. Physics
         { 
             id: "phy", name_en: "Physics", name_ar: "فيزياء", 
             type: "shared", year: 1, term: 1, material: ["lecs", "summary", "quiz"], 
             content: { lecs: [], summary: { ar: [], en: [] }, quiz: [] } 
         },
+        
+        // 6. Math 1
         { 
             id: "m1", name_en: "Math 1", name_ar: "رياضيات 1", 
             type: "shared", year: 1, term: 1, material: ["core_material", "quiz"], 
             sections: ["Differentiation", "Integration"],
             content: { core_material: [], quiz: [] } 
         },
+
+        // 7. Programming
         { 
             id: "prog", name_en: "Programming", name_ar: "برمجة", 
             type: "shared", year: 1, term: 1, material: ["chapters", "summary", "labs_interactive", "quiz"], 
@@ -88,7 +143,7 @@ const db = {
 
         // --- AI SPECIFIC ---
 
-        // 8. Networks
+        // 8. Networks (UPDATED)
         { 
             id: "net", name_en: "Networks", name_ar: "شبكات", 
             type: "ai", year: 1, term: 1, material: ["lecs", "summary", "labs", "quiz"], 
@@ -132,6 +187,8 @@ const db = {
         },
 
         // --- CYBER SPECIFIC ---
+
+        // 9. Electronics (UPDATED)
         { 
             id: "elec", name_en: "Electronics", name_ar: "كهربية", 
             type: "cyber", year: 1, term: 1, material: ["lecs", "summary", "quiz"], 
@@ -165,8 +222,8 @@ const db = {
                         { title: "Electronics Lecture 4", link: "https://drive.google.com/file/d/1G2h24fZDec-rcO_Ko1IsYr3g3HO2ZOfK/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Circuit diagrams are MISSING. Check original slides." },
                         { title: "Electronics Lecture 5", link: "https://drive.google.com/file/d/1YneDbeaXo_zZB7PZvYMD42ROSXvUiMdn/view?usp=drive_link", type: "PDF" },
                         { title: "Electronics Lecture 6", link: "https://drive.google.com/file/d/1djoN9AciHheLMIv-XuuOICBDCiAih-SR/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Circuit diagrams are MISSING. Check original slides." },
-                        { title: "Electronics Lecture 7", link: "https://drive.google.com/file/d/12Ud-GCkLenOTWmzmwpRCAsvfQKMnfu1f/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Circuit diagrams are MISSING. Check original slides." },
-                        { title: "Electronics Lecture 8", link: "https://drive.google.com/file/d/1SGl6uMC_OJO1QhnVYrPjeiHYzQvOBKKW/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Circuit diagrams are MISSING. Check original slides." },
+                        { title: "Electronics Lecture 7", link: "https://drive.google.com/file/d/12Ud-GCkLenOTWmzmwpRCAsvfQKMnfu1f/view?usp=drive_link", type: "PDF" },
+                        { title: "Electronics Lecture 8", link: "https://drive.google.com/file/d/1SGl6uMC_OJO1QhnVYrPjeiHYzQvOBKKW/view?usp=drive_link", type: "PDF" },
                         { title: "Electronics SS", link: "https://drive.google.com/file/d/1Vb9nSkoJ0gev4tw_jqd1W-bhMULABDw6/view?usp=drive_link", type: "PDF", note: "Warning: For quick review only. Use full summaries for complete study." }
                     ] 
                 },
