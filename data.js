@@ -1,14 +1,12 @@
-// ======================================================
-// PART 1: MAJORS & SHARED SUBJECTS (GROUP A)
-// ======================================================
-
 const db = {
     majors: {
         ai: { name_en: "Artificial Intelligence", name_ar: "الذكاء الاصطناعي", icon: "fa-brain" },
         cyber: { name_en: "Cyber Security", name_ar: "الأمن السيبراني", icon: "fa-shield-halved" }
     },
     subjects: [
-        // 1. Business Administration
+        // ======================================================
+        // 1. BUSINESS ADMINISTRATION
+        // ======================================================
         { 
             id: "bus", name_en: "Business Administration", name_ar: "إدارة أعمال", 
             type: "shared", year: 1, term: 1, material: ["lecs", "summary", "quiz"],
@@ -56,9 +54,12 @@ const db = {
                     ]
                 },
                 quiz: []
-            },
+            }
+        },
 
-        // 2. English
+        // ======================================================
+        // 2. ENGLISH
+        // ======================================================
         { 
             id: "eng", name_en: "English", name_ar: "لغة إنجليزية", 
             type: "shared", year: 1, term: 1, material: ["lecs", "summary", "quiz"], 
@@ -100,7 +101,9 @@ const db = {
                 quiz: []
             },
 
-        // 3. Creative Thinking
+        // ======================================================
+        // 3. CREATIVE THINKING
+        // ======================================================
         { 
             id: "cre", name_en: "Creative Thinking", name_ar: "تفكير إبداعي", 
             type: "shared", year: 1, term: 1, material: ["lecs", "summary", "quiz"], 
@@ -140,14 +143,16 @@ const db = {
                         { title: "Creative Thinking Lecture 7", link: "https://drive.google.com/file/d/1g1TDUL2wE2wqNaaimRUrgtOEmItSNiEa/view?usp=drive_link", type: "PDF" },
                         { title: "Creative Thinking Lecture 8", link: "https://drive.google.com/file/d/1Mqik26GmfdB0MteTOiBgYPGXVSitLPkN/view?usp=drive_link", type: "PDF" },
                         { title: "Creative Thinking Lecture 9", link: "https://drive.google.com/file/d/1st4-iYTnGrI5F5X9DWhKftsOzlDV_X8R/view?usp=drive_link", type: "PDF" },
-                        { title: "Creative Thinking SS", link: "https://drive.google.com/file/d/1UufaftTaieq9rw3UrgfYhhmMmD6SWLfW/view?usp=drive_link", type: "PDF", note: "Warning: For quick review only." },
+                        { title: "Creative Thinking SS", link: "https://drive.google.com/file/d/1UufaftTaieq9rw3UrgfYhhmMmD6SWLfW/view?usp=drive_link", type: "PDF" }, note: "Warning: For quick review only." },
                         { title: "Creative Thinking All comparisons", link: "https://drive.google.com/file/d/1mjrbQ24jGC-yf3YnDls2Kw2FYay6gkhJ/view?usp=drive_link", type: "PDF", note: "Useful: Collection of all course comparisons." }
                     ] 
                 },
                 quiz: []
             },
 
-        // 4. Math 0
+        // ======================================================
+        // 4. MATH 0
+        // ======================================================
         { 
             id: "m0", name_en: "Math 0", name_ar: "رياضيات 0", 
             type: "shared", year: 1, term: 1, material: ["lecs", "summary", "quiz"], 
@@ -186,9 +191,10 @@ const db = {
                 },
                 quiz: []
             },
-            , // الفاصلة دي مهمة جداً عشان تفصل عن الجزء اللي فات
 
-        // 5. Physics
+        // ======================================================
+        // 5. PHYSICS
+        // ======================================================
         { 
             id: "phy", name_en: "Physics", name_ar: "فيزياء", 
             type: "shared", year: 1, term: 1, material: ["lecs", "summary", "quiz"], 
@@ -204,13 +210,13 @@ const db = {
                 ],
                 summary: {
                     ar: [
-                        { title: "المحاضرة 1", link: "https://drive.google.com/file/d/1EGP5d2n9bFaPvH37FALF4aa8_w3L38is/view?usp=drive_link", type: "PDF", note: "تنبيه: الملخص نصي." },
-                        { title: "المحاضرة 2", link: "https://drive.google.com/file/d/1QEygYZdvzlf9TfknBBUAdZweZgOx_o-t/view?usp=drive_link", type: "PDF", note: "تنبيه: الملخص نصي." },
-                        { title: "المحاضرة 3", link: "https://drive.google.com/file/d/1fcmpHMT_0fuc3u--rESlcPnyi5wykkXz/view?usp=drive_link", type: "PDF", note: "تنبيه: الملخص نصي." },
-                        { title: "المحاضرة 4", link: "https://drive.google.com/file/d/1SXUdzzJBTbleOsFq9Wt9kRE7Q3_XL7rV/view?usp=drive_link", type: "PDF", note: "تنبيه: الملخص نصي." },
-                        { title: "المحاضرة 5", link: "https://drive.google.com/file/d/1LDqbAocoUpPWmC3SpwyheelE1hxj8mRA/view?usp=drive_link", type: "PDF", note: "تنبيه: الملخص نصي." },
-                        { title: "المحاضرة 6", link: "https://drive.google.com/file/d/1qweIXNJ7mpZ1y5uOXVYvIN_2IOia2tsd/view?usp=drive_link", type: "PDF", note: "تنبيه: الملخص نصي." },
-                        { title: "المتجهات", link: "https://drive.google.com/file/d/1KfxA4HersIlEIGVDxkosVpQZFeyJW8Kg/view?usp=drive_link", type: "PDF", note: "تنبيه: الملخص نصي." }
+                        { title: "المحاضرة 1", link: "https://drive.google.com/file/d/1EGP5d2n9bFaPvH37FALF4aa8_w3L38is/view?usp=drive_link", type: "PDF", note: "تنبيه: الملخص نصي. الرسومات ناقصة." },
+                        { title: "المحاضرة 2", link: "https://drive.google.com/file/d/1QEygYZdvzlf9TfknBBUAdZweZgOx_o-t/view?usp=drive_link", type: "PDF", note: "تنبيه: الملخص نصي. الرسومات ناقصة." },
+                        { title: "المحاضرة 3", link: "https://drive.google.com/file/d/1fcmpHMT_0fuc3u--rESlcPnyi5wykkXz/view?usp=drive_link", type: "PDF", note: "تنبيه: الملخص نصي. الرسومات ناقصة." },
+                        { title: "المحاضرة 4", link: "https://drive.google.com/file/d/1SXUdzzJBTbleOsFq9Wt9kRE7Q3_XL7rV/view?usp=drive_link", type: "PDF", note: "تنبيه: الملخص نصي. الرسومات ناقصة." },
+                        { title: "المحاضرة 5", link: "https://drive.google.com/file/d/1LDqbAocoUpPWmC3SpwyheelE1hxj8mRA/view?usp=drive_link", type: "PDF", note: "تنبيه: الملخص نصي. الرسومات ناقصة." },
+                        { title: "المحاضرة 6", link: "https://drive.google.com/file/d/1qweIXNJ7mpZ1y5uOXVYvIN_2IOia2tsd/view?usp=drive_link", type: "PDF", note: "تنبيه: الملخص نصي. الرسومات ناقصة." },
+                        { title: "المتجهات", link: "https://drive.google.com/file/d/1KfxA4HersIlEIGVDxkosVpQZFeyJW8Kg/view?usp=drive_link", type: "PDF", note: "تنبيه: الملخص نصي. الرسومات ناقصة." }
                     ],
                     en: [
                         { title: "Lecture 1", link: "https://drive.google.com/file/d/1748GcEmPY7HHI6tlvQ-gNFPFxWzqQQm9/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Diagrams MISSING." },
@@ -225,7 +231,9 @@ const db = {
                 quiz: []
             },
         
-        // 6. Math 1
+        // ======================================================
+        // 6. MATH 1
+        // ======================================================
         { 
             id: "m1", name_en: "Math 1", name_ar: "رياضيات 1", 
             type: "shared", year: 1, term: 1, material: ["core_material", "quiz"], 
@@ -246,7 +254,9 @@ const db = {
             } 
         },
 
-        // 7. Programming (PART A)
+        // ======================================================
+        // 7. PROGRAMMING (CORRECTED CODE BLOCK SYNTAX)
+        // ======================================================
         { 
             id: "prog", name_en: "Programming", name_ar: "برمجة", 
             type: "shared", year: 1, term: 1, material: ["chapters", "lecs", "summary", "labs", "quiz"], 
@@ -315,25 +325,25 @@ const db = {
                             {
                                 id: 1,
                                 type: "code",
-                                prompt: "Write a Java program that converts Fahrenheit to Celsius. Formula: C = 5 * (F - 32) / 9.",
-                                hint: "Use Scanner to read double input.",
-                                expectedOutput: "Celsius",
-                                solutionCode: `import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner input = new Scanner(System.in);\n        System.out.print("Enter temp in Fahrenheit: ");\n        double f = input.nextDouble();\n        double c = 5.0 * (f - 32) / 9.0;\n        System.out.println("Temp " + f + " in Fahrenheit = " + c + " Celsius");\n    }\n}`
+                                prompt: "Write a Java program that converts Fahrenheit to Celsius. (Enter 68)",
+                                hint: "C = 5 * (F - 32) / 9",
+                                expectedOutput: "Temp 68.0 in Fahrenheit = 20.0 Celsius",
+                                solutionCode: `import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner input = new Scanner(System.in);\n        //System.out.print("Enter temp in Fahrenheit: ");\n        double f = input.nextDouble();\n        double c = 5.0 * (f - 32) / 9.0;\n        System.out.println("Temp " + f + " in Fahrenheit = " + c + " Celsius");\n    }\n}`
                             },
                             {
                                 id: 2,
                                 type: "code",
-                                prompt: "Write a Java program to evaluate the distance S in vertical motion. S = ut - 0.5*g*t^2. (g=9.8)",
-                                hint: "Read u (velocity) and t (time).",
-                                expectedOutput: "Distance",
-                                solutionCode: `import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner input = new Scanner(System.in);\n        System.out.print("Enter u and t: ");\n        double u = input.nextDouble();\n        double t = input.nextDouble();\n        double g = 9.8;\n        double s = (u*t) - (0.5 * g * Math.pow(t, 2));\n        System.out.println("Distance = " + s);\n    }\n}`
+                                prompt: "Write a Java program to evaluate the distance S in vertical motion under gravity given S = ut - 0.5*g*t^2. (g=9.8). Read u (initial velocity) and t (time).",
+                                hint: "Use Math.pow(t, 2) for t squared.",
+                                expectedOutput: "Distance = 980.4",
+                                solutionCode: `import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner input = new Scanner(System.in);\n        //System.out.print("Enter u and t: ");\n        double u = input.nextDouble();\n        double t = input.nextDouble();\n        double g = 9.8;\n        double s = (u*t) - (0.5 * g * Math.pow(t, 2));\n        System.out.println("Distance = " + s);\n    }\n}`
                             },
                             {
                                 id: 3,
                                 type: "code",
-                                prompt: "Calculate volume and surface area of a sphere given radius r.",
-                                hint: "Vol = 4/3*pi*r^3, Area = 4*pi*r^2",
-                                expectedOutput: "Volume",
+                                prompt: "Write a program to calculate the volume and surface area of a sphere given its radius r. (Vol = 4/3 * pi * r^3, Area = 4 * pi * r^2)",
+                                hint: "Use Math.PI and Math.pow(). Use 4.0/3.0 for decimal division.",
+                                expectedOutput: "Volume: 4188.790204786391\nArea: 1256.6370614359173",
                                 solutionCode: `import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner input = new Scanner(System.in);\n        double r = input.nextDouble();\n        double vol = (4.0/3.0) * Math.PI * Math.pow(r, 3);\n        double area = 4.0 * Math.PI * Math.pow(r, 2);\n        System.out.println("Volume: " + vol + "\\nArea: " + area);\n    }\n}`
                             }
                         ],
@@ -342,17 +352,17 @@ const db = {
                             {
                                 id: 1,
                                 type: "code",
-                                prompt: "Solve quadratic equation ax^2 + bx + c = 0.",
+                                prompt: "Write a program to solve a quadratic equation ax^2 + bx + c = 0. Print 'Two roots', 'One root', or 'No real roots' based on the discriminant.",
                                 hint: "Discriminant = b^2 - 4ac",
-                                expectedOutput: "roots",
+                                expectedOutput: "Two roots",
                                 solutionCode: `import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        double a = sc.nextDouble(), b = sc.nextDouble(), c = sc.nextDouble();\n        double d = Math.pow(b, 2) - 4*a*c;\n        if (d > 0) System.out.println("Two roots");\n        else if (d == 0) System.out.println("One root");\n        else System.out.println("No real roots");\n    }\n}`
                             },
                             {
                                 id: 2,
                                 type: "code",
-                                prompt: "Characterize earthquake based on Richter scale n.",
-                                hint: "<5 Little, 5-5.5 Some, 5.5-6.5 Serious, 6.5-7.5 Disaster, >7.5 Catastrophe",
-                                expectedOutput: "damage",
+                                prompt: "Write a program to characterize an earthquake based on Richter scale number n using if-else. (<5: Little, 5-5.5: Some, 5.5-6.5: Serious, 6.5-7.5: Disaster, >7.5: Catastrophe)",
+                                hint: "Use an if-else if ladder.",
+                                expectedOutput: "Serious damage",
                                 solutionCode: `import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        double n = sc.nextDouble();\n        if (n < 5.0) System.out.println("Little damage");\n        else if (n < 5.5) System.out.println("Some damage");\n        else if (n < 6.5) System.out.println("Serious damage");\n        else if (n < 7.5) System.out.println("Disaster");\n        else System.out.println("Catastrophe");\n    }\n}`
                             }
                         ],
@@ -361,28 +371,29 @@ const db = {
                             {
                                 id: 1,
                                 type: "code",
-                                prompt: "Print weekday name (1=Saturday) using switch.",
-                                hint: "switch(day) case 1: ...",
-                                expectedOutput: "day",
+                                prompt: "Write a program that asks for a number (1-7) and prints the weekday name (1=Saturday) using switch statement.",
+                                hint: "switch(day) { case 1: ... }",
+                                expectedOutput: "Monday",
                                 solutionCode: `import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int day = sc.nextInt();\n        switch(day) {\n            case 1: System.out.println("Saturday"); break;\n            case 2: System.out.println("Sunday"); break;\n            case 3: System.out.println("Monday"); break;\n            case 4: System.out.println("Tuesday"); break;\n            case 5: System.out.println("Wednesday"); break;\n            case 6: System.out.println("Thursday"); break;\n            case 7: System.out.println("Friday"); break;\n            default: System.out.println("Invalid");\n        }\n    }\n}`
                             },
                             {
                                 id: 2,
                                 type: "code",
-                                prompt: "Print Season based on month number (1-12).",
-                                hint: "12,1,2 Winter... etc.",
-                                expectedOutput: "Season",
+                                prompt: "Write a program that reads a month number (1-12) and prints the Season (Winter, Spring, Summer, Fall) using switch.",
+                                hint: "Group cases: case 12: case 1: case 2: ...",
+                                expectedOutput: "Season: Summer",
                                 solutionCode: `import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int m = sc.nextInt();\n        switch(m) {\n            case 12: case 1: case 2: System.out.println("Season: Winter"); break;\n            case 3: case 4: case 5: System.out.println("Season: Spring"); break;\n            case 6: case 7: case 8: System.out.println("Season: Summer"); break;\n            case 9: case 10: case 11: System.out.println("Season: Fall"); break;\n            default: System.out.println("Invalid");\n        }\n    }\n}`
                             },
                             {
                                 id: 3,
                                 type: "code",
-                                prompt: "Generate two random integers between a and b.",
-                                hint: "Math.random()",
-                                expectedOutput: "", 
+                                prompt: "Generate two random integer numbers between a and b.",
+                                hint: "Formula: a + (int)(Math.random() * ((b - a) + 1))",
+                                expectedOutput: "", // Random output, no exact match check
                                 solutionCode: `import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int a = sc.nextInt();\n        int b = sc.nextInt();\n        int r1 = a + (int)(Math.random() * ((b - a) + 1));\n        System.out.println(r1);\n    }\n}`
                             }
                         ],
+
                         lab_5: [
                             {
                                 id: 1,
@@ -477,8 +488,9 @@ const db = {
                     }
                 },
                 quiz: []
-            } 
-        },
+            },
+
+        // --- AI SPECIFIC ---
 
         // 8. Networks
         { 
@@ -523,6 +535,8 @@ const db = {
             } 
         },
 
+        // --- CYBER SPECIFIC ---
+
         // 9. Electronics
         { 
             id: "elec", name_en: "Electronics", name_ar: "كهربية", 
@@ -557,9 +571,9 @@ const db = {
                         { title: "Electronics Lecture 4", link: "https://drive.google.com/file/d/1G2h24fZDec-rcO_Ko1IsYr3g3HO2ZOfK/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Circuit diagrams are MISSING. Check original slides." },
                         { title: "Electronics Lecture 5", link: "https://drive.google.com/file/d/1YneDbeaXo_zZB7PZvYMD42ROSXvUiMdn/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Circuit diagrams are MISSING. Check original slides." },
                         { title: "Electronics Lecture 6", link: "https://drive.google.com/file/d/1djoN9AciHheLMIv-XuuOICBDCiAih-SR/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Circuit diagrams are MISSING. Check original slides." },
-                        { title: "Electronics Lecture 7", link: "https://drive.google.com/file/d/12Ud-GCkLenOTWmzmwpRCAsvfQKMnfu1f/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Circuit diagrams are MISSING. Check original slides." },
-                        { title: "Electronics Lecture 8", link: "https://drive.google.com/file/d/1SGl6uMC_OJO1QhnVYrPjeiHYzQvOBKKW/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Circuit diagrams are MISSING. Check original slides." },
-                        { title: "Electronics SS", link: "https://drive.google.com/file/d/1Vb9nSkoJ0gev4tw_jqd1W-bhMULABDw6/view?usp=drive_link", type: "PDF", note: "Warning: For quick review only. Use full summaries for complete study." }
+                        { title: "Electronics Lecture 7", link: "https://drive.google.com/file/d/12Ud-GCkLenOTWmzmwpRCAsvfQKMnfu1f/view?usp=drive_link", type: "PDF" },
+                        { title: "Electronics Lecture 8", link: "https://drive.google.com/file/d/1SGl6uMC_OJO1QhnVYrPjeiHYzQvOBKKW/view?usp=drive_link", type: "PDF" },
+                        { title: "Electronics SS", link: "https://drive.google.com/file/d/1Vb9nSkoJ0gev4tw_jqd1W-bhMULABDw6/view?usp=drive_link", type: "PDF" }, note: "Warning: For quick review only. Use full summaries for complete study." }
                     ] 
                 },
                 quiz: []
