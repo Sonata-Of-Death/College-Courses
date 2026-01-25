@@ -28,7 +28,8 @@ const translations = {
         flagAlertTitle: "Review Required", flagAlertMsg: "You have flagged questions: ", flagAlertAction: "Submit Anyway", flagAlertBack: "Return to Quiz",
         // Sub-sections
         arSec: "Arabic Section", enSec: "English Section", backToSelection: "Back to Selection",
-        lecsMain: "Lectures", lecsSol: "Solutions"
+        lecsMain: "Lectures", lecsSol: "Solutions",
+        labsMaterial: "Material", labsQuestions: "Interactive Questions"
     },
     ar: {
         welcomeTitle: "مرحباً بك في", welcomeSpan: "قاعدة معرفة حاسبات DNU", welcomeSub: "", selectTrack: "اختر المسار الأكاديمي للمتابعة", back: "رجوع", selectYear: "اختر السنة الدراسية", selectTerm: "اختر الفصل الدراسي", year: "السنة", term1: "الترم الأول", term2: "الترم الثاني", t1Range: "سبتمبر - يناير", t2Range: "فبراير - يونيو", clickAccess: "اضغط للوصول للمحتوى", noSubjects: "لا توجد مواد متاحة.", adminAccess: "دخول المشرفين", login: "دخول", accessDenied: "بيانات خاطئة",
@@ -40,7 +41,8 @@ const translations = {
         flagAlertTitle: "تنبيه مراجعة", flagAlertMsg: "لديك أسئلة محددة للمراجعة أرقام: ", flagAlertAction: "تسليم على أي حال", flagAlertBack: "عودة للاختبار",
         // Sub-sections
         arSec: "القسم العربي", enSec: "القسم الإنجليزي", backToSelection: "العودة للاختيار",
-        lecsMain: "شرح المحاضرات", lecsSol: "حلول الأسئلة"
+        lecsMain: "شرح المحاضرات", lecsSol: "حلول الأسئلة",
+        labsMaterial: "شرح اللابات", labsQuestions: "أسئلة تفاعلية"
     }
 };
 
@@ -241,6 +243,31 @@ function getTabContent(subject, type) {
         `;
     }
 
+    // --- CASE 3: SPLIT LABS (MATERIAL / QUESTIONS) ---
+    if (type === 'labs' && !Array.isArray(subject.content.labs)) {
+        if (appState.subFilter === null) {
+            return `
+                <div class="grid-center" style="margin-top:0;">
+                    <div class="selection-card" onclick="setSubFilter('material')" style="width:200px; padding:1.5rem;"><i class="fas fa-laptop-code card-icon"></i><h3>${t('labsMaterial')}</h3></div>
+                    <div class="selection-card" onclick="setSubFilter('questions')" style="width:200px; padding:1.5rem;"><i class="fas fa-question-circle card-icon"></i><h3>${t('labsQuestions')}</h3></div>
+                </div>
+            `;
+        }
+        const files = appState.subFilter === 'material' ? (subject.content.labs.material || []) : (subject.content.labs.questions || []);
+        
+        // Handling empty questions list with a "Coming Soon" message if needed
+        let contentHtml = renderFileList(files);
+        if (appState.subFilter === 'questions' && files.length === 0) {
+            contentHtml = '<p style="text-align:center; color:var(--text-secondary); margin-top:2rem;">Interactive Questions Coming Soon...</p>';
+        }
+
+        return `
+            <button class="btn-back" style="background:var(--accent); color:white; border:none;" onclick="setSubFilter(null)"><i class="fas fa-arrow-up"></i> ${t('backToSelection')}</button>
+            <h3 style="color:var(--text-primary); margin: 1rem 0; padding-bottom: 5px;">${appState.subFilter === 'material' ? t('labsMaterial') : t('labsQuestions')}</h3>
+            <div class="file-list">${contentHtml}</div>
+        `;
+    }
+
     // --- STANDARD ARRAYS ---
     if (['lecs', 'summary', 'core_material', 'chapters', 'labs_interactive', 'labs'].includes(type)) {
         return `<div class="file-list">${renderFileList(subject.content[type])}</div>`;
@@ -260,11 +287,18 @@ function renderFileList(files) {
         let downloadLink = file.link;
         let iconClass = 'fa-file-pdf';
         let iconStyle = 'color:var(--text-primary)';
+        let viewButton = `<button class="btn-view" onclick="openPdf('${file.link}')"><i class="fas fa-eye"></i> ${t('view')}</button>`;
+
+        // Handle dummy links (like Lab 1 Note)
+        if (file.link === "#") {
+            downloadLink = "#";
+            viewButton = ""; // No view button for notes
+        } 
         
         // Detect if it's a presentation
-        const isPPT = file.type === 'PPT' || file.link.includes('presentation');
+        const isPPT = file.type === 'PPT' || (file.link && file.link.includes('presentation'));
         
-        const idMatch = file.link.match(/\/d\/([a-zA-Z0-9_-]+)/);
+        const idMatch = file.link && file.link.match(/\/d\/([a-zA-Z0-9_-]+)/);
         if(idMatch && idMatch[1]) {
             if (isPPT) {
                 downloadLink = `https://docs.google.com/presentation/d/${idMatch[1]}/export/pptx`;
@@ -283,8 +317,8 @@ function renderFileList(files) {
                 ${file.note ? `<div class="warning-box"><i class="fas fa-exclamation-triangle"></i><span dir="auto">${file.note}</span></div>` : ''}
             </div>
             <div class="file-actions">
-                <button class="btn-view" onclick="openPdf('${file.link}')"><i class="fas fa-eye"></i> ${t('view')}</button>
-                <a href="${downloadLink}" class="btn-download"><i class="fas fa-download"></i> ${t('download')}</a>
+                ${viewButton}
+                ${file.link !== "#" ? `<a href="${downloadLink}" class="btn-download"><i class="fas fa-download"></i> ${t('download')}</a>` : ''}
             </div>
         </div>
         `;
