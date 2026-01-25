@@ -10,16 +10,16 @@ const db = {
             type: "shared", year: 1, term: 1, material: ["lecs", "summary", "quiz"],
             content: {
                 lecs: [
-                    { title: "Lecture 1", link: "https://drive.google.com/file/d/1SfIG8hN63n4TRZhapxoW80s7ne18_BuM/view?usp=drive_link", type: "PDF" },
-                    { title: "Lecture 2", link: "https://drive.google.com/file/d/1fnKpjoeIOtT6CHmDIrJdDWX2yvKxxQzY/view?usp=drive_link", type: "PDF" },
-                    { title: "Lecture 3", link: "https://drive.google.com/file/d/1n2iWy6kfiirCuavxrLY6-pOOC63K4sue/view?usp=drive_link", type: "PDF" },
-                    { title: "Lecture 4", link: "https://drive.google.com/file/d/1uW_9OA5UN_nvCSk_xZHiYhQLMA1zO9RW/view?usp=drive_link", type: "PDF" },
-                    { title: "Lecture 5", link: "https://drive.google.com/file/d/14YyXXbXpHhpSKCQbgtW8okePfUFlGoNc/view?usp=drive_link", type: "PDF" },
-                    { title: "Lecture 6", link: "https://drive.google.com/file/d/1dh7CHKscRTSv1e2HbYextQ9-zOXWgrIz/view?usp=drive_link", type: "PDF" },
-                    { title: "Lecture 7", link: "https://drive.google.com/file/d/1eyPLzNI_C0si8xS3C-fWPvX-bfWqWPyT/view?usp=drive_link", type: "PDF" },
-                    { title: "Lecture 8", link: "https://drive.google.com/file/d/11T-BBEpOu5pLMu_3zek7lysdjJWQshvg/view?usp=drive_link", type: "PDF" },
-                    { title: "Lecture 9", link: "https://drive.google.com/file/d/17gb6z07pY-DZMIzCaqMQ2SxRT4pXtzGt/view?usp=drive_link", type: "PDF" },
-                    { title: "Lecture 10", link: "https://drive.google.com/file/d/1JVhV_Iwv5jK0Rwdyu5Le0bfEEaWEp2lS/view?usp=drive_link", type: "PDF" }
+                    { title: "Business Administration 1", link: "https://drive.google.com/file/d/1SfIG8hN63n4TRZhapxoW80s7ne18_BuM/view?usp=drive_link", type: "PDF" },
+                    { title: "Business Administration 2", link: "https://drive.google.com/file/d/1fnKpjoeIOtT6CHmDIrJdDWX2yvKxxQzY/view?usp=drive_link", type: "PDF" },
+                    { title: "Business Administration 3", link: "https://drive.google.com/file/d/1n2iWy6kfiirCuavxrLY6-pOOC63K4sue/view?usp=drive_link", type: "PDF" },
+                    { title: "Business Administration 4", link: "https://drive.google.com/file/d/1uW_9OA5UN_nvCSk_xZHiYhQLMA1zO9RW/view?usp=drive_link", type: "PDF" },
+                    { title: "Business Administration 5", link: "https://drive.google.com/file/d/14YyXXbXpHhpSKCQbgtW8okePfUFlGoNc/view?usp=drive_link", type: "PDF" },
+                    { title: "Business Administration 6", link: "https://drive.google.com/file/d/1dh7CHKscRTSv1e2HbYextQ9-zOXWgrIz/view?usp=drive_link", type: "PDF" },
+                    { title: "Business Administration 7", link: "https://drive.google.com/file/d/1eyPLzNI_C0si8xS3C-fWPvX-bfWqWPyT/view?usp=drive_link", type: "PDF" },
+                    { title: "Business Administration 8", link: "https://drive.google.com/file/d/11T-BBEpOu5pLMu_3zek7lysdjJWQshvg/view?usp=drive_link", type: "PDF" },
+                    { title: "Business Administration 9", link: "https://drive.google.com/file/d/17gb6z07pY-DZMIzCaqMQ2SxRT4pXtzGt/view?usp=drive_link", type: "PDF" },
+                    { title: "Business Administration 10", link: "https://drive.google.com/file/d/1JVhV_Iwv5jK0Rwdyu5Le0bfEEaWEp2lS/view?usp=drive_link", type: "PDF" }
                 ],
                 summary: {
                     ar: [
@@ -53,7 +53,6 @@ const db = {
                 },
                 quiz: []
             },
-
         // 2. English
         { 
             id: "eng", name_en: "English", name_ar: "لغة إنجليزية", 
@@ -95,7 +94,6 @@ const db = {
                 ],
                 quiz: []
             },
-
         // 3. Creative Thinking
         { 
             id: "cre", name_en: "Creative Thinking", name_ar: "تفكير إبداعي", 
@@ -142,7 +140,6 @@ const db = {
                 },
                 quiz: []
             },
-
         // 4. Math 0
         { 
             id: "m0", name_en: "Math 0", name_ar: "رياضيات 0", 
@@ -182,7 +179,6 @@ const db = {
                 },
                 quiz: []
             },
-
         // 5. Physics
         { 
             id: "phy", name_en: "Physics", name_ar: "فيزياء", 
@@ -219,7 +215,6 @@ const db = {
                 },
                 quiz: []
             },
-        
         // 6. Math 1
         { 
             id: "m1", name_en: "Math 1", name_ar: "رياضيات 1", 
@@ -310,25 +305,25 @@ const db = {
                             {
                                 id: 1,
                                 type: "code",
-                                prompt: "Write a Java program that returns the Celsius value 'C' for a given temperature measured in Fahrenheit 'F'. Use the formula: C = 5 * (F - 32) / 9.",
-                                hint: "Use Scanner to read double input. Formula: 5.0 * (f - 32) / 9.0",
-                                expectedOutput: "Temp 68.0 in Fahrenheit = 20.0 Celsius",
-                                solutionCode: `import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner input = new Scanner(System.in);\n        //System.out.print("Enter temp in Fahrenheit: ");\n        double f = input.nextDouble();\n        double c = 5.0 * (f - 32) / 9.0;\n        System.out.println("Temp " + f + " in Fahrenheit = " + c + " Celsius");\n    }\n}`
+                                prompt: "Write a Java program that converts Fahrenheit to Celsius. Formula: C = 5 * (F - 32) / 9.",
+                                hint: "Use Scanner to read double input.",
+                                expectedOutput: "Celsius",
+                                solutionCode: `import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner input = new Scanner(System.in);\n        System.out.print("Enter temp in Fahrenheit: ");\n        double f = input.nextDouble();\n        double c = 5.0 * (f - 32) / 9.0;\n        System.out.println("Temp " + f + " in Fahrenheit = " + c + " Celsius");\n    }\n}`
                             },
                             {
                                 id: 2,
                                 type: "code",
-                                prompt: "Write a Java program to evaluate the distance S in vertical motion under gravity given S = ut - 0.5*g*t^2. (g=9.8). Read u (initial velocity) and t (time).",
-                                hint: "Use Math.pow(t, 2) for t squared.",
-                                expectedOutput: "Distance = 980.4",
-                                solutionCode: `import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner input = new Scanner(System.in);\n        //System.out.print("Enter u and t: ");\n        double u = input.nextDouble();\n        double t = input.nextDouble();\n        double g = 9.8;\n        double s = (u*t) - (0.5 * g * Math.pow(t, 2));\n        System.out.println("Distance = " + s);\n    }\n}`
+                                prompt: "Write a Java program to evaluate the distance S in vertical motion. S = ut - 0.5*g*t^2. (g=9.8)",
+                                hint: "Read u (velocity) and t (time).",
+                                expectedOutput: "Distance",
+                                solutionCode: `import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner input = new Scanner(System.in);\n        System.out.print("Enter u and t: ");\n        double u = input.nextDouble();\n        double t = input.nextDouble();\n        double g = 9.8;\n        double s = (u*t) - (0.5 * g * Math.pow(t, 2));\n        System.out.println("Distance = " + s);\n    }\n}`
                             },
                             {
                                 id: 3,
                                 type: "code",
-                                prompt: "Write a program to calculate the volume and surface area of a sphere given its radius r. (Vol = 4/3 * pi * r^3, Area = 4 * pi * r^2)",
-                                hint: "Use Math.PI and Math.pow(). Use 4.0/3.0 for decimal division.",
-                                expectedOutput: "Volume: 4188.790204786391\nArea: 1256.6370614359173",
+                                prompt: "Calculate volume and surface area of a sphere given radius r.",
+                                hint: "Vol = 4/3*pi*r^3, Area = 4*pi*r^2",
+                                expectedOutput: "Volume",
                                 solutionCode: `import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner input = new Scanner(System.in);\n        double r = input.nextDouble();\n        double vol = (4.0/3.0) * Math.PI * Math.pow(r, 3);\n        double area = 4.0 * Math.PI * Math.pow(r, 2);\n        System.out.println("Volume: " + vol + "\\nArea: " + area);\n    }\n}`
                             }
                         ],
@@ -337,17 +332,17 @@ const db = {
                             {
                                 id: 1,
                                 type: "code",
-                                prompt: "Write a program to solve a quadratic equation ax^2 + bx + c = 0. Print 'Two roots', 'One root', or 'No real roots' based on the discriminant.",
+                                prompt: "Solve quadratic equation ax^2 + bx + c = 0.",
                                 hint: "Discriminant = b^2 - 4ac",
-                                expectedOutput: "Two roots",
+                                expectedOutput: "roots",
                                 solutionCode: `import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        double a = sc.nextDouble(), b = sc.nextDouble(), c = sc.nextDouble();\n        double d = Math.pow(b, 2) - 4*a*c;\n        if (d > 0) System.out.println("Two roots");\n        else if (d == 0) System.out.println("One root");\n        else System.out.println("No real roots");\n    }\n}`
                             },
                             {
                                 id: 2,
                                 type: "code",
-                                prompt: "Write a program to characterize an earthquake based on Richter scale number n using if-else. (<5: Little, 5-5.5: Some, 5.5-6.5: Serious, 6.5-7.5: Disaster, >7.5: Catastrophe)",
-                                hint: "Use an if-else if ladder.",
-                                expectedOutput: "Serious damage",
+                                prompt: "Characterize earthquake based on Richter scale n.",
+                                hint: "<5 Little, 5-5.5 Some, 5.5-6.5 Serious, 6.5-7.5 Disaster, >7.5 Catastrophe",
+                                expectedOutput: "damage",
                                 solutionCode: `import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        double n = sc.nextDouble();\n        if (n < 5.0) System.out.println("Little damage");\n        else if (n < 5.5) System.out.println("Some damage");\n        else if (n < 6.5) System.out.println("Serious damage");\n        else if (n < 7.5) System.out.println("Disaster");\n        else System.out.println("Catastrophe");\n    }\n}`
                             }
                         ],
@@ -356,25 +351,25 @@ const db = {
                             {
                                 id: 1,
                                 type: "code",
-                                prompt: "Write a program that asks for a number (1-7) and prints the weekday name (1=Saturday) using switch statement.",
-                                hint: "switch(day) { case 1: ... }",
-                                expectedOutput: "Monday",
+                                prompt: "Print weekday name (1=Saturday) using switch.",
+                                hint: "switch(day) case 1: ...",
+                                expectedOutput: "day",
                                 solutionCode: `import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int day = sc.nextInt();\n        switch(day) {\n            case 1: System.out.println("Saturday"); break;\n            case 2: System.out.println("Sunday"); break;\n            case 3: System.out.println("Monday"); break;\n            case 4: System.out.println("Tuesday"); break;\n            case 5: System.out.println("Wednesday"); break;\n            case 6: System.out.println("Thursday"); break;\n            case 7: System.out.println("Friday"); break;\n            default: System.out.println("Invalid");\n        }\n    }\n}`
                             },
                             {
                                 id: 2,
                                 type: "code",
-                                prompt: "Write a program that reads a month number (1-12) and prints the Season (Winter, Spring, Summer, Fall) using switch.",
-                                hint: "Group cases: case 12: case 1: case 2: ...",
-                                expectedOutput: "Season: Summer",
+                                prompt: "Print Season based on month number (1-12).",
+                                hint: "12,1,2 Winter... etc.",
+                                expectedOutput: "Season",
                                 solutionCode: `import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int m = sc.nextInt();\n        switch(m) {\n            case 12: case 1: case 2: System.out.println("Season: Winter"); break;\n            case 3: case 4: case 5: System.out.println("Season: Spring"); break;\n            case 6: case 7: case 8: System.out.println("Season: Summer"); break;\n            case 9: case 10: case 11: System.out.println("Season: Fall"); break;\n            default: System.out.println("Invalid");\n        }\n    }\n}`
                             },
                             {
                                 id: 3,
                                 type: "code",
-                                prompt: "Generate two random integer numbers between a and b.",
-                                hint: "Formula: a + (int)(Math.random() * ((b - a) + 1))",
-                                expectedOutput: "", // Random output, no exact match check
+                                prompt: "Generate two random integers between a and b.",
+                                hint: "Math.random()",
+                                expectedOutput: "", 
                                 solutionCode: `import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int a = sc.nextInt();\n        int b = sc.nextInt();\n        int r1 = a + (int)(Math.random() * ((b - a) + 1));\n        System.out.println(r1);\n    }\n}`
                             }
                         ],
@@ -420,7 +415,7 @@ const db = {
                                 type: "code",
                                 prompt: "Print numbers from 100 down to 0, decreasing by 7 each step.",
                                 hint: "Loop logic: for(int i=100; i>=0; i-=7)",
-                                expectedOutput: "100 93 86 79 72 65 58 51 44 37 30 23 16 9 2 ",
+                                expectedOutput: "100 93 86 79 72 65 58 51 44 37 30 23 16 9 2",
                                 solutionCode: `public class Main {\n    public static void main(String[] args) {\n        for(int i=100; i>=0; i-=7) System.out.print(i + " ");\n    }\n}`
                             }
                         ],
@@ -551,8 +546,8 @@ const db = {
                         { title: "Electronics Lecture 4", link: "https://drive.google.com/file/d/1G2h24fZDec-rcO_Ko1IsYr3g3HO2ZOfK/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Circuit diagrams are MISSING. Check original slides." },
                         { title: "Electronics Lecture 5", link: "https://drive.google.com/file/d/1YneDbeaXo_zZB7PZvYMD42ROSXvUiMdn/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Circuit diagrams are MISSING. Check original slides." },
                         { title: "Electronics Lecture 6", link: "https://drive.google.com/file/d/1djoN9AciHheLMIv-XuuOICBDCiAih-SR/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Circuit diagrams are MISSING. Check original slides." },
-                        { title: "Electronics Lecture 7", link: "https://drive.google.com/file/d/12Ud-GCkLenOTWmzmwpRCAsvfQKMnfu1f/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Circuit diagrams are MISSING. Check original slides." },
-                        { title: "Electronics Lecture 8", link: "https://drive.google.com/file/d/1SGl6uMC_OJO1QhnVYrPjeiHYzQvOBKKW/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Circuit diagrams are MISSING. Check original slides." },
+                        { title: "Electronics Lecture 7", link: "https://drive.google.com/file/d/12Ud-GCkLenOTWmzmwpRCAsvfQKMnfu1f/view?usp=drive_link", type: "PDF" },
+                        { title: "Electronics Lecture 8", link: "https://drive.google.com/file/d/1SGl6uMC_OJO1QhnVYrPjeiHYzQvOBKKW/view?usp=drive_link", type: "PDF" },
                         { title: "Electronics SS", link: "https://drive.google.com/file/d/1Vb9nSkoJ0gev4tw_jqd1W-bhMULABDw6/view?usp=drive_link", type: "PDF" }, note: "Warning: For quick review only. Use full summaries for complete study." }
                     ] 
                 },
