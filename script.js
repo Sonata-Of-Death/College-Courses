@@ -110,7 +110,7 @@ function renderCurrentView() {
     }
 }
 
-// --- Standard Views ---
+// --- Standard Views (Home, Year, Term, Dashboard) ---
 function renderHome() { appState.view = 'home'; container.innerHTML = `<section class="hero"><h1>${t('welcomeTitle')} <span class="highlight">${t('welcomeSpan')}</span> ${t('welcomeSub')}</h1><p>${t('selectTrack')}</p><div class="grid-center"><div class="selection-card" onclick="selectMajor('ai')"><i class="fas fa-brain card-icon"></i><h2>${appState.lang === 'en' ? db.majors.ai.name_en : db.majors.ai.name_ar}</h2></div><div class="selection-card" onclick="selectMajor('cyber')"><i class="fas fa-shield-halved card-icon"></i><h2>${appState.lang === 'en' ? db.majors.cyber.name_en : db.majors.cyber.name_ar}</h2></div></div></section>`; }
 function selectMajor(major) { appState.major = major; renderYearSelect(); }
 function renderYearSelect() { appState.view = 'year'; container.innerHTML = `<button class="btn-back" onclick="renderHome()"><i class="fas fa-arrow-left"></i> ${t('back')}</button><h2 class="section-title">${t('selectYear')}</h2><div class="grid-center">${[1, 2, 3, 4].map(y => `<div class="selection-card" onclick="selectYear(${y})"><div style="font-size: 2.5rem; font-weight: bold; color: var(--accent); margin-bottom: 1rem;">0${y}</div><h3>${t('year')} ${y}</h3></div>`).join('')}</div>`; }
@@ -149,7 +149,7 @@ function getTabContent(subject, type) {
         }
         // Interactive Labs Selection
         const labList = subject.content.labs.questions.labs_list || [];
-        if (labList.length === 0) return `<button class="btn-back" style="background:var(--accent); color:white; border:none;" onclick="setSubFilter(null)"><i class="fas fa-arrow-up"></i> ${t('backToSelection')}</button><p style="text-align:center; margin-top:2rem;">Interactive Questions Coming Soon...</p>`;
+        if (labList.length === 0) return `<button class="btn-back" style="background:var(--accent); color:white; border:none;" onclick="setSubFilter(null)"><i class="fas fa-arrow-up"></i> ${t('backToSelection')}</button><p style="text-align:center; margin-top:2rem; color:var(--text-secondary);">Interactive Questions Coming Soon...</p>`;
         
         return `<button class="btn-back" style="background:var(--accent); color:white; border:none;" onclick="setSubFilter(null)"><i class="fas fa-arrow-up"></i> ${t('backToSelection')}</button><h3 style="color:var(--text-primary); margin: 1rem 0; padding-bottom: 5px;">${t('labsQuestions')}</h3>
         <div class="dashboard-grid">${labList.map(l => `<div class="subject-card" onclick="startLab(${l.id})"><div class="subject-title">${l.title}</div><small style="color:var(--text-secondary)">${l.qCount} Questions</small><button class="btn-start-lab">${t('startLab')}</button></div>`).join('')}</div>`;
