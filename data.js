@@ -6,7 +6,7 @@ const db = {
     subjects: [
         // --- SHARED SUBJECTS (TERM 1) ---
 
-        // 1. Business Administration
+        // 1. Business Administration (جاهز)
         { 
             id: "bus", name_en: "Business Administration", name_ar: "إدارة أعمال", 
             type: "shared", year: 1, term: 1, material: ["lecs", "summary", "quiz"],
@@ -57,7 +57,7 @@ const db = {
             }
         },
 
-        // 2. English (SPLIT LECTURES & SOLUTIONS)
+        // 2. English (جاهز - تم دمج الحلول في قسم المحاضرات)
         { 
             id: "eng", name_en: "English", name_ar: "لغة إنجليزية", 
             type: "shared", year: 1, term: 1, material: ["lecs", "summary", "quiz"], 
@@ -103,7 +103,7 @@ const db = {
             } 
         },
 
-        // 3. Creative Thinking (UPDATED)
+        // 3. Creative Thinking (جاهز)
         { 
             id: "cre", name_en: "Creative Thinking", name_ar: "تفكير إبداعي", 
             type: "shared", year: 1, term: 1, material: ["lecs", "summary", "quiz"], 
@@ -182,7 +182,7 @@ const db = {
 
         // --- AI SPECIFIC ---
 
-        // 8. Networks (UPDATED)
+        // 8. Networks (جاهز)
         { 
             id: "net", name_en: "Networks", name_ar: "شبكات", 
             type: "ai", year: 1, term: 1, material: ["lecs", "summary", "labs", "quiz"], 
@@ -227,7 +227,7 @@ const db = {
 
         // --- CYBER SPECIFIC ---
 
-        // 9. Electronics (UPDATED)
+        // 9. Electronics (جاهز)
         { 
             id: "elec", name_en: "Electronics", name_ar: "كهربية", 
             type: "cyber", year: 1, term: 1, material: ["lecs", "summary", "quiz"], 
@@ -263,7 +263,7 @@ const db = {
                         { title: "Electronics Lecture 6", link: "https://drive.google.com/file/d/1djoN9AciHheLMIv-XuuOICBDCiAih-SR/view?usp=drive_link", type: "PDF" },
                         { title: "Electronics Lecture 7", link: "https://drive.google.com/file/d/12Ud-GCkLenOTWmzmwpRCAsvfQKMnfu1f/view?usp=drive_link", type: "PDF" },
                         { title: "Electronics Lecture 8", link: "https://drive.google.com/file/d/1SGl6uMC_OJO1QhnVYrPjeiHYzQvOBKKW/view?usp=drive_link", type: "PDF" },
-                        { title: "Electronics SS", link: "https://drive.google.com/file/d/1Vb9nSkoJ0gev4tw_jqd1W-bhMULABDw6/view?usp=drive_link", type: "PDF" }, note: "Warning: For quick review only. Use full summaries for complete study." }
+                        { title: "Electronics SS", link: "https://drive.google.com/file/d/1Vb9nSkoJ0gev4tw_jqd1W-bhMULABDw6/view?usp=drive_link", type: "PDF", note: "Warning: For quick review only. Use full summaries for complete study." }
                     ] 
                 },
                 quiz: []
