@@ -110,7 +110,7 @@ function renderCurrentView() {
     }
 }
 
-// --- Standard Views (Home, Year, Term, Dashboard) ---
+// --- Standard Views ---
 function renderHome() { appState.view = 'home'; container.innerHTML = `<section class="hero"><h1>${t('welcomeTitle')} <span class="highlight">${t('welcomeSpan')}</span> ${t('welcomeSub')}</h1><p>${t('selectTrack')}</p><div class="grid-center"><div class="selection-card" onclick="selectMajor('ai')"><i class="fas fa-brain card-icon"></i><h2>${appState.lang === 'en' ? db.majors.ai.name_en : db.majors.ai.name_ar}</h2></div><div class="selection-card" onclick="selectMajor('cyber')"><i class="fas fa-shield-halved card-icon"></i><h2>${appState.lang === 'en' ? db.majors.cyber.name_en : db.majors.cyber.name_ar}</h2></div></div></section>`; }
 function selectMajor(major) { appState.major = major; renderYearSelect(); }
 function renderYearSelect() { appState.view = 'year'; container.innerHTML = `<button class="btn-back" onclick="renderHome()"><i class="fas fa-arrow-left"></i> ${t('back')}</button><h2 class="section-title">${t('selectYear')}</h2><div class="grid-center">${[1, 2, 3, 4].map(y => `<div class="selection-card" onclick="selectYear(${y})"><div style="font-size: 2.5rem; font-weight: bold; color: var(--accent); margin-bottom: 1rem;">0${y}</div><h3>${t('year')} ${y}</h3></div>`).join('')}</div>`; }
