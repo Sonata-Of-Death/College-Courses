@@ -16,11 +16,11 @@ let appState = {
     quiz: { active: false, questions: [], currentQuestionIndex: 0, time: 0, userAnswers: {}, flagged: new Set() }
 };
 
-// Dictionary
+// Dictionary (Updated with Solutions)
 const translations = {
     en: {
         welcomeTitle: "Welcome to", welcomeSpan: "DNU Computer Science", welcomeSub: "Knowledge Base", selectTrack: "Select your academic track to proceed", back: "Back", selectYear: "Select Academic Year", selectTerm: "Select Semester", year: "Year", term1: "First Semester", term2: "Second Semester", t1Range: "Sep - Jan", t2Range: "Feb - Jun", clickAccess: "Click to access material", noSubjects: "No subjects found.", adminAccess: "Admin Access", login: "LOGIN", accessDenied: "Access Denied",
-        lecs: "Lectures", summary: "Summaries", quiz: "Quiz", labs: "Labs", core_material: "Core Material", chapters: "Chapters", labs_interactive: "Interactive Labs",
+        lecs: "Lectures", summary: "Summaries", solutions: "Solutions", quiz: "Quiz", labs: "Labs", core_material: "Core Material", chapters: "Chapters", labs_interactive: "Interactive Labs",
         view: "View", download: "Download", startQuiz: "Start Quiz", quizReady: "Ready for the Challenge?",
         qNum: "Question", flag: "Flag for Review", prev: "Prev", next: "Next", submit: "Submit",
         resultTitle: "Quiz Completed!", timeTaken: "Time Taken", backCourse: "Back to Course",
@@ -30,7 +30,7 @@ const translations = {
     },
     ar: {
         welcomeTitle: "مرحباً بك في", welcomeSpan: "قاعدة معرفة حاسبات DNU", welcomeSub: "", selectTrack: "اختر المسار الأكاديمي للمتابعة", back: "رجوع", selectYear: "اختر السنة الدراسية", selectTerm: "اختر الفصل الدراسي", year: "السنة", term1: "الترم الأول", term2: "الترم الثاني", t1Range: "سبتمبر - يناير", t2Range: "فبراير - يونيو", clickAccess: "اضغط للوصول للمحتوى", noSubjects: "لا توجد مواد متاحة.", adminAccess: "دخول المشرفين", login: "دخول", accessDenied: "بيانات خاطئة",
-        lecs: "محاضرات", summary: "ملخصات", quiz: "اختبار", labs: "تجارب معملية", core_material: "المحتوى الأساسي", chapters: "الفصول", labs_interactive: "معمل تفاعلي",
+        lecs: "محاضرات", summary: "ملخصات", solutions: "حلول الأسئلة", quiz: "اختبار", labs: "تجارب معملية", core_material: "المحتوى الأساسي", chapters: "الفصول", labs_interactive: "معمل تفاعلي",
         view: "عرض", download: "تحميل", startQuiz: "بدء الاختبار", quizReady: "جاهز للتحدي؟",
         qNum: "سؤال", flag: "تحديد للمراجعة", prev: "السابق", next: "التالي", submit: "تسليم",
         resultTitle: "تم إنهاء الاختبار!", timeTaken: "الوقت المستغرق", backCourse: "عودة للمادة",
@@ -216,7 +216,8 @@ function getTabContent(subject, type) {
             <div class="file-list">${renderFileList(files)}</div>
         `;
     }
-    if (['lecs', 'summary', 'core_material', 'chapters', 'labs_interactive', 'labs'].includes(type)) {
+    // Added 'solutions' to valid content types
+    if (['lecs', 'summary', 'solutions', 'core_material', 'chapters', 'labs_interactive', 'labs'].includes(type)) {
         return `<div class="file-list">${renderFileList(subject.content[type])}</div>`;
     }
     if (type === 'quiz') {
@@ -225,25 +226,22 @@ function getTabContent(subject, type) {
     return `<p>Coming Soon.</p>`;
 }
 
-// Fixed Helper to render file list items (Includes PPT icon logic & Bidi Fix)
+// Helper to render file list items
 function renderFileList(files) {
     if (!files || files.length === 0) return '<p style="text-align:center; color:var(--text-secondary);">No files available.</p>';
     
     return files.map(file => {
-        // --- PPT DIRECT DOWNLOAD FIX ---
         let downloadLink = file.link;
         let iconClass = 'fa-file-pdf';
         let iconStyle = 'color:var(--text-primary)';
         
-        // Detect if it's a presentation
         const isPPT = file.type === 'PPT' || file.link.includes('presentation');
-        
         const idMatch = file.link.match(/\/d\/([a-zA-Z0-9_-]+)/);
         if(idMatch && idMatch[1]) {
             if (isPPT) {
                 downloadLink = `https://docs.google.com/presentation/d/${idMatch[1]}/export/pptx`;
                 iconClass = 'fa-file-powerpoint';
-                iconStyle = 'color:var(--ppt-color)'; // Uses new variable
+                iconStyle = 'color:var(--ppt-color)'; 
             } else {
                 downloadLink = `https://drive.google.com/uc?export=download&id=${idMatch[1]}`;
             }
