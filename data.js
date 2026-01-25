@@ -148,7 +148,7 @@ const db = {
             } 
         },
 
-        // 4. Math 0 (UPDATED WITH REAL DATA)
+        // 4. Math 0 (جاهز)
         { 
             id: "m0", name_en: "Math 0", name_ar: "رياضيات 0", 
             type: "shared", year: 1, term: 1, material: ["lecs", "summary", "quiz"], 
@@ -189,14 +189,45 @@ const db = {
             } 
         },
 
-        // 5. Physics
+        // 5. Physics (UPDATED WITH REAL DATA & WARNINGS)
         { 
             id: "phy", name_en: "Physics", name_ar: "فيزياء", 
             type: "shared", year: 1, term: 1, material: ["lecs", "summary", "quiz"], 
-            content: { lecs: [], summary: { ar: [], en: [] }, quiz: [] } 
+            content: {
+                lecs: [
+                    { title: "Lecture 1", link: "https://drive.google.com/file/d/1gbMIrNAc2_4E2c6Bj6F4tL1Ysdo2cwAx/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 2", link: "https://drive.google.com/file/d/1J1_sRlrTXjMGCibD3EjhZ224iZ3mspvo/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 3", link: "https://drive.google.com/file/d/1pOHMpk7aQpBd1VlSDsMG2KnqHZCqTVv4/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 4", link: "https://drive.google.com/file/d/1JKkNkf-y0ENXzjJyhWgamaP9zTrzu8vd/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 5", link: "https://drive.google.com/file/d/1dk9oaEPIRQjjS8fRv3Ci9JFmheUFfdJh/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 6", link: "https://drive.google.com/file/d/1h7tWkMu57YQiPqA6vddoZc9YyWMzDqxU/view?usp=drive_link", type: "PDF" },
+                    { title: "Vectors", link: "https://drive.google.com/file/d/1jhN3LhAH9KjTj7onXIn6zDXXlL9Jxp6Y/view?usp=drive_link", type: "PDF" }
+                ],
+                summary: {
+                    ar: [
+                        { title: "المحاضرة 1", link: "https://drive.google.com/file/d/1EGP5d2n9bFaPvH37FALF4aa8_w3L38is/view?usp=drive_link", type: "PDF", note: "تنبيه: الملخص نصي. الرسومات والمخططات غير موجودة. راجع المحاضرة الأصلية." },
+                        { title: "المحاضرة 2", link: "https://drive.google.com/file/d/1QEygYZdvzlf9TfknBBUAdZweZgOx_o-t/view?usp=drive_link", type: "PDF", note: "تنبيه: الملخص نصي. الرسومات والمخططات غير موجودة. راجع المحاضرة الأصلية." },
+                        { title: "المحاضرة 3", link: "https://drive.google.com/file/d/1fcmpHMT_0fuc3u--rESlcPnyi5wykkXz/view?usp=drive_link", type: "PDF", note: "تنبيه: الملخص نصي. الرسومات والمخططات غير موجودة. راجع المحاضرة الأصلية." },
+                        { title: "المحاضرة 4", link: "https://drive.google.com/file/d/1SXUdzzJBTbleOsFq9Wt9kRE7Q3_XL7rV/view?usp=drive_link", type: "PDF", note: "تنبيه: الملخص نصي. الرسومات والمخططات غير موجودة. راجع المحاضرة الأصلية." },
+                        { title: "المحاضرة 5", link: "https://drive.google.com/file/d/1LDqbAocoUpPWmC3SpwyheelE1hxj8mRA/view?usp=drive_link", type: "PDF", note: "تنبيه: الملخص نصي. الرسومات والمخططات غير موجودة. راجع المحاضرة الأصلية." },
+                        { title: "المحاضرة 6", link: "https://drive.google.com/file/d/1qweIXNJ7mpZ1y5uOXVYvIN_2IOia2tsd/view?usp=drive_link", type: "PDF", note: "تنبيه: الملخص نصي. الرسومات والمخططات غير موجودة. راجع المحاضرة الأصلية." },
+                        { title: "المتجهات", link: "https://drive.google.com/file/d/1KfxA4HersIlEIGVDxkosVpQZFeyJW8Kg/view?usp=drive_link", type: "PDF", note: "تنبيه: الملخص نصي. الرسومات والمخططات غير موجودة. راجع المحاضرة الأصلية." }
+                    ],
+                    en: [
+                        { title: "Lecture 1", link: "https://drive.google.com/file/d/1748GcEmPY7HHI6tlvQ-gNFPFxWzqQQm9/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Diagrams and graphs are MISSING. Check original slides." },
+                        { title: "Lecture 2", link: "https://drive.google.com/file/d/1DcZOHWti5fRrSGpIcXO8u6tnh9Vs16T_/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Diagrams and graphs are MISSING. Check original slides." },
+                        { title: "Lecture 3", link: "https://drive.google.com/file/d/1jl8O9I7RhR6QTF81_B0Jeufd0K9pf9rt/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Diagrams and graphs are MISSING. Check original slides." },
+                        { title: "Lecture 4", link: "https://drive.google.com/file/d/1OSFgPS3aO9A8j9D0BPQjWt4A8ARzq_bY/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Diagrams and graphs are MISSING. Check original slides." },
+                        { title: "Lecture 5", link: "https://drive.google.com/file/d/1utMmZao8ruskEwtg4WteYnujcRYsEn7W/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Diagrams and graphs are MISSING. Check original slides." },
+                        { title: "Lecture 6", link: "https://drive.google.com/file/d/1fIgFMU8C-rwPrnsuwSbkMzXhJNmO3GdO/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Diagrams and graphs are MISSING. Check original slides." },
+                        { title: "Vectors", link: "https://drive.google.com/file/d/17vYwS9RyFQq-Enf-B_JPIJdkYtubmix6/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Diagrams and graphs are MISSING. Check original slides." }
+                    ]
+                },
+                quiz: []
+            } 
         },
         
-        // 6. Math 1 (UPDATED WITH REAL DATA)
+        // 6. Math 1 (جاهز)
         { 
             id: "m1", name_en: "Math 1", name_ar: "رياضيات 1", 
             type: "shared", year: 1, term: 1, material: ["core_material", "quiz"], 
@@ -303,11 +334,11 @@ const db = {
                         { title: "Electronics Lecture 2", link: "https://drive.google.com/file/d/1-fMz12nTw8iu3S-HdEpI8furpT02Z3eu/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Circuit diagrams are MISSING. Check original slides." },
                         { title: "Electronics Lecture 3", link: "https://drive.google.com/file/d/1jeG_hZ9QsnC7oK10ZFzFk9flF0Y1CLDK/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Circuit diagrams are MISSING. Check original slides." },
                         { title: "Electronics Lecture 4", link: "https://drive.google.com/file/d/1G2h24fZDec-rcO_Ko1IsYr3g3HO2ZOfK/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Circuit diagrams are MISSING. Check original slides." },
-                        { title: "Electronics Lecture 5", link: "https://drive.google.com/file/d/1YneDbeaXo_zZB7PZvYMD42ROSXvUiMdn/view?usp=drive_link", type: "PDF" },
-                        { title: "Electronics Lecture 6", link: "https://drive.google.com/file/d/1djoN9AciHheLMIv-XuuOICBDCiAih-SR/view?usp=drive_link", type: "PDF" },
+                        { title: "Electronics Lecture 5", link: "https://drive.google.com/file/d/1YneDbeaXo_zZB7PZvYMD42ROSXvUiMdn/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Circuit diagrams are MISSING. Check original slides." },
+                        { title: "Electronics Lecture 6", link: "https://drive.google.com/file/d/1djoN9AciHheLMIv-XuuOICBDCiAih-SR/view?usp=drive_link", type: "PDF", note: "Warning: Text-only. Circuit diagrams are MISSING. Check original slides." },
                         { title: "Electronics Lecture 7", link: "https://drive.google.com/file/d/12Ud-GCkLenOTWmzmwpRCAsvfQKMnfu1f/view?usp=drive_link", type: "PDF" },
                         { title: "Electronics Lecture 8", link: "https://drive.google.com/file/d/1SGl6uMC_OJO1QhnVYrPjeiHYzQvOBKKW/view?usp=drive_link", type: "PDF" },
-                        { title: "Electronics SS", link: "https://drive.google.com/file/d/1Vb9nSkoJ0gev4tw_jqd1W-bhMULABDw6/view?usp=drive_link", type: "PDF", note: "Warning: For quick review only. Use full summaries for complete study." }
+                        { title: "Electronics SS", link: "https://drive.google.com/file/d/1Vb9nSkoJ0gev4tw_jqd1W-bhMULABDw6/view?usp=drive_link", type: "PDF" }, note: "Warning: For quick review only. Use full summaries for complete study." }
                     ] 
                 },
                 quiz: []
