@@ -268,3 +268,42 @@ footer.home-footer { padding: 3rem 1rem; font-size: 1rem; }
 @keyframes zoomIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
 @media (max-width: 768px) { .lab-workspace { flex-direction: column; height: auto; } .compare-container { flex-direction: column; } .lab-arena { height: auto; } .editor-pane { min-height: 400px; } .console-output { height: 120px; } }
+/* --- Fix: Lab Results Visibility --- */
+/* تكبير نوافذ الحل وإجابة الطالب */
+.lab-result-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.lab-compare-box {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    min-height: 300px; /* ارتفاع ثابت عشان يشيل كود كتير */
+}
+
+.lab-answer-window {
+    flex: 1;
+    padding: 15px;
+    border-radius: 8px;
+    background: var(--code-bg); /* خلفية غامقة عشان الكود يبان */
+    color: var(--text-primary);
+    font-family: 'Courier New', monospace; /* خط كود واضح */
+    font-size: 1rem; /* تكبير الخط */
+    overflow-y: auto; /* سكرول لو الكلام كتير */
+    border: 2px solid transparent;
+}
+
+/* تمييز الألوان بوضوح */
+.lab-answer-window.student {
+    border-color: var(--danger); /* أحمر */
+    background: rgba(239, 68, 68, 0.1); /* أحمر خفيف جداً في الخلفية */
+}
+
+.lab-answer-window.correct {
+    border-color: var(--success); /* أخضر */
+    background: rgba(16, 185, 129, 0.1); /* أخضر خفيف جداً في الخلفية */
+}
