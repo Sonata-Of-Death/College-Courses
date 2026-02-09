@@ -214,15 +214,11 @@ function renderSubjectView() {
 
     // ⧈ START: Smart Lab Logic
     if(appState.activeTab === 'labs') {
-        // Check if "questions" exist and are not empty
         const hasQuestions = sub.content.labs.questions && Object.keys(sub.content.labs.questions).length > 0;
-
         if (!hasQuestions) {
-            // CASE 1: No Interactive Labs (e.g., Networks) -> Show files directly
             const files = Array.isArray(sub.content.labs) ? sub.content.labs : sub.content.labs.material;
             content = renderFileList(files);
         } else {
-            // CASE 2: Has Interactive Labs (e.g., Programming) -> Show Split View
             if(!appState.subFilter) {
                 content = `
                 <div class="grid-center">
@@ -239,20 +235,14 @@ function renderSubjectView() {
                 content = appState.subFilter === 'material' ? renderFileList(sub.content.labs.material) : renderLabList(sub.content.labs.questions.labs_list);
             }
         }
-    // ⧈ END: Smart Lab Logic
-
     } else if(appState.activeTab === 'summary' && !Array.isArray(sub.content.summary)) {
         if(!appState.subFilter) content = `<div class="grid-center"><div class="selection-card" onclick="appState.subFilter='ar'; renderSubjectView()"><i class="fas fa-language card-icon"></i><h3>${t('arSec')}</h3></div><div class="selection-card" onclick="appState.subFilter='en'; renderSubjectView()"><i class="fas fa-globe card-icon"></i><h3>${t('enSec')}</h3></div></div>`;
         else content = renderFileList(appState.subFilter === 'ar' ? sub.content.summary.ar : sub.content.summary.en);
-
     } else if(appState.activeTab === 'lecs' && !Array.isArray(sub.content.lecs)) {
         if(!appState.subFilter) content = `<div class="grid-center"><div class="selection-card" onclick="appState.subFilter='main'; renderSubjectView()"><i class="fas fa-chalkboard-teacher card-icon"></i><h3>${t('lecsMain')}</h3></div><div class="selection-card" onclick="appState.subFilter='solutions'; renderSubjectView()"><i class="fas fa-check-circle card-icon"></i><h3>${t('lecsSol')}</h3></div></div>`;
         else content = renderFileList(appState.subFilter === 'main' ? sub.content.lecs.main : sub.content.lecs.solutions);
-    
-    // ⧈ START: Smart Quiz Logic (Updated)
     } else if (appState.activeTab === 'quiz') { 
         if (sub.content.quiz && sub.content.quiz.isSplit) {
-            // Case 1: Split Quizzes (Categorized)
             content = `<div class="dashboard-grid">
                 ${sub.content.quiz.sections.map(sect => `
                     <div class="subject-card" onclick="startQuiz('${sect.id}', '${sect.type}')">
@@ -263,20 +253,14 @@ function renderSubjectView() {
                     </div>`).join('')}
             </div>`;
         } else if (Array.isArray(sub.content.quiz) && sub.content.quiz.length > 0 && sub.content.quiz[0].link) {
-            // Case 2: PDF List (Electronics Style)
-            // If the array items have a 'link' property, render as File List
             content = renderFileList(sub.content.quiz);
         } else {
-            // Case 3: Single Interactive Quiz
             content = `<div style="text-align:center; padding:3rem;">
                 <h2 style="margin-bottom:1rem; color:var(--white);">${t('quizReady')}</h2>
                 <button class="btn-start-lab" style="max-width:200px;" onclick="startQuiz()">${t('startQuiz')}</button>
             </div>`; 
         }
-    } 
-    // ⧈ END: Smart Quiz Logic
-    
-    else {
+    } else {
         content = renderFileList(sub.content[appState.activeTab]);
     }
 
@@ -301,14 +285,11 @@ function renderFileList(list) {
     return list.map(f => {
         const downloadLink = convertDriveToDirectLink(f.link);
         const previewLink = f.link.includes('view') ? f.link.replace('/view', '/preview') : f.link;
-        
-        // Define Icon Logic (Supports standard and custom types)
-        let iconClass = 'fa-file-pdf'; // default
+        let iconClass = 'fa-file-pdf';
         if (f.type === 'PPT') iconClass = 'fa-file-powerpoint';
         else if (f.type === 'Book') iconClass = 'fa-book';
         else if (f.type === 'Solution') iconClass = 'fa-file-signature';
         else if (f.type === 'Sheet') iconClass = 'fa-file-lines';
-
         return `
         <div class="file-item">
             <div class="file-info">
@@ -338,6 +319,7 @@ function initLab(id) {
     labTimerInterval = setInterval(() => { appState.lab.time++; const tEl = document.getElementById('timer'); if(tEl) tEl.innerText = formatTime(appState.lab.time); }, 1000);
     renderLabQuestion();
 }
+
 function renderLabQuestion() {
     appState.view = 'lab';
     const q = appState.lab.questions[appState.lab.currentQIndex];
@@ -356,26 +338,140 @@ function renderLabQuestion() {
                     <div class="console-output" id="console-out">// Output...</div>
                 </div>
             </div>
-            <div class="compare-container" id="compare-view">
-                <div class="solution-view"><h4>Solution:</h4><pre>${q.solutionCode}</pre></div><div class="user-view"><h4>Your Code:</h4><pre id="static-user-code"></pre></div><div style="text-align:center; width:100%;"><button class="btn-run" style="width:auto; margin:0 auto;" onclick="nextLabQ()">${t('understood')} <i class="fas fa-arrow-right"></i></button></div>
+            
+            <div class="compare-container" id="compare-view" style="flex-direction: column; align-items: center;">
+                <div class="lab-compare-box" style="display: flex; gap: 15px; width: 100%; min-height: 400px;">
+                    <div class="lab-answer-window correct" style="flex: 1; padding: 15px; border-radius: 8px; background: rgba(16, 185, 129, 0.1); border: 2px solid var(--success); overflow-y: auto; color: var(--text-primary);">
+                        <h4 style="color:var(--success); margin-bottom:10px;">Solution:</h4>
+                        <pre style="white-space: pre-wrap;">${q.solutionCode}</pre>
+                    </div>
+                    <div class="lab-answer-window student" style="flex: 1; padding: 15px; border-radius: 8px; background: rgba(239, 68, 68, 0.1); border: 2px solid var(--danger); overflow-y: auto; color: var(--text-primary);">
+                        <h4 style="color:var(--danger); margin-bottom:10px;">Your Code:</h4>
+                        <pre id="static-user-code" style="white-space: pre-wrap;"></pre>
+                    </div>
+                </div>
+                <div style="margin-top: 20px; width: 100%; text-align: center;">
+                    <button class="btn-run" style="width:auto; padding: 10px 30px;" onclick="nextLabQ()">
+                        ${t('understood')} <i class="fas fa-check"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+        
+        <div id="input-modal" class="modal-overlay">
+            <div class="input-modal-content" style="max-height: 80vh; overflow-y: auto;">
+                <h3 style="color:var(--white); margin-bottom:1rem; border-bottom:1px solid var(--border); padding-bottom:10px;">
+                    ⌨️ Program Input
+                </h3>
+                <div id="dynamic-inputs-container"></div>
+                <button id="add-input-btn" class="btn-view" style="width:100%; justify-content:center; margin-bottom:15px; border-style:dashed; display:none;">
+                    <i class="fas fa-plus"></i> Add More Input
+                </button>
+                <button class="btn-run" onclick="resolveInput()" style="width:100%; justify-content:center;">Submit & Run</button>
             </div>
         </div>
-        <div id="input-modal" class="modal-overlay"><div class="input-modal-content"><h3 style="color:var(--white); margin-bottom:0.5rem;">⌨️ Input Required</h3><p style="color:var(--text-secondary);">${t('inputPrompt')}</p><input type="text" id="custom-stdin" class="custom-input-field" placeholder="${t('inputPlaceholder')}"><button class="btn-run" onclick="resolveInput()" style="width:100%; justify-content:center;">Submit & Run</button></div></div>
+
         <div id="main-class-alert" class="modal-overlay"><div class="input-modal-content warning-modal"><h2 style="color:var(--warning); margin-bottom:1rem;">${t('mainClassAlertTitle')}</h2><p style="color:var(--text-primary); margin-bottom:1.5rem; line-height:1.5;">${t('mainClassAlertBody')}</p><button class="btn-confirm" onclick="document.getElementById('main-class-alert').style.display='none'">OK, I'll Fix it</button></div></div>
     `;
-    renderMath(); // Render Math in Labs
+    renderMath(); 
 }
-function showHint() { document.getElementById('hint-box').style.display = 'block'; const btn = document.getElementById('hint-btn'); btn.innerHTML = t('hideHint'); btn.disabled = true; btn.style.opacity = "0.7"; }
+
+// ⧈ GENIUS INPUT SYSTEM
+function analyzeInputRequirements(code) {
+    const cleanCode = code.replace(/\/\/.*|\/\*[\s\S]*?\*\//g, "");
+    let inputFields = [];
+    const regex = /(?:(\w+)\s*=\s*)?[\w.]+\.next(Int|Double|Line|Float|Boolean|Long|Short|Byte)\s*\(/g;
+    let match;
+    while ((match = regex.exec(cleanCode)) !== null) {
+        inputFields.push({
+            label: match[1] || `Input ${inputFields.length + 1}`, 
+            type: match[2] 
+        });
+    }
+    // Updated Loop Regex (Includes for, while, do)
+    const hasLoop = /\b(for|while|do)\b/.test(cleanCode);
+
+    return { inputs: inputFields, hasLoop: hasLoop };
+}
+
+function getInputFromUser(analysis) { 
+    return new Promise((resolve) => { 
+        const modal = document.getElementById('input-modal');
+        const container = document.getElementById('dynamic-inputs-container');
+        const addBtn = document.getElementById('add-input-btn');
+        container.innerHTML = '';
+        
+        let fieldsToRender = analysis && analysis.inputs.length > 0 ? analysis.inputs : [{label: 'Input', type: 'Value'}];
+        fieldsToRender.forEach((field, index) => {
+            addInputField(container, field.label, field.type, index === 0);
+        });
+
+        if (analysis && analysis.hasLoop) {
+            addBtn.style.display = 'inline-block';
+            addBtn.onclick = () => addInputField(container, 'Next Iteration', 'Value', false);
+        } else {
+            addBtn.style.display = 'none';
+        }
+
+        modal.style.display = 'flex'; 
+        inputResolve = resolve; 
+    }); 
+}
+
+function addInputField(container, labelText, type, focus) {
+    const div = document.createElement('div');
+    div.className = 'input-group';
+    div.style.marginBottom = '10px';
+    div.style.textAlign = 'left';
+    
+    const label = document.createElement('label');
+    label.innerText = `Enter ${labelText} (${type}):`;
+    label.style.display = 'block';
+    label.style.color = 'var(--text-secondary)';
+    label.style.fontSize = '0.9rem';
+    label.style.marginBottom = '5px';
+    
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'custom-input-field dynamic-input';
+    input.style.width = '100%';
+    input.placeholder = `e.g. ${type === 'Line' ? 'Hello World' : '10'}`;
+    
+    if(focus) setTimeout(() => input.focus(), 100);
+
+    div.appendChild(label);
+    div.appendChild(input);
+    container.appendChild(div);
+}
+
 let inputResolve = null;
-function getInputFromUser() { return new Promise((resolve) => { document.getElementById('input-modal').style.display = 'flex'; setTimeout(() => document.getElementById('custom-stdin').focus(), 100); inputResolve = resolve; }); }
-function resolveInput() { const val = document.getElementById('custom-stdin').value; document.getElementById('input-modal').style.display = 'none'; if(inputResolve) inputResolve(val); }
+function resolveInput() { 
+    const inputs = document.querySelectorAll('.dynamic-input');
+    let values = [];
+    inputs.forEach(input => {
+        if(input.value.trim() !== "") values.push(input.value.trim());
+    });
+    const finalStdin = values.join('\n');
+    document.getElementById('input-modal').style.display = 'none'; 
+    if(inputResolve) inputResolve(finalStdin); 
+}
+
+function showHint() { document.getElementById('hint-box').style.display = 'block'; const btn = document.getElementById('hint-btn'); btn.innerHTML = t('hideHint'); btn.disabled = true; btn.style.opacity = "0.7"; }
+
 async function runLabCode() {
     const userCode = document.getElementById('code-input').value;
     const consoleOut = document.getElementById('console-out');
     const q = appState.lab.questions[appState.lab.currentQIndex];
+
     if (!userCode.match(/class\s+Main\b/)) { document.getElementById('main-class-alert').style.display = 'flex'; return; }
+
     let stdin = "";
-    if (userCode.includes("Scanner") || userCode.includes("System.in")) { stdin = await getInputFromUser(); }
+    if (userCode.includes("Scanner") || userCode.includes("System.in")) { 
+        const analysis = analyzeInputRequirements(userCode);
+        stdin = await getInputFromUser(analysis); 
+    }
+
     consoleOut.innerHTML = `<span style="color:var(--accent);">⏳ ${t('solving')}</span>`;
     try {
         const response = await fetch('https://emkc.org/api/v2/piston/execute', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ language: "java", version: "15.0.2", files: [{ name: "Main.java", content: userCode }], stdin: stdin }) });
@@ -393,6 +489,7 @@ async function runLabCode() {
         }
     } catch (e) { consoleOut.innerHTML = `❌ Connection Error`; }
 }
+
 function celebrateSuccess() {
     for(let i=0; i<50; i++) {
         const p = document.createElement('div'); p.classList.add('particle');
@@ -402,7 +499,48 @@ function celebrateSuccess() {
     }
 }
 function surrender() { appState.lab.surrendered = true; document.getElementById('workspace').style.display = 'none'; document.getElementById('compare-view').style.display = 'flex'; document.getElementById('static-user-code').innerText = appState.lab.userCode || "// No code"; }
-function nextLabQ() { if (appState.lab.currentQIndex < appState.lab.questions.length - 1) { appState.lab.currentQIndex++; appState.lab.userCode = ""; appState.lab.surrendered = false; renderLabQuestion(); } else { alert("🎉 Lab Completed!"); exitLab(); } }
+
+// ⧈ NEW LAB COMPLETION LOGIC
+function nextLabQ() { 
+    if (appState.lab.currentQIndex < appState.lab.questions.length - 1) { 
+        appState.lab.currentQIndex++; 
+        appState.lab.userCode = ""; 
+        appState.lab.surrendered = false; 
+        renderLabQuestion(); 
+    } else { 
+        showLabCompletionModal(); 
+    } 
+}
+
+function showLabCompletionModal() {
+    celebrateSuccess();
+    setTimeout(celebrateSuccess, 500);
+    const modal = document.createElement('div');
+    modal.id = 'completion-modal';
+    modal.className = 'modal-overlay';
+    modal.style.display = 'flex';
+    modal.style.animation = 'fadeIn 0.3s ease-out';
+    modal.innerHTML = `
+        <div class="input-modal-content" style="text-align:center; border-top: 5px solid var(--success);">
+            <div style="font-size: 4rem; margin-bottom: 10px;">🏆</div>
+            <h2 style="color:var(--white); margin-bottom:0.5rem; font-size:1.8rem;">Mission Accomplished!</h2>
+            <p style="color:var(--text-secondary); margin-bottom:2rem; font-size:1.1rem;">
+                Excellent work. You have successfully completed this lab module.
+            </p>
+            <button class="btn-run" onclick="finishLab()" style="width:100%; justify-content:center; padding:12px; font-size:1.1rem;">
+                Return to Dashboard <i class="fas fa-arrow-right" style="margin-left:10px;"></i>
+            </button>
+        </div>
+    `;
+    document.body.appendChild(modal);
+}
+
+function finishLab() {
+    const modal = document.getElementById('completion-modal');
+    if(modal) modal.remove();
+    exitLab();
+}
+
 function exitLab() { clearIntervals(); appState.lab.active = false; renderSubjectView(); }
 
 // --- Enhanced Quiz System ---
@@ -411,7 +549,6 @@ function startQuiz(sectionId, type = 'mcq') {
     const sub = db.subjects.find(s => s.id === appState.currentSubjectId); 
     let questions = [];
 
-    // Select correct data source
     if (sectionId && sub.content.quiz && sub.content.quiz.isSplit) {
         questions = sub.content.quiz.data[sectionId];
     } else {
@@ -428,8 +565,8 @@ function startQuiz(sectionId, type = 'mcq') {
         time: 0, 
         userAnswers: {}, 
         flagged: new Set(),
-        type: type, // Store quiz type
-        selfCheckState: 'input' // State for writing Qs
+        type: type, 
+        selfCheckState: 'input'
     }; 
     
     if(typeof quizTimerInterval !== 'undefined') clearInterval(quizTimerInterval); 
@@ -448,12 +585,10 @@ function renderQuestion(index) {
     const q = appState.quiz.questions[index]; 
     const isFlagged = appState.quiz.flagged.has(index); 
     
-    // DIFFERENT RENDER LOGIC BASED ON TYPE
     let contentBody = '';
     let navButtons = '';
 
     if (appState.quiz.type === 'mcq') {
-        // --- MCQ Layout ---
         contentBody = `
             <h3 style="margin-bottom:1rem; color:var(--white); line-height:1.5;">${q.question}</h3>
             <div class="options-grid">
@@ -475,12 +610,10 @@ function renderQuestion(index) {
         `;
 
     } else if (appState.quiz.type === 'text') {
-        // --- Writing / Self-Check Layout ---
         const savedAnswer = appState.quiz.userAnswers[index]?.text || "";
         const isChecked = appState.quiz.userAnswers[index]?.checked || false;
         
         if (!isChecked) {
-            // State 1: Input
             contentBody = `
                 <h3 style="margin-bottom:1rem; color:var(--white); line-height:1.5;">${q.question}</h3>
                 <textarea id="text-answer" class="code-editor" style="height:150px; width:100%;" placeholder="${t('typeAnswer')}">${savedAnswer}</textarea>
@@ -489,7 +622,6 @@ function renderQuestion(index) {
                 </div>
             `;
         } else {
-            // State 2: Comparison
             contentBody = `
                 <h3 style="margin-bottom:1rem; color:var(--white); line-height:1.5;">${q.question}</h3>
                 <div class="self-check-area">
@@ -509,8 +641,7 @@ function renderQuestion(index) {
         navButtons = '';
 
     } else if (appState.quiz.type === 'tf') {
-        // --- True/False Immediate Feedback Layout ---
-        const userAnswer = appState.quiz.userAnswers[index]; // { val: boolean, checked: boolean }
+        const userAnswer = appState.quiz.userAnswers[index]; 
         const isAnswered = userAnswer && userAnswer.checked;
         
         let feedbackHtml = '';
@@ -543,7 +674,6 @@ function renderQuestion(index) {
             ${feedbackHtml}
         `;
         
-        // Navigation for TF (Hide Submit until end, show Next only after answer)
         navButtons = `
             ${index > 0 ? `<button class="btn-view" onclick="renderQuestion(${index - 1})">${t('prev')}</button>` : '<div></div>'}
             ${index < appState.quiz.questions.length - 1 
@@ -579,31 +709,27 @@ function renderQuestion(index) {
         </div>
         <div id="alert-modal" class="modal-overlay"></div>
     `; 
-    renderMath(); // TRIGGER MATH RENDER
+    renderMath();
 }
 
-// --- Logic for Text/Self-Check Quizzes ---
 function showModelAnswer(index) {
     const userText = document.getElementById('text-answer').value;
     appState.quiz.userAnswers[index] = { text: userText, checked: true };
-    renderQuestion(index); // Re-render in "Comparison" state
+    renderQuestion(index); 
 }
 
 function markSelfCheck(index, isCorrect) {
     appState.quiz.userAnswers[index].isCorrect = isCorrect;
-    if (isCorrect) celebrateSuccess(); // Encouragement only on success
+    if (isCorrect) celebrateSuccess(); 
     
-    // Auto move to next question or finish
     if (index < appState.quiz.questions.length - 1) {
         renderQuestion(index + 1);
     } else {
-        // Finish Quiz
         appState.quiz.active = false;
         renderQuizResult();
     }
 }
 
-// --- Logic for True/False Quizzes ---
 function handleTFAnswer(index, val) {
     const q = appState.quiz.questions[index];
     const isCorrect = (val === q.answer);
@@ -612,7 +738,6 @@ function handleTFAnswer(index, val) {
     renderQuestion(index);
 }
 
-// --- Logic for MCQ Quizzes ---
 function toggleFlag(index) { 
     if(appState.quiz.flagged.has(index)) appState.quiz.flagged.delete(index); else appState.quiz.flagged.add(index); 
     renderQuestion(index); 
@@ -664,7 +789,6 @@ function renderQuizResult() {
 
         if(isCorrect) score++; 
         
-        // Build report
         if(!isCorrect && appState.quiz.type === 'mcq') { 
             reportHtml += `
                 <div class="file-item" style="display:block; border-color:var(--danger); margin-bottom:1rem;">
@@ -702,11 +826,9 @@ function renderQuizResult() {
             <button class="btn-back" onclick="exitQuiz()" style="margin-top:2rem;">${t('backCourse')}</button>
             <div style="text-align:left; margin-top:3rem;">${reportHtml || '<p style="text-align:center; color:var(--success);">Perfect Score! 🎉</p>'}</div>
         </div>`; 
-    renderMath(); // Render Math in Results
+    renderMath(); 
 }
-function exitQuiz() { renderSubjectView(); }
 
-// --- Enhanced Preview Modal ---
 function openPdf(link) { 
     const modal = document.createElement('div');
     modal.className = 'modal-overlay';
