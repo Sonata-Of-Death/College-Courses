@@ -24,8 +24,8 @@ let appState = {
         time: 0, 
         userAnswers: {}, 
         flagged: new Set(),
-        type: 'mcq', // 'mcq', 'text', or 'tf'
-        selfCheckState: 'input' // 'input' or 'check'
+        type: 'mcq', 
+        selfCheckState: 'input'
     }
 };
 
@@ -39,7 +39,12 @@ const translations = {
         lecs: "Lectures", summary: "Summaries", quiz: "Quiz", labs: "Labs", 
         chapters: "Chapters", core_material: "Core Material",
         arSec: "Arabic Section", enSec: "English Section", backToSelection: "Back to Selection",
-        lecsMain: "Lectures", lecsSol: "Solutions", labsMaterial: "Lab Slides", labsQuestions: "Interactive Labs",
+        lecsMain: "Lectures", lecsSol: "Solutions", 
+        // --- TABS TRANSLATIONS ---
+        labsMaterial: "Lab Slides", 
+        labsQuestions: "Lab Questions", 
+        codingTraining: "Coding Training",
+        // -------------------------
         startLab: "Start Challenge", runCode: "Run Code", surrender: "Show Solution", 
         nextQ: "Next Question", understood: "I Understood",
         solving: "Compiling...", showHint: "💡 Show Hint", hideHint: "Hint Visible",
@@ -48,7 +53,7 @@ const translations = {
         inputPrompt: "This program requires input.",
         inputPlaceholder: "Enter values separated by space (e.g. 5 10)",
         correctTitle: "Excellent Work!", correctMsg: "Output matches expected result.",
-        nextAuto: "Next question in 5s...",
+        nextAuto: "Next question in 3s...",
         preview: "Document Preview", close: "Close",
         adminAccess: "Admin Access", login: "LOGIN", accessDenied: "Access Denied",
         quizReady: "Ready to test your knowledge?", startQuiz: "Start Quiz",
@@ -67,7 +72,12 @@ const translations = {
         lecs: "محاضرات", summary: "ملخصات", quiz: "اختبار", labs: "لابات", 
         chapters: "فصول الكتاب", core_material: "المحتوى الأساسي",
         arSec: "القسم العربي", enSec: "القسم الإنجليزي", backToSelection: "العودة للاختيار",
-        lecsMain: "شرح المحاضرات", lecsSol: "حلول الأسئلة", labsMaterial: "ملفات الشرح", labsQuestions: "معامل تفاعلية",
+        lecsMain: "شرح المحاضرات", lecsSol: "حلول الأسئلة", 
+        // --- TABS TRANSLATIONS ---
+        labsMaterial: "ملفات الشرح", 
+        labsQuestions: "أسئلة المعامل", 
+        codingTraining: "تدريبات برمجية",
+        // -------------------------
         startLab: "بدء التحدي", runCode: "تشغيل الكود", surrender: "إظهار الحل", 
         nextQ: "السؤال التالي", understood: "فهمت الفكرة",
         solving: "جاري المعالجة...", showHint: "💡 تلميح", hideHint: "التلميح ظاهر",
@@ -76,7 +86,7 @@ const translations = {
         inputPrompt: "البرنامج يحتاج مدخلات (Input).",
         inputPlaceholder: "ادخل القيم وافصل بمسافة (مثال: 5 10)",
         correctTitle: "عمل رائع!", correctMsg: "النتيجة مطابقة للمطلوب.",
-        nextAuto: "السؤال التالي خلال 5 ثواني...",
+        nextAuto: "السؤال التالي خلال 3 ثواني...",
         preview: "عرض الملف", close: "إغلاق",
         adminAccess: "دخول المشرفين", login: "دخول", accessDenied: "بيانات خاطئة",
         quizReady: "جاهز تختبر معلوماتك؟", startQuiz: "بدء الاختبار",
@@ -93,13 +103,13 @@ function t(key) {
     return val !== undefined ? val : key; 
 }
 
-// --- KaTeX Helper (Enhanced) ---
+// --- KaTeX Helper ---
 function renderMath() {
     if (window.renderMathInElement) {
         renderMathInElement(document.body, {
             delimiters: [
-                {left: "$$", right: "$$", display: true},  // Block Math
-                {left: "$", right: "$", display: false},   // Inline Math
+                {left: "$$", right: "$$", display: true},  
+                {left: "$", right: "$", display: false},   
                 {left: "\\(", right: "\\)", display: false},
                 {left: "\\[", right: "\\]", display: true}
             ],
@@ -207,32 +217,42 @@ function renderSubjectView() {
     appState.view = 'subject';
     const sub = db.subjects.find(s => s.id === appState.currentSubjectId);
     
-    // Create Tabs
     let tabs = sub.material.map(m => `<button class="tab-btn ${m === appState.activeTab ? 'active' : ''}" onclick="appState.activeTab='${m}'; appState.subFilter=null; renderSubjectView()">${t(m)}</button>`).join('');
     
     let content = "";
 
-    // ⧈ START: Smart Lab Logic
+    // ⧈ START: NEW SPLIT LAB LOGIC
     if(appState.activeTab === 'labs') {
         const hasQuestions = sub.content.labs.questions && Object.keys(sub.content.labs.questions).length > 0;
+        
         if (!hasQuestions) {
             const files = Array.isArray(sub.content.labs) ? sub.content.labs : sub.content.labs.material;
             content = renderFileList(files);
         } else {
             if(!appState.subFilter) {
+                // Determine if coding exercises exist
+                const hasCoding = sub.content.labs.questions.coding_list && sub.content.labs.questions.coding_list.length > 0;
+                
                 content = `
                 <div class="grid-center">
                     <div class="selection-card" onclick="appState.subFilter='material'; renderSubjectView()">
                         <i class="fas fa-book-reader card-icon"></i>
                         <h3>${t('labsMaterial')}</h3>
                     </div>
-                    <div class="selection-card" onclick="appState.subFilter='questions'; renderSubjectView()">
-                        <i class="fas fa-laptop-code card-icon"></i>
+                    <div class="selection-card" onclick="appState.subFilter='labs_list'; renderSubjectView()">
+                        <i class="fas fa-flask card-icon"></i>
                         <h3>${t('labsQuestions')}</h3>
                     </div>
+                    ${hasCoding ? `
+                    <div class="selection-card" onclick="appState.subFilter='coding_list'; renderSubjectView()">
+                        <i class="fas fa-laptop-code card-icon"></i>
+                        <h3>${t('codingTraining')}</h3>
+                    </div>` : ''}
                 </div>`;
             } else {
-                content = appState.subFilter === 'material' ? renderFileList(sub.content.labs.material) : renderLabList(sub.content.labs.questions.labs_list);
+                if (appState.subFilter === 'material') content = renderFileList(sub.content.labs.material);
+                else if (appState.subFilter === 'labs_list') content = renderLabList(sub.content.labs.questions.labs_list);
+                else if (appState.subFilter === 'coding_list') content = renderLabList(sub.content.labs.questions.coding_list);
             }
         }
     } else if(appState.activeTab === 'summary' && !Array.isArray(sub.content.summary)) {
@@ -246,7 +266,9 @@ function renderSubjectView() {
             content = `<div class="dashboard-grid">
                 ${sub.content.quiz.sections.map(sect => `
                     <div class="subject-card" onclick="startQuiz('${sect.id}', '${sect.type}')">
-                        <div style="margin-bottom:10px; font-size:2rem; color:var(--accent);"><i class="fas ${sect.type === 'text' ? 'fa-pen-alt' : (sect.type === 'tf' ? 'fa-check-double' : 'fa-list-ul')}"></i></div>
+                        <div style="margin-bottom:10px; font-size:2rem; color:var(--accent);">
+                            <i class="fas ${sect.type === 'text' ? 'fa-pen-alt' : (sect.type === 'tf' ? 'fa-check-double' : 'fa-list-ul')}"></i>
+                        </div>
                         <h3>${sect.title}</h3>
                         <p style="color:var(--text-secondary); font-size:0.9rem;">${sect.qCount} Questions</p>
                         <button class="btn-start-lab">${t('startQuiz')}</button>
@@ -313,8 +335,15 @@ function renderLabList(list) {
 let labTimerInterval;
 function initLab(id) {
     const sub = db.subjects.find(s => s.id === appState.currentSubjectId);
-    if (!sub || !sub.content.labs.questions['lab_'+id]) return;
-    appState.lab = { active: true, id: id, questions: sub.content.labs.questions['lab_'+id], currentQIndex: 0, time: 0, userCode: "", surrendered: false };
+    if (!sub) return;
+
+    // ⧈ NEW: Determine where the questions are coming from (lab_X)
+    let questions = sub.content.labs.questions['lab_'+id];
+    
+    // Safety check
+    if (!questions) return;
+
+    appState.lab = { active: true, id: id, questions: questions, currentQIndex: 0, time: 0, userCode: "", surrendered: false };
     if(labTimerInterval) clearInterval(labTimerInterval);
     labTimerInterval = setInterval(() => { appState.lab.time++; const tEl = document.getElementById('timer'); if(tEl) tEl.innerText = formatTime(appState.lab.time); }, 1000);
     renderLabQuestion();
@@ -324,11 +353,29 @@ function renderLabQuestion() {
     appState.view = 'lab';
     const q = appState.lab.questions[appState.lab.currentQIndex];
     if(typeof appState.lab.userCode === 'undefined' || appState.lab.userCode === "") appState.lab.userCode = ""; 
+    
+    // ⧈ NEW: Test Case Instruction Block
+    let instructionHtml = '';
+    if (q.testCaseInputs) {
+        // ⧈ USER UX: Show the student what's happening without confusing them ⧈
+        instructionHtml = `
+            <div style="background: rgba(0, 169, 255, 0.1); border-left: 3px solid var(--accent); padding: 10px; margin-bottom: 15px; font-size: 0.9em; color: var(--text-primary); border-radius: 4px;">
+                <i class="fas fa-robot" style="margin-right:8px; color:var(--accent);"></i>
+                <strong>Automated Test:</strong> The system will automatically inject this input:<br>
+                <span style="color:var(--white); font-family:monospace; background:rgba(0,0,0,0.3); padding:2px 6px; border-radius:3px; display:inline-block; margin-top:5px;">${q.testCaseInputs}</span>
+                <div style="margin-top:5px; font-size:0.85em; color:var(--text-secondary);">
+                    <em>(You don't need to type this yourself when running the code)</em>
+                </div>
+            </div>
+        `;
+    }
+
     container.innerHTML = `
         <div class="lab-arena">
             <div class="lab-header"><h3>Lab ${appState.lab.id} - Q ${appState.lab.currentQIndex + 1} / ${appState.lab.questions.length}</h3><div class="timer-box" id="timer">${formatTime(appState.lab.time)}</div><button class="btn-back" style="margin:0;" onclick="exitLab()"><i class="fas fa-times"></i> Exit</button></div>
             <div class="lab-workspace" id="workspace">
                 <div class="problem-pane">
+                    ${instructionHtml}
                     <h4 style="color:var(--accent); margin-bottom:1rem;">Task:</h4><p style="line-height:1.6; font-size:1.1rem;">${q.prompt}</p>
                     <div style="margin-top:2rem;"><button class="btn-view" style="width:100%; justify-content:center;" onclick="showHint()" id="hint-btn">${t('showHint')}</button><div id="hint-box" style="display:none; margin-top:10px; background:rgba(0,0,0,0.2); padding:1rem; border-radius:8px; border:1px solid var(--border);"><strong style="color:var(--warning);">Hint:</strong> <br><span>${q.hint}</span></div></div>
                 </div>
@@ -389,7 +436,6 @@ function analyzeInputRequirements(code) {
             type: match[2] 
         });
     }
-    // Updated Loop Regex (Includes for, while, do)
     const hasLoop = /\b(for|while|do)\b/.test(cleanCode);
 
     return { inputs: inputFields, hasLoop: hasLoop };
@@ -459,6 +505,36 @@ function resolveInput() {
 
 function showHint() { document.getElementById('hint-box').style.display = 'block'; const btn = document.getElementById('hint-btn'); btn.innerHTML = t('hideHint'); btn.disabled = true; btn.style.opacity = "0.7"; }
 
+/**
+ * ⧈ Smart Judge System
+ * Helper function to validate numerical or text answers flexibly.
+ */
+function smartCompare(userOutput, expectedOutput) {
+    if (!expectedOutput) return true; // No requirement check
+    
+    // Clean inputs
+    let uClean = userOutput ? userOutput.toString() : "";
+    let eClean = expectedOutput.toString().trim();
+
+    // 1. Text Check (if expected is not a number)
+    if (isNaN(parseFloat(eClean))) {
+        return uClean.toLowerCase().includes(eClean.toLowerCase());
+    }
+
+    // 2. Numeric Check (Regex to find all numbers)
+    let expectedNum = parseFloat(eClean);
+    let userNumbers = uClean.match(/-?\d+(\.\d+)?/g);
+
+    if (!userNumbers) return false;
+
+    // Tolerance (0.1 for float differences)
+    const EPSILON = 0.1;
+    return userNumbers.some(numStr => {
+        let detectedNum = parseFloat(numStr);
+        return Math.abs(detectedNum - expectedNum) < EPSILON;
+    });
+}
+
 async function runLabCode() {
     const userCode = document.getElementById('code-input').value;
     const consoleOut = document.getElementById('console-out');
@@ -466,25 +542,61 @@ async function runLabCode() {
 
     if (!userCode.match(/class\s+Main\b/)) { document.getElementById('main-class-alert').style.display = 'flex'; return; }
 
+    // ⧈ Anti-Cheat: Source Code Analysis (NEW 🛡️)
+    if (q.codePatterns && q.codePatterns.length > 0) {
+        const missingPatterns = q.codePatterns.filter(pattern => !userCode.includes(pattern));
+        if (missingPatterns.length > 0) {
+            consoleOut.innerHTML = `<span style="color:var(--warning);">⚠️ Logic Check Failed:</span>\nYour code seems to be missing required logic (e.g., ${missingPatterns[0]}).\nMake sure you are following the requirements, not just printing the answer!`;
+            return;
+        }
+    }
+
     let stdin = "";
-    if (userCode.includes("Scanner") || userCode.includes("System.in")) { 
+    // ⧈ AUTO-INJECTION LOGIC ⧈
+    if (q.testCaseInputs) {
+         stdin = q.testCaseInputs;
+         consoleOut.innerHTML = `<span style="color:var(--text-secondary); font-size:0.85em;">> Auto-injecting test inputs...</span>\n`;
+    } 
+    else if (userCode.includes("Scanner") || userCode.includes("System.in")) { 
         const analysis = analyzeInputRequirements(userCode);
         stdin = await getInputFromUser(analysis); 
     }
 
-    consoleOut.innerHTML = `<span style="color:var(--accent);">⏳ ${t('solving')}</span>`;
+    consoleOut.innerHTML += `<span style="color:var(--accent);">⏳ ${t('solving')}</span>`;
     try {
         const response = await fetch('https://emkc.org/api/v2/piston/execute', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ language: "java", version: "15.0.2", files: [{ name: "Main.java", content: userCode }], stdin: stdin }) });
         const result = await response.json();
         if (result.run) {
             let output = result.run.output || "";
+            let cleanOutput = output.trim();
+
             if (result.run.stderr) { consoleOut.innerHTML = `<span style="color:var(--danger);">❌ Error:\n${result.run.stderr}</span>`; } 
             else {
+                // ⧈ NEW: Use Smart Judge Logic
                 let isCorrect = false;
-                if (q.validationKeywords && q.validationKeywords.length > 0) { const normOut = output.toLowerCase(); if (q.validationKeywords.every(k => normOut.includes(k.toLowerCase()))) isCorrect = true; } 
-                else { consoleOut.innerHTML = `<span style="color:var(--warning);">⚠️ Executed (No Validation):</span>\n${output}`; return; }
-                if (isCorrect) { consoleOut.innerHTML = `<span style="color:var(--success);">✅ ${t('correctMsg')}</span>\n${output}\n<span style="color:var(--accent); display:block; margin-top:10px;">${t('nextAuto')}</span>`; celebrateSuccess(); setTimeout(() => { if(appState.lab.active) nextLabQ(); }, 5000); } 
-                else { consoleOut.innerHTML = `<span style="color:var(--warning);">⚠️ Output Mismatch. Check requirements.</span>\nYour Output:\n${output}`; }
+                
+                if (q.expectedOutput) {
+                    isCorrect = smartCompare(cleanOutput, q.expectedOutput);
+                } 
+                else if (q.validationKeywords && q.validationKeywords.length > 0) { 
+                    const normOut = cleanOutput.toLowerCase(); 
+                    const allKeywordsFound = q.validationKeywords.every(k => normOut.includes(k.toLowerCase()));
+                    const isLengthReasonable = cleanOutput.length < 500; 
+                    isCorrect = allKeywordsFound && isLengthReasonable;
+                } 
+                else { 
+                    consoleOut.innerHTML = `<span style="color:var(--warning);">⚠️ Executed (No Validation):</span>\n${output}`; return; 
+                }
+                
+                if (isCorrect) { 
+                    consoleOut.innerHTML = `<span style="color:var(--success);">✅ ${t('correctMsg')}</span>\n${output}\n<span style="color:var(--accent); display:block; margin-top:10px; font-weight:bold;">${t('nextAuto')}</span>`; 
+                    celebrateSuccess(); 
+                    // Auto-Next Logic
+                    setTimeout(() => { if(appState.lab.active) nextLabQ(); }, 3000); 
+                } 
+                else { 
+                    consoleOut.innerHTML = `<span style="color:var(--warning);">⚠️ Output Mismatch. Check requirements.</span>\nYour Output:\n${output}`; 
+                }
             }
         }
     } catch (e) { consoleOut.innerHTML = `❌ Connection Error`; }
@@ -541,7 +653,23 @@ function finishLab() {
     exitLab();
 }
 
-function exitLab() { clearIntervals(); appState.lab.active = false; renderSubjectView(); }
+// ⧈ FIXED: Proper Exit Function to reset state
+function exitLab() { 
+    clearIntervals(); 
+    appState.lab.active = false; 
+    // We don't reset subFilter here so user goes back to the list they were in
+    renderSubjectView(); 
+}
+
+// ⧈ FIXED: Added exitQuiz function which was missing
+function exitQuiz() {
+    if(typeof quizTimerInterval !== 'undefined') clearInterval(quizTimerInterval);
+    appState.quiz.active = false;
+    appState.quiz.currentQuestionIndex = 0;
+    appState.quiz.userAnswers = {};
+    appState.quiz.flagged = new Set();
+    renderSubjectView();
+}
 
 // --- Enhanced Quiz System ---
 let quizTimerInterval;
