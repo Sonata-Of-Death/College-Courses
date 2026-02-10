@@ -1946,166 +1946,583 @@ quiz: {
                             { id: 7, title: "Lab 7: Loops (While/Do-While)", qCount: 2 },
                             { id: 8, title: "Lab 8: Arrays", qCount: 3 }
                         ],
+                        coding_list: [
+                            { id: 13, title: "Coding: Basics (Input/Output)", qCount: 10 },
+                            { id: 14, title: "Coding: Loops & Basic Arrays", qCount: 10 },
+                            { id: 15, title: "Coding: Algorithms (Digits/Strings)", qCount: 10 },
+                            { id: 16, title: "Coding: Advanced Logic (Patterns)", qCount: 10 },
+                            { id: 17, title: "Coding: Expert Algorithms 1", qCount: 10 },
+                            { id: 18, title: "Coding: Expert Algorithms 2", qCount: 10 },
+                            { id: 19, title: "Coding: Master Class 1", qCount: 10 },
+                            { id: 20, title: "Coding: Master Class 2", qCount: 10 }
+                        ],
                         
                         lab_2: [
                             {
-                                id: 1,
-                                type: "code",
-                                prompt: "Write a Java program that returns the Celsius value 'C' for a given temperature measured in Fahrenheit 'F'. Use the formula: C = 5 * (F - 32) / 9.",
+                                id: 1, type: "code",
+                                prompt: "Write a Java program that returns the Celsius value 'C' for a given temperature measured in Fahrenheit 'F'. Formula: C = 5 * (F - 32) / 9.",
                                 hint: "Use Scanner to read double input. Formula: 5.0 * (f - 32) / 9.0",
-                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner input = new Scanner(System.in);\n        System.out.print(\"Enter temp in Fahrenheit: \");\n        double f = input.nextDouble();\n        double c = 5.0 * (f - 32) / 9.0;\n        System.out.println(\"Temp \" + f + \" in Fahrenheit = \" + c + \" Celsius\");\n    }\n}",
-                                validationKeywords: ["Fahrenheit", "Celsius", "="]
+                                testCaseInputs: "100",
+                                expectedOutput: "37.77",
+                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner input = new Scanner(System.in);\n        System.out.print(\"Enter temp in Fahrenheit: \");\n        double f = input.nextDouble();\n        double c = 5.0 * (f - 32) / 9.0;\n        System.out.println(\"Temp \" + f + \" in Fahrenheit = \" + c + \" Celsius\");\n    }\n}"
                             },
                             {
-                                id: 2,
-                                type: "code",
+                                id: 2, type: "code",
                                 prompt: "Write a Java program to evaluate the distance S in vertical motion under gravity given S = ut - 0.5*g*t^2. (g=9.8). Read u (initial velocity) and t (time).",
                                 hint: "Use Math.pow(t, 2) for t squared.",
-                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner input = new Scanner(System.in);\n        System.out.print(\"Enter u and t: \");\n        double u = input.nextDouble();\n        double t = input.nextDouble();\n        double g = 9.8;\n        double s = (u*t) - (0.5 * g * Math.pow(t, 2));\n        System.out.println(\"Distance = \" + s);\n    }\n}",
-                                validationKeywords: ["Distance", "="]
+                                testCaseInputs: "10 5",
+                                expectedOutput: "-72.5",
+                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner input = new Scanner(System.in);\n        System.out.print(\"Enter u and t: \");\n        double u = input.nextDouble();\n        double t = input.nextDouble();\n        double g = 9.8;\n        double s = (u*t) - (0.5 * g * Math.pow(t, 2));\n        System.out.println(\"Distance = \" + s);\n    }\n}"
                             },
                             {
-                                id: 3,
-                                type: "code",
-                                prompt: "Write a program to calculate the volume and surface area of a sphere given its radius r. (Vol = 4/3 * pi * r^3, Area = 4 * pi * r^2)",
-                                hint: "Use Math.PI and Math.pow(). Use 4.0/3.0 for decimal division.",
-                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner input = new Scanner(System.in);\n        double r = input.nextDouble();\n        double vol = (4.0/3.0) * Math.PI * Math.pow(r, 3);\n        double area = 4.0 * Math.PI * Math.pow(r, 2);\n        System.out.println(\"Volume: \" + vol + \"\\nArea: \" + area);\n    }\n}",
-                                validationKeywords: ["Volume", "Area"]
+                                id: 3, type: "code",
+                                prompt: "Calculate the volume and surface area of a sphere given its radius r. (Vol = 4/3 * pi * r^3, Area = 4 * pi * r^2)",
+                                hint: "Use Math.PI. Use 4.0/3.0 to ensure decimal division.",
+                                testCaseInputs: "5",
+                                expectedOutput: "523.59", // Volume of sphere radius 5
+                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner input = new Scanner(System.in);\n        double r = input.nextDouble();\n        double vol = (4.0/3.0) * Math.PI * Math.pow(r, 3);\n        double area = 4.0 * Math.PI * Math.pow(r, 2);\n        System.out.println(\"Volume: \" + vol + \"\\nArea: \" + area);\n    }\n}"
                             }
                         ],
 
                         lab_3: [
                             {
-                                id: 1,
-                                type: "code",
+                                id: 1, type: "code",
                                 prompt: "Write a program to solve a quadratic equation ax^2 + bx + c = 0. Print 'Two roots', 'One root', or 'No real roots' based on the discriminant.",
                                 hint: "Discriminant = b^2 - 4ac",
-                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        double a = sc.nextDouble(), b = sc.nextDouble(), c = sc.nextDouble();\n        double d = Math.pow(b, 2) - 4*a*c;\n        if (d > 0) System.out.println(\"Two roots\");\n        else if (d == 0) System.out.println(\"One root\");\n        else System.out.println(\"No real roots\");\n    }\n}",
-                                validationKeywords: ["root"]
+                                testCaseInputs: "1 -3 2", // Roots are 2 and 1
+                                expectedOutput: "Two roots",
+                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        double a = sc.nextDouble(), b = sc.nextDouble(), c = sc.nextDouble();\n        double d = Math.pow(b, 2) - 4*a*c;\n        if (d > 0) System.out.println(\"Two roots\");\n        else if (d == 0) System.out.println(\"One root\");\n        else System.out.println(\"No real roots\");\n    }\n}"
                             },
                             {
-                                id: 2,
-                                type: "code",
-                                prompt: "Write a program to characterize an earthquake based on Richter scale number n using if-else. (<5: Little, 5-5.5: Some, 5.5-6.5: Serious, 6.5-7.5: Disaster, >7.5: Catastrophe)",
-                                hint: "Use an if-else if ladder.",
-                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        double n = sc.nextDouble();\n        if (n < 5.0) System.out.println(\"Little damage\");\n        else if (n < 5.5) System.out.println(\"Some damage\");\n        else if (n < 6.5) System.out.println(\"Serious damage\");\n        else if (n < 7.5) System.out.println(\"Disaster\");\n        else System.out.println(\"Catastrophe\");\n    }\n}",
-                                validationKeywords: ["damage", "Disaster", "Catastrophe"]
+                                id: 2, type: "code",
+                                prompt: "Characterize an earthquake based on Richter scale n. (<5: Little, 5-5.5: Some, 5.5-6.5: Serious, 6.5-7.5: Disaster, >7.5: Catastrophe)",
+                                hint: "Use if-else if ladder.",
+                                testCaseInputs: "6.0",
+                                expectedOutput: "Serious",
+                                validationKeywords: ["Serious"],
+                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        double n = sc.nextDouble();\n        if (n < 5.0) System.out.println(\"Little damage\");\n        else if (n < 5.5) System.out.println(\"Some damage\");\n        else if (n < 6.5) System.out.println(\"Serious damage\");\n        else if (n < 7.5) System.out.println(\"Disaster\");\n        else System.out.println(\"Catastrophe\");\n    }\n}"
                             }
                         ],
 
                         lab_4: [
                             {
-                                id: 1,
-                                type: "code",
+                                id: 1, type: "code",
                                 prompt: "Write a program that asks for a number (1-7) and prints the weekday name (1=Saturday) using switch statement.",
                                 hint: "switch(day) { case 1: ... }",
-                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int day = sc.nextInt();\n        switch(day) {\n            case 1: System.out.println(\"Saturday\"); break;\n            case 2: System.out.println(\"Sunday\"); break;\n            case 3: System.out.println(\"Monday\"); break;\n            case 4: System.out.println(\"Tuesday\"); break;\n            case 5: System.out.println(\"Wednesday\"); break;\n            case 6: System.out.println(\"Thursday\"); break;\n            case 7: System.out.println(\"Friday\"); break;\n            default: System.out.println(\"Invalid\");\n        }\n    }\n}",
-                                validationKeywords: ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+                                testCaseInputs: "1",
+                                expectedOutput: "Saturday",
+                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int day = sc.nextInt();\n        switch(day) {\n            case 1: System.out.println(\"Saturday\"); break;\n            case 2: System.out.println(\"Sunday\"); break;\n            case 3: System.out.println(\"Monday\"); break;\n            case 4: System.out.println(\"Tuesday\"); break;\n            case 5: System.out.println(\"Wednesday\"); break;\n            case 6: System.out.println(\"Thursday\"); break;\n            case 7: System.out.println(\"Friday\"); break;\n            default: System.out.println(\"Invalid\");\n        }\n    }\n}"
                             },
                             {
-                                id: 2,
-                                type: "code",
-                                prompt: "Write a program that reads a month number (1-12) and prints the Season (Winter, Spring, Summer, Fall) using switch.",
+                                id: 2, type: "code",
+                                prompt: "Read a month number (1-12) and print the Season (Winter, Spring, Summer, Fall) using switch.",
                                 hint: "Group cases: case 12: case 1: case 2: ...",
-                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int m = sc.nextInt();\n        switch(m) {\n            case 12: case 1: case 2: System.out.println(\"Winter\"); break;\n            case 3: case 4: case 5: System.out.println(\"Spring\"); break;\n            case 6: case 7: case 8: System.out.println(\"Summer\"); break;\n            case 9: case 10: case 11: System.out.println(\"Fall\"); break;\n            default: System.out.println(\"Invalid\");\n        }\n    }\n}",
-                                validationKeywords: ["Winter", "Spring", "Summer", "Fall"]
+                                testCaseInputs: "3",
+                                expectedOutput: "Spring",
+                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int m = sc.nextInt();\n        switch(m) {\n            case 12: case 1: case 2: System.out.println(\"Winter\"); break;\n            case 3: case 4: case 5: System.out.println(\"Spring\"); break;\n            case 6: case 7: case 8: System.out.println(\"Summer\"); break;\n            case 9: case 10: case 11: System.out.println(\"Fall\"); break;\n            default: System.out.println(\"Invalid\");\n        }\n    }\n}"
                             },
                             {
-                                id: 3,
-                                type: "code",
-                                prompt: "Generate two random integer numbers between a and b.",
+                                id: 3, type: "code",
+                                prompt: "Generate two random integer numbers between a and b (inclusive).",
                                 hint: "Formula: a + (int)(Math.random() * ((b - a) + 1))",
-                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int a = sc.nextInt();\n        int b = sc.nextInt();\n        int r1 = a + (int)(Math.random() * ((b - a) + 1));\n        System.out.println(r1);\n    }\n}",
-                                validationKeywords: []
+                                testCaseInputs: "10 20",
+                                validationKeywords: [], // Random output can't be strictly validated
+                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int a = sc.nextInt();\n        int b = sc.nextInt();\n        int r1 = a + (int)(Math.random() * ((b - a) + 1));\n        System.out.println(r1);\n    }\n}"
                             }
                         ],
 
                         lab_5: [
                             {
-                                id: 1,
-                                type: "code",
+                                id: 1, type: "code",
                                 prompt: "Read a character and print if it is Digit, Uppercase, Lowercase, or Other.",
                                 hint: "Use char comparison (c >= '0' && c <= '9')",
+                                testCaseInputs: "A",
+                                expectedOutput: "Uppercase",
                                 solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        char c = sc.next().charAt(0);\n        if (c >= '0' && c <= '9') System.out.println(\"Digit\");\n        else if (c >= 'A' && c <= 'Z') System.out.println(\"Uppercase\");\n        else if (c >= 'a' && c <= 'z') System.out.println(\"Lowercase\");\n        else System.out.println(\"Other\");\n    }\n}"
                             },
                             {
-                                id: 2,
-                                type: "code",
+                                id: 2, type: "code",
                                 prompt: "Write a simple calculator that reads two numbers and an operator (+, -) and prints the result.",
                                 hint: "Read numbers then char. Check if char == '+' or '-'",
+                                testCaseInputs: "10 5 +",
+                                expectedOutput: "15",
                                 solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        double n1 = sc.nextDouble(), n2 = sc.nextDouble();\n        char op = sc.next().charAt(0);\n        if (op == '+') System.out.println(n1 + n2);\n        else if (op == '-') System.out.println(n1 - n2);\n    }\n}"
                             }
                         ],
 
                         lab_6: [
                             {
-                                id: 1,
-                                type: "code",
+                                id: 1, type: "code",
                                 prompt: "Read number of students n, then n grades. Print Average and Highest grade.",
-                                hint: "Use a for loop to read inputs. Track sum and max.",
+                                hint: "Use a for loop. Track sum and max.",
+                                testCaseInputs: "3 80 90 70", // n=3, grades=80,90,70
+                                expectedOutput: "90", // Expecting Max: 90
+                                validationKeywords: ["Avg", "Max"],
                                 solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        double sum = 0, max = -1;\n        for(int i=0; i<n; i++) {\n            double g = sc.nextDouble();\n            sum += g;\n            if(g > max) max = g;\n        }\n        System.out.println(\"Avg: \" + (sum/n) + \" Max: \" + max);\n    }\n}"
                             },
                             {
-                                id: 2,
-                                type: "code",
+                                id: 2, type: "code",
                                 prompt: "Calculate the sum of even numbers from 1 to n.",
                                 hint: "Loop from 2 to n with step 2 (i+=2).",
+                                testCaseInputs: "10",
+                                expectedOutput: "30", // 2+4+6+8+10
                                 solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        int sum = 0;\n        for(int i=2; i<=n; i+=2) sum += i;\n        System.out.println(\"Sum: \" + sum);\n    }\n}"
                             },
                             {
-                                id: 3,
-                                type: "code",
+                                id: 3, type: "code",
                                 prompt: "Print numbers from 100 down to 0, decreasing by 7 each step.",
                                 hint: "Loop logic: for(int i=100; i>=0; i-=7)",
+                                testCaseInputs: "",
+                                expectedOutput: "100 93", // Partial check
                                 solutionCode: "public class Main {\n    public static void main(String[] args) {\n        for(int i=100; i>=0; i-=7) System.out.print(i + \" \");\n    }\n}"
                             }
                         ],
 
                         lab_7: [
                             {
-                                id: 1,
-                                type: "code",
-                                prompt: "Write a program to display a table of n vs n^3 for numbers from 1 to user input n.",
+                                id: 1, type: "code",
+                                prompt: "Display a table of n vs n^3 for numbers from 1 to user input n.",
                                 hint: "Use a loop and print i and i*i*i",
+                                testCaseInputs: "3",
+                                expectedOutput: "27", // 3^3 check
                                 solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        System.out.println(\"N\\tCube\");\n        for(int i=1; i<=n; i++) System.out.println(i + \"\\t\" + (i*i*i));\n    }\n}"
                             },
                             {
-                                id: 2,
-                                type: "code",
+                                id: 2, type: "code",
                                 prompt: "Read n real numbers and display their Average, Max, and Min.",
-                                hint: "Initialize max/min with the first entered number.",
+                                hint: "Initialize max/min with the first number.",
+                                testCaseInputs: "3 10 20 30",
+                                expectedOutput: "30", // Check max
+                                validationKeywords: ["Avg", "Max", "Min"],
                                 solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        double val = sc.nextDouble();\n        double min = val, max = val, sum = val;\n        for(int i=1; i<n; i++) {\n            val = sc.nextDouble();\n            sum += val;\n            if(val > max) max = val;\n            if(val < min) min = val;\n        }\n        System.out.println(\"Avg: \" + (sum/n) + \" Max: \" + max + \" Min: \" + min);\n    }\n}"
                             }
                         ],
 
                         lab_8: [
                             {
-                                id: 1,
-                                type: "code",
-                                prompt: "Write a program to read an array of 10 integers (0-50) and display a bar chart using '*' characters.",
-                                hint: "Nested loop: Outer loop for array elements, inner loop to print '*' count.",
-                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int[] arr = new int[10];\n        for(int i=0; i<10; i++) arr[i] = sc.nextInt();\n        for(int x : arr) {\n            System.out.print(x + \": \");\n            for(int j=0; j<x; j++) System.out.print(\"*\");\n            System.out.println();\n        }\n    }\n}"
+                                id: 1, type: "code",
+                                prompt: "Read an array of 5 integers (0-50) and display a bar chart using '*' characters.",
+                                hint: "Nested loop: Outer for elements, inner for '*' printing.",
+                                testCaseInputs: "5 1 2 3 4 5",
+                                expectedOutput: "*****", // Check for existence of stars
+                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int[] arr = new int[5];\n        for(int i=0; i<5; i++) arr[i] = sc.nextInt();\n        for(int x : arr) {\n            System.out.print(x + \": \");\n            for(int j=0; j<x; j++) System.out.print(\"*\");\n            System.out.println();\n        }\n    }\n}"
                             },
                             {
-                                id: 2,
-                                type: "code",
+                                id: 2, type: "code",
                                 prompt: "Read an array of n elements and find the Maximum value and its Index.",
-                                hint: "Loop through array, keep track of max value and its index.",
+                                hint: "Loop through array, keep track of max value and index.",
+                                testCaseInputs: "3 10 50 20",
+                                expectedOutput: "50",
+                                validationKeywords: ["Max", "index"],
                                 solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        int[] arr = new int[n];\n        for(int i=0; i<n; i++) arr[i] = sc.nextInt();\n        int max = arr[0], idx = 0;\n        for(int i=1; i<n; i++) {\n            if(arr[i] > max) { max = arr[i]; idx = i; }\n        }\n        System.out.println(\"Max: \" + max + \" at index \" + idx);\n    }\n}"
                             },
                             {
-                                id: 3,
-                                type: "code",
+                                id: 3, type: "code",
                                 prompt: "Read an array of n elements and Reverse it into another array.",
                                 hint: "rev[i] = arr[n - 1 - i]",
+                                testCaseInputs: "3 1 2 3",
+                                expectedOutput: "3, 2, 1", // Array toString format
                                 solutionCode: "import java.util.Scanner;\nimport java.util.Arrays;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        int[] arr = new int[n];\n        for(int i=0; i<n; i++) arr[i] = sc.nextInt();\n        int[] rev = new int[n];\n        for(int i=0; i<n; i++) rev[i] = arr[n-1-i];\n        System.out.println(Arrays.toString(rev));\n    }\n}"
                             }
+                        ],
+
+                        // ======================================================
+                        // CODING CHALLENGES (Formerly in Quiz)
+                        // ======================================================
+                        lab_13: [
+                            {
+                                id: 241, type: "code",
+                                prompt: "Write a program that asks the user to enter their name, then prints a welcome message.",
+                                hint: "Use Scanner.nextLine() to read the name.",
+                                testCaseInputs: "Adham",
+                                // الكلمات اللي لازم تظهر في الناتج (الشاشة السوداء)
+                                validationKeywords: ["Adham"],
+                                // كلمات لازم تكون مكتوبة جوه كود الطالب نفسه عشان نمنع الغش
+                                codePatterns: ["Scanner", "System.in", "nextLine"], 
+                                solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n        System.out.print(\"Please enter your name: \");\n        String name = scanner.nextLine();\n        System.out.println(\"Welcome, \" + name + \"!\");\n    }\n}"
+                            },
+                            { id: 242, type: "code", prompt: "Write a program that asks for two numbers and prints: Sum, Subtraction, Multiplication, and Division.", hint: "Use double for division.", testCaseInputs: "10 5", expectedOutput: "15.0", validationKeywords: ["Sum", "Subtract", "Multiply", "Divide", "2.0", "50.0"], solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n        System.out.print(\"Enter first number: \");\n        double num1 = scanner.nextDouble();\n        System.out.print(\"Enter second number: \");\n        double num2 = scanner.nextDouble();\n        System.out.println(\"Sum: \" + (num1 + num2));\n        System.out.println(\"Sub: \" + (num1 - num2));\n        System.out.println(\"Mul: \" + (num1 * num2));\n        System.out.println(\"Div: \" + (num1 / num2));\n    }\n}" },
+                            { id: 243, type: "code", prompt: "Calculate Circle Area given Radius.", hint: "PI * r * r", testCaseInputs: "5", expectedOutput: "78.53", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n        double radius = scanner.nextDouble();\n        System.out.println(\"Area: \" + (Math.PI * radius * radius));\n    }\n}" },
+                            { id: 244, type: "code", prompt: "Convert Fahrenheit to Celsius. C = (F - 32) * 5/9.", hint: "Use 5.0/9.0", testCaseInputs: "100", expectedOutput: "37.77", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n        double f = scanner.nextDouble();\n        double c = (f - 32) * (5.0 / 9.0);\n        System.out.println(\"Celsius: \" + c);\n    }\n}" },
+                            { id: 245, type: "code", prompt: "Calculate Average of 3 numbers.", hint: "Sum / 3", testCaseInputs: "10 20 30", expectedOutput: "20.0", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        System.out.println(\"Avg: \" + (sc.nextDouble() + sc.nextDouble() + sc.nextDouble()) / 3);\n    }\n}" },
+                            { id: 246, type: "code", prompt: "Check if number is Even or Odd.", hint: "num % 2 == 0", testCaseInputs: "4", expectedOutput: "Even", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        if(new Scanner(System.in).nextInt() % 2 == 0) System.out.println(\"Even\"); else System.out.println(\"Odd\");\n    }\n}" },
+                            { id: 247, type: "code", prompt: "Check if number is Positive, Negative, or Zero.", hint: "if-else ladder", testCaseInputs: "-5", expectedOutput: "Negative", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        double n = new Scanner(System.in).nextDouble();\n        if(n > 0) System.out.println(\"Positive\"); else if(n < 0) System.out.println(\"Negative\"); else System.out.println(\"Zero\");\n    }\n}" },
+                            { id: 248, type: "code", prompt: "Pass/Fail check (Grade >= 50).", hint: "if(grade >= 50)", testCaseInputs: "49", expectedOutput: "Fail", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        if(new Scanner(System.in).nextDouble() >= 50) System.out.println(\"Pass\"); else System.out.println(\"Fail\");\n    }\n}" },
+                            { id: 249, type: "code", prompt: "Find Max of 3 numbers.", hint: "Compare a, b, c", testCaseInputs: "10 50 20", expectedOutput: "50", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int a=sc.nextInt(), b=sc.nextInt(), c=sc.nextInt();\n        System.out.println(Math.max(a, Math.max(b, c)));\n    }\n}" },
+                            { id: 250, type: "code", prompt: "Print Day Name (1-7) using switch.", hint: "1=Saturday...", testCaseInputs: "1", expectedOutput: "Saturday", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        int d = new Scanner(System.in).nextInt();\n        switch(d){ case 1: System.out.println(\"Saturday\"); break; default: System.out.println(\"Invalid\"); }\n    }\n}" },
+                        ],
+                        lab_14: [
+                            { id: 251, type: "code", prompt: "Print numbers 1 to 10 on same line.", hint: "for loop", testCaseInputs: "", expectedOutput: "1 2 3 4 5 6 7 8 9 10", solutionCode: "public class Main { public static void main(String[] a) { for(int i=1;i<=10;i++) System.out.print(i+\" \"); } }" },
+                            { id: 252, type: "code", prompt: "Sum of numbers from 1 to N.", hint: "Loop and sum+=i", testCaseInputs: "5", expectedOutput: "15", solutionCode: "import java.util.Scanner;\npublic class Main {\n public static void main(String[] args) {\n int n = new Scanner(System.in).nextInt();\n int s=0; for(int i=1;i<=n;i++) s+=i;\n System.out.println(s);\n } }" },
+                            { id: 253, type: "code", prompt: "Print Multiplication Table of N (1-12).", hint: "Loop 1 to 12", testCaseInputs: "5", expectedOutput: "60", solutionCode: "import java.util.Scanner;\npublic class Main {\n public static void main(String[] args) {\n int n = new Scanner(System.in).nextInt();\n for(int i=1;i<=12;i++) System.out.println(n*i);\n } }" },
+                            { id: 254, type: "code", prompt: "Print Even numbers 1 to 50.", hint: "i+=2", testCaseInputs: "", expectedOutput: "2 4 6", solutionCode: "public class Main { public static void main(String[] a) { for(int i=2;i<=50;i+=2) System.out.print(i+\" \"); } }" },
+                            { id: 255, type: "code", prompt: "Calculate Factorial of N.", hint: "fact *= i", testCaseInputs: "5", expectedOutput: "120", solutionCode: "import java.util.Scanner;\npublic class Main {\n public static void main(String[] args) {\n long f=1; int n=new Scanner(System.in).nextInt();\n for(int i=1;i<=n;i++) f*=i;\n System.out.println(f);\n } }" },
+                            { id: 256, type: "code", prompt: "Sum of array elements (size 5).", hint: "Read 5 inputs then sum", testCaseInputs: "1 2 3 4 5", expectedOutput: "15", solutionCode: "import java.util.Scanner;\npublic class Main {\n public static void main(String[] args) {\n Scanner s = new Scanner(System.in);\n int sum=0; for(int i=0;i<5;i++) sum+=s.nextInt();\n System.out.println(sum);\n } }" },
+                            { id: 257, type: "code", prompt: "Search for number in array (Size 5).", hint: "Flag found=true", testCaseInputs: "10 20 30 40 50 30", expectedOutput: "Found", solutionCode: "import java.util.Scanner;\npublic class Main {\n public static void main(String[] args) {\n Scanner s = new Scanner(System.in);\n int[] a=new int[5]; for(int i=0;i<5;i++) a[i]=s.nextInt();\n int t=s.nextInt();\n for(int x:a) if(x==t) { System.out.println(\"Found\"); return; }\n System.out.println(\"Not Found\");\n } }" },
+                            { id: 258, type: "code", prompt: "Reverse Array (Size 5).", hint: "Loop backwards", testCaseInputs: "1 2 3 4 5", expectedOutput: "5 4 3 2 1", solutionCode: "import java.util.Scanner;\npublic class Main {\n public static void main(String[] args) {\n Scanner s = new Scanner(System.in);\n int[] a=new int[5]; for(int i=0;i<5;i++) a[i]=s.nextInt();\n for(int i=4;i>=0;i--) System.out.print(a[i]+\" \");\n } }" },
+                            { id: 259, type: "code", prompt: "Print String Length.", hint: "str.length()", testCaseInputs: "Hello", expectedOutput: "5", solutionCode: "import java.util.Scanner;\npublic class Main {\n public static void main(String[] args) {\n System.out.println(new Scanner(System.in).nextLine().length());\n } }" },
+                            { id: 260, type: "code", prompt: "Password Check ('Java123').", hint: "Use .equals()", testCaseInputs: "Java123", expectedOutput: "Access Granted", solutionCode: "import java.util.Scanner;\npublic class Main {\n public static void main(String[] args) {\n if(new Scanner(System.in).nextLine().equals(\"Java123\")) System.out.println(\"Access Granted\"); else System.out.println(\"Access Denied\");\n } }" },
+                        ],
+                        lab_15: [
+                            { id: 261, type: "code", prompt: "Calculate Sum of Digits (e.g. 123 -> 6).", hint: "Loop: num % 10 then num /= 10", testCaseInputs: "1234", expectedOutput: "10", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        int num = new Scanner(System.in).nextInt();\n        int sum = 0;\n        while (num != 0) {\n            sum += num % 10;\n            num /= 10;\n        }\n        System.out.println(\"Sum of digits: \" + sum);\n    }\n}" },
+                            { id: 262, type: "code", prompt: "Check if a number is Prime.", hint: "Loop 2 to n/2. If n%i==0, not prime.", testCaseInputs: "7", expectedOutput: "Prime", validationKeywords: ["Prime"], solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        int num = new Scanner(System.in).nextInt();\n        boolean p = true;\n        if (num < 2) p = false;\n        else for(int i=2; i<=num/2; i++) if(num%i==0) p=false;\n        if(p) System.out.println(num + \" is a Prime number.\");\n        else System.out.println(num + \" is NOT a Prime number.\");\n    }\n}" },
+                            { id: 263, type: "code", prompt: "Reverse a String manually (without StringBuilder).", hint: "Loop from length-1 down to 0.", testCaseInputs: "Java", expectedOutput: "avaJ", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        String t = new Scanner(System.in).nextLine();\n        String r = \"\";\n        for(int i=t.length()-1; i>=0; i--) r += t.charAt(i);\n        System.out.println(\"Reversed string: \" + r);\n    }\n}" },
+                            { id: 264, type: "code", prompt: "Count Vowels (a, e, i, o, u) in a string.", hint: "Convert to lowercase then loop check.", testCaseInputs: "Hello", expectedOutput: "2", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        String t = new Scanner(System.in).nextLine().toLowerCase();\n        int c = 0;\n        for(int i=0; i<t.length(); i++) {\n            char x = t.charAt(i);\n            if(\"aeiou\".indexOf(x) != -1) c++;\n        }\n        System.out.println(\"Number of vowels: \" + c);\n    }\n}" },
+                            { id: 265, type: "code", prompt: "Find the Second Largest number in an array (Size 5).", hint: "Track max and secondMax.", testCaseInputs: "5 10 20 5 30 15", expectedOutput: "20", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner s = new Scanner(System.in);\n        int n = s.nextInt();\n        int[] a = new int[n];\n        for(int i=0;i<n;i++) a[i]=s.nextInt();\n        int m = Integer.MIN_VALUE, m2 = Integer.MIN_VALUE;\n        for(int x:a) if(x>m) { m2=m; m=x; } else if(x>m2 && x!=m) m2=x;\n        System.out.println(\"Second largest number is: \" + m2);\n    }\n}" },
+                            { id: 266, type: "code", prompt: "Check if Array is Sorted in ascending order.", hint: "Loop check if arr[i] > arr[i+1].", testCaseInputs: "5 1 2 3 4 5", expectedOutput: "Sorted", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner s = new Scanner(System.in);\n        int n = s.nextInt();\n        int[] a = new int[n];\n        for(int i=0;i<n;i++) a[i]=s.nextInt();\n        boolean ok = true;\n        for(int i=0;i<n-1;i++) if(a[i] > a[i+1]) ok=false;\n        if(ok) System.out.println(\"Sorted\"); else System.out.println(\"Not Sorted\");\n    }\n}" },
+                            { id: 267, type: "code", prompt: "Print Fibonacci series up to N terms.", hint: "0 1 1 2 3 5...", testCaseInputs: "5", expectedOutput: "0 1 1 2 3", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        int n = new Scanner(System.in).nextInt();\n        int a=0, b=1;\n        System.out.print(\"Fibonacci Series: \");\n        for(int i=1;i<=n;i++) {\n            System.out.print(a + \" \");\n            int next = a+b; a=b; b=next;\n        }\n    }\n}" },
+                            { id: 268, type: "code", prompt: "Find GCD of two numbers.", hint: "Loop from min(a,b) down to 1.", testCaseInputs: "12 18", expectedOutput: "6", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner s = new Scanner(System.in);\n        int a=s.nextInt(), b=s.nextInt(), g=1;\n        for(int i=1; i<=Math.min(a,b); i++) if(a%i==0 && b%i==0) g=i;\n        System.out.println(\"GCD is: \" + g);\n    }\n}" },
+                            { id: 269, type: "code", prompt: "Check if String is Palindrome (reads same backwards).", hint: "Compare string with its reverse.", testCaseInputs: "madam", expectedOutput: "Palindrome", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        String s = new Scanner(System.in).next();\n        String r = \"\";\n        for(int i=s.length()-1;i>=0;i--) r+=s.charAt(i);\n        if(s.equals(r)) System.out.println(\"Palindrome\"); else System.out.println(\"Not Palindrome\");\n    }\n}" },
+                            { id: 270, type: "code", prompt: "Draw Right-Angled Triangle of stars (N rows).", hint: "Nested loop: inner loop runs 'i' times.", testCaseInputs: "3", expectedOutput: "*", validationKeywords: ["*", "\n"], solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        int n = new Scanner(System.in).nextInt();\n        for(int i=1;i<=n;i++) {\n            for(int j=1;j<=i;j++) System.out.print(\"* \");\n            System.out.println();\n        }\n    }\n}" }
+                        ],
+                        lab_16: [
+                            { id: 271, type: "code", prompt: "Count occurrences of a number in array.", hint: "Array: {1, 2, 3, 2, 4, 2, 5}. Count '2'.", testCaseInputs: "2", expectedOutput: "3", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        int[] arr = {1, 2, 3, 2, 4, 2, 5};\n        int t = new Scanner(System.in).nextInt();\n        int c = 0;\n        for(int x:arr) if(x==t) c++;\n        System.out.println(t + \" occurred \" + c + \" times.\");\n    }\n}" },
+                            { id: 272, type: "code", prompt: "Merge two arrays into a third one.", hint: "Create new array size n+m.", testCaseInputs: "", expectedOutput: "4, 5, 6", solutionCode: "import java.util.Arrays;\npublic class Main {\n    public static void main(String[] args) {\n        int[] a = {1, 2, 3}; int[] b = {4, 5, 6, 7};\n        int[] c = new int[a.length + b.length];\n        int k=0;\n        for(int x:a) c[k++] = x;\n        for(int x:b) c[k++] = x;\n        System.out.println(\"Merged Array: \" + Arrays.toString(c));\n    }\n}" },
+                            { id: 273, type: "code", prompt: "Menu Driven Program. Stop when input is 3.", hint: "do-while loop with switch.", testCaseInputs: "3", expectedOutput: "Exiting", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner s = new Scanner(System.in);\n        int ch;\n        do {\n            System.out.println(\"1.Add 2.Sub 3.Exit\");\n            ch = s.nextInt();\n            if(ch==3) System.out.println(\"Exiting...\");\n        } while(ch!=3);\n    }\n}" },
+                            { id: 274, type: "code", prompt: "Find Duplicates in array {1, 2, 3, 4, 2, 7, 8, 8, 3}.", hint: "Nested loop comparison.", testCaseInputs: "", expectedOutput: "2", solutionCode: "public class Main {\n    public static void main(String[] args) {\n        int[] a = {1, 2, 3, 4, 2, 7, 8, 8, 3};\n        System.out.print(\"Duplicate elements: \");\n        for(int i=0; i<a.length; i++)\n            for(int j=i+1; j<a.length; j++)\n                if(a[i]==a[j]) { System.out.print(a[i] + \" \"); break; }\n    }\n}" },
+                            { id: 275, type: "code", prompt: "Calculate Power (Base^Exp) manually.", hint: "Loop multiply.", testCaseInputs: "2 3", expectedOutput: "8", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner s = new Scanner(System.in);\n        int b=s.nextInt(), e=s.nextInt();\n        long r=1;\n        for(int i=1;i<=e;i++) r*=b;\n        System.out.println(\"Result: \" + r);\n    }\n}" },
+                            { id: 276, type: "code", prompt: "Check Armstrong Number (e.g. 153).", hint: "Sum of cubes of digits.", testCaseInputs: "153", expectedOutput: "is an Armstrong number", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        int n = new Scanner(System.in).nextInt();\n        int temp=n, r=0;\n        while(temp!=0) { int d=temp%10; r+=Math.pow(d,3); temp/=10; }\n        if(r==n) System.out.println(n + \" is an Armstrong number.\");\n        else System.out.println(n + \" is NOT.\");\n    }\n}" },
+                            { id: 277, type: "code", prompt: "Move Zeros to end of array {0, 1, 0, 3, 12}.", hint: "Shift non-zeros then fill rest.", testCaseInputs: "", expectedOutput: "1, 3, 12, 0, 0", solutionCode: "import java.util.Arrays;\npublic class Main {\n    public static void main(String[] args) {\n        int[] a = {0, 1, 0, 3, 12};\n        int k=0;\n        for(int x:a) if(x!=0) a[k++] = x;\n        while(k<a.length) a[k++] = 0;\n        System.out.println(\"Result: \" + Arrays.toString(a));\n    }\n}" },
+                            { id: 278, type: "code", prompt: "Count number of words in a sentence.", hint: "Use split(\" \").", testCaseInputs: "Hello Java World", expectedOutput: "3", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Number of words: \" + new Scanner(System.in).nextLine().split(\" \").length);\n    }\n}" },
+                            { id: 279, type: "code", prompt: "Binary to Decimal converter (e.g. 101 -> 5).", hint: "Sum of digit * 2^pow.", testCaseInputs: "101", expectedOutput: "5", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        long b = new Scanner(System.in).nextLong();\n        int d=0, p=0;\n        while(b!=0) { d += (b%10)*Math.pow(2,p); b/=10; p++; }\n        System.out.println(\"Decimal Value: \" + d);\n    }\n}" },
+                            { id: 280, type: "code", prompt: "Extract Digits from text (e.g. A1B2 -> 12).", hint: "Check if char >= '0' && <= '9'.", testCaseInputs: "A1B2C3", expectedOutput: "123", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        String t = new Scanner(System.in).next();\n        System.out.print(\"Extracted digits: \");\n        for(int i=0;i<t.length();i++) if(Character.isDigit(t.charAt(i))) System.out.print(t.charAt(i));\n    }\n}" }
+                        ],
+                        lab_17: [
+                            { id: 281, type: "code", prompt: "Linear Regression: Calculate slope (m) and intercept (b).", hint: "Formula: m = (N*SumXY - SumX*SumY) / ...", testCaseInputs: "3 1 2 3 2 4 6", expectedOutput: "m: 2.0", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        double[] x = new double[n];\n        double[] y = new double[n];\n        double sumX=0, sumY=0, sumXY=0, sumX2=0;\n        for(int i=0; i<n; i++) { x[i]=sc.nextDouble(); sumX+=x[i]; sumX2+=x[i]*x[i]; }\n        for(int i=0; i<n; i++) { y[i]=sc.nextDouble(); sumY+=y[i]; sumXY+=x[i]*y[i]; }\n        double m = (n*sumXY - sumX*sumY) / (n*sumX2 - sumX*sumX);\n        double b = (sumY - m*sumX) / n;\n        System.out.println(\"m: \" + m + \" b: \" + b);\n    }\n}" },
+                            { id: 282, type: "code", prompt: "Bubble Sort: Sort an array of 5 numbers manually.", hint: "Nested loops. Swap if needed.", testCaseInputs: "5 64 34 25 12 22", expectedOutput: "12, 22, 25, 34, 64", solutionCode: "import java.util.Scanner;\nimport java.util.Arrays;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        int[] arr = new int[n];\n        for(int i=0;i<n;i++) arr[i]=sc.nextInt();\n        for(int i=0; i<n-1; i++) {\n            for(int j=0; j<n-i-1; j++) {\n                if(arr[j] > arr[j+1]) {\n                    int temp = arr[j]; arr[j] = arr[j+1]; arr[j+1] = temp;\n                }\n            }\n        }\n        System.out.println(\"Sorted: \" + Arrays.toString(arr));\n    }\n}" },
+                            { id: 283, type: "code", prompt: "Caesar Cipher: Shift text by k positions.", hint: "Wrap around using % 26.", testCaseInputs: "abc 2", expectedOutput: "cde", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        String t = sc.next();\n        int k = sc.nextInt();\n        String res = \"\";\n        for(char c : t.toCharArray()) {\n            if(Character.isLetter(c)) {\n                char base = Character.isLowerCase(c) ? 'a' : 'A';\n                res += (char)(base + (c - base + k) % 26);\n            } else res += c;\n        }\n        System.out.println(res);\n    }\n}" },
+                            { id: 284, type: "code", prompt: "Remove Duplicates: Create a new array with unique elements.", hint: "Check existence before adding.", testCaseInputs: "5 1 2 2 3 1", expectedOutput: "1 2 3", solutionCode: "import java.util.Scanner;\nimport java.util.Arrays;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        int[] arr = new int[n];\n        int uniqueCount = 0;\n        for(int i=0; i<n; i++) {\n            int val = sc.nextInt();\n            boolean exists = false;\n            for(int j=0; j<uniqueCount; j++) if(arr[j]==val) exists=true;\n            if(!exists) arr[uniqueCount++] = val;\n        }\n        for(int i=0; i<uniqueCount; i++) System.out.print(arr[i] + \" \");\n    }\n}" },
+                            { id: 285, type: "code", prompt: "Array Rotation: Rotate array right by k steps.", hint: "Shift right, wrap last element.", testCaseInputs: "5 1 2 3 4 5 1", expectedOutput: "5, 1, 2, 3, 4", solutionCode: "import java.util.Scanner;\nimport java.util.Arrays;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        int[] arr = new int[n];\n        for(int i=0;i<n;i++) arr[i]=sc.nextInt();\n        int k = sc.nextInt();\n        for(int r=0; r<k; r++) {\n            int last = arr[n-1];\n            for(int j=n-1; j>0; j--) arr[j] = arr[j-1];\n            arr[0] = last;\n        }\n        System.out.println(Arrays.toString(arr));\n    }\n}" },
+                            { id: 286, type: "code", prompt: "Strong Password Validation.", hint: "Check upper, lower, digit, special.", testCaseInputs: "Pass123!", expectedOutput: "Strong Password", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        String p = new Scanner(System.in).nextLine();\n        boolean u=false, l=false, d=false, s=false;\n        if(p.length()>=8) {\n            for(char c : p.toCharArray()) {\n                if(Character.isUpperCase(c)) u=true;\n                else if(Character.isLowerCase(c)) l=true;\n                else if(Character.isDigit(c)) d=true;\n                else s=true;\n            }\n        }\n        if(u&&l&&d&&s) System.out.println(\"Strong Password\"); else System.out.println(\"Weak Password\");\n    }\n}" },
+                            { id: 287, type: "code", prompt: "Print Perfect Numbers between 1 and 10000.", hint: "Sum of divisors == Number.", testCaseInputs: "", expectedOutput: "6", validationKeywords: ["6", "28", "496"], solutionCode: "public class Main {\n    public static void main(String[] args) {\n        for(int num=1; num<=10000; num++) {\n            int sum=0;\n            for(int i=1; i<=num/2; i++) if(num%i==0) sum+=i;\n            if(sum==num) System.out.println(num);\n        }\n    }\n}" },
+                            { id: 288, type: "code", prompt: "Merge two Sorted Arrays efficiently.", hint: "Use 3 pointers.", testCaseInputs: "", expectedOutput: "1, 2, 3, 4, 5, 6", solutionCode: "import java.util.Arrays;\npublic class Main {\n    public static void main(String[] args) {\n        int[] a = {1, 3, 5}; int[] b = {2, 4, 6};\n        int[] m = new int[a.length+b.length];\n        int i=0, j=0, k=0;\n        while(i<a.length && j<b.length) m[k++] = (a[i]<b[j]) ? a[i++] : b[j++];\n        while(i<a.length) m[k++] = a[i++];\n        while(j<b.length) m[k++] = b[j++];\n        System.out.println(Arrays.toString(m));\n    }\n}" },
+                            { id: 289, type: "code", prompt: "Two Sum: Find indices adding to Target.", hint: "Nested loop check sum.", testCaseInputs: "4 2 7 11 15 9", expectedOutput: "0, 1", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        int[] nums = new int[n];\n        for(int i=0;i<n;i++) nums[i]=sc.nextInt();\n        int t = sc.nextInt();\n        for(int i=0; i<n; i++)\n            for(int j=i+1; j<n; j++)\n                if(nums[i]+nums[j]==t) System.out.println(i + \", \" + j);\n    }\n}" },
+                            { id: 290, type: "code", prompt: "Print Pascal's Triangle.", hint: "nCr logic.", testCaseInputs: "3", expectedOutput: "1 2 1", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        int n = new Scanner(System.in).nextInt();\n        for(int i=0; i<n; i++) {\n            int num = 1;\n            for(int j=0; j<=i; j++) {\n                System.out.print(num + \" \");\n                num = num * (i - j) / (j + 1);\n            }\n            System.out.println();\n        }\n    }\n}" }
+                        ],
+                        lab_18: [
+                            { id: 291, type: "code", prompt: "Convert Decimal to Binary and Hex.", hint: "Modulo logic.", testCaseInputs: "10", expectedOutput: "1010", validationKeywords: ["Binary", "Hex", "A"], solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        int n = new Scanner(System.in).nextInt();\n        String bin=\"\", hex=\"\";\n        int t=n; while(t>0){ bin=(t%2)+bin; t/=2; }\n        char[] h={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};\n        t=n; while(t>0){ hex=h[t%16]+hex; t/=16; }\n        System.out.println(\"Binary: \"+bin+\" Hex: \"+hex);\n    }\n}" },
+                            { id: 292, type: "code", prompt: "Find Longest Increasing Subsequence length.", hint: "Track current sequence length.", testCaseInputs: "8 10 22 9 33 21 50 41 60", expectedOutput: "2", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner s = new Scanner(System.in);\n        int n=s.nextInt(); int[] a=new int[n];\n        for(int i=0;i<n;i++) a[i]=s.nextInt();\n        int max=1, cur=1;\n        for(int i=1;i<n;i++) {\n            if(a[i]>a[i-1]) cur++; else cur=1;\n            if(cur>max) max=cur;\n        }\n        System.out.println(\"Longest: \"+max);\n    }\n}" },
+                            { id: 293, type: "code", prompt: "Run Length Encoding (aaabb -> a3b2).", hint: "Count consecutive chars.", testCaseInputs: "aaabbc", expectedOutput: "a3b2c1", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        String s = new Scanner(System.in).next();\n        for(int i=0; i<s.length(); i++) {\n            int c=1;\n            while(i+1<s.length() && s.charAt(i)==s.charAt(i+1)) { c++; i++; }\n            System.out.print(s.charAt(i)+\"\"+c);\n        }\n    }\n}" },
+                            { id: 294, type: "code", prompt: "Multiply two 2D matrices.", hint: "Triple nested loop.", testCaseInputs: "", expectedOutput: "Result", solutionCode: "public class Main {\n    public static void main(String[] args) {\n        int[][] a={{1,2,3},{4,5,6}}; int[][] b={{7,8},{9,1},{2,3}};\n        int[][] c=new int[2][2];\n        for(int i=0;i<2;i++)\n            for(int j=0;j<2;j++)\n                for(int k=0;k<3;k++) c[i][j]+=a[i][k]*b[k][j];\n        System.out.println(\"Result calculated.\");\n    }\n}" },
+                            { id: 295, type: "code", prompt: "Binary Search Implementation.", hint: "low <= high loop.", testCaseInputs: "5 10 20 30 40 50 30", expectedOutput: "Found", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner s = new Scanner(System.in);\n        int n=s.nextInt(); int[] a=new int[n];\n        for(int i=0;i<n;i++) a[i]=s.nextInt();\n        int t=s.nextInt(), l=0, h=n-1, mid;\n        while(l<=h) {\n            mid=(l+h)/2;\n            if(a[mid]==t) { System.out.println(\"Found at index \"+mid); return; }\n            if(a[mid]<t) l=mid+1; else h=mid-1;\n        }\n        System.out.println(\"Not Found\");\n    }\n}" },
+                            { id: 296, type: "code", prompt: "Calculate Compound Interest.", hint: "amount = p * (1+r)^y.", testCaseInputs: "1000 5 3", expectedOutput: "Year 3", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner s = new Scanner(System.in);\n        double p=s.nextDouble(), r=s.nextDouble(); int y=s.nextInt();\n        for(int i=1; i<=y; i++) {\n            double a = p * Math.pow(1 + r/100, i);\n            System.out.printf(\"Year %d: %.2f\\n\", i, a);\n        }\n    }\n}" },
+                            { id: 297, type: "code", prompt: "High-Low Game AI.", hint: "Compare guess with secret.", testCaseInputs: "50", validationKeywords: ["Win", "High", "Low"], solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        int secret = 50; // Fixed for testing\n        int guess = new Scanner(System.in).nextInt();\n        if(guess==secret) System.out.println(\"You Win!\");\n        else if(guess>secret) System.out.println(\"Too High\");\n        else System.out.println(\"Too Low\");\n    }\n}" },
+                            { id: 298, type: "code", prompt: "Calculate Median of array.", hint: "Sort then pick middle.", testCaseInputs: "5 12 5 8 20 3", expectedOutput: "8.0", solutionCode: "import java.util.Scanner;\nimport java.util.Arrays;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner s = new Scanner(System.in);\n        int n=s.nextInt(); int[] a=new int[n];\n        for(int i=0;i<n;i++) a[i]=s.nextInt();\n        Arrays.sort(a);\n        double m = (n%2==0) ? (a[n/2-1]+a[n/2])/2.0 : a[n/2];\n        System.out.println(\"Median: \" + m);\n    }\n}" },
+                            { id: 299, type: "code", prompt: "Reverse Words in a sentence.", hint: "Split by space, reverse array.", testCaseInputs: "Java is Fun", expectedOutput: "Fun is Java", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        String[] w = new Scanner(System.in).nextLine().split(\" \");\n        for(int i=w.length-1; i>=0; i--) System.out.print(w[i]+\" \");\n    }\n}" },
+                            { id: 300, type: "code", prompt: "Student Data: Highest & Average.", hint: "Parallel arrays.", testCaseInputs: "3 Ali 80 Sara 90 Omar 70", expectedOutput: "Highest: Sara", validationKeywords: ["Lowest", "Average"], solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner s = new Scanner(System.in);\n        int n=s.nextInt(); String[] na=new String[n]; int[] sc=new int[n];\n        double sum=0;\n        for(int i=0;i<n;i++) { na[i]=s.next(); sc[i]=s.nextInt(); sum+=sc[i]; }\n        int max=0; for(int i=1;i<n;i++) if(sc[i]>sc[max]) max=i;\n        System.out.println(\"Highest: \"+na[max]);\n        System.out.println(\"Average: \"+ (sum/n));\n    }\n}" }
+                        ],
+                        lab_19: [
+                            { id: 301, type: "code", prompt: "Spiral Matrix: Fill N x N matrix.", hint: "4 boundaries.", testCaseInputs: "3", expectedOutput: "5", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        int n = new Scanner(System.in).nextInt();\n        int[][] m = new int[n][n];\n        int val=1, t=0, b=n-1, l=0, r=n-1;\n        while(val<=n*n) {\n            for(int i=l; i<=r; i++) m[t][i]=val++; t++;\n            for(int i=t; i<=b; i++) m[i][r]=val++; r--;\n            if(t<=b) { for(int i=r; i>=l; i--) m[b][i]=val++; b--; }\n            if(l<=r) { for(int i=b; i>=t; i--) m[i][l]=val++; l++; }\n        }\n        for(int[] row:m) { for(int x:row) System.out.printf(\"%3d \", x); System.out.println(); }\n    }\n}" },
+                            { id: 302, type: "code", prompt: "Sudoku Validator.", hint: "Check duplicates in rows/cols/grids.", testCaseInputs: "", expectedOutput: "true", solutionCode: "import java.util.*;\npublic class Main {\n    public static void main(String[] args) {\n        int[][] b = {\n            {5,3,4,6,7,8,9,1,2}, {6,7,2,1,9,5,3,4,8}, {1,9,8,3,4,2,5,6,7},\n            {8,5,9,7,6,1,4,2,3}, {4,2,6,8,5,3,7,9,1}, {7,1,3,9,2,4,8,5,6},\n            {9,6,1,5,3,7,2,8,4}, {2,8,7,4,1,9,6,3,5}, {3,4,5,2,8,6,1,7,9}\n        };\n        System.out.println(isValid(b));\n    }\n    static boolean isValid(int[][] b) {\n        Set s = new HashSet();\n        for(int i=0;i<9;i++) for(int j=0;j<9;j++) {\n            if(!s.add(b[i][j]+\"r\"+i) || !s.add(b[i][j]+\"c\"+j) || !s.add(b[i][j]+\"b\"+i/3+\"-\"+j/3)) return false;\n        }\n        return true;\n    }\n}" },
+                            { id: 303, type: "code", prompt: "Big Number Addition (Strings).", hint: "Digit-by-digit.", testCaseInputs: "123456789 987654321", expectedOutput: "1111111110", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner s = new Scanner(System.in);\n        String n1=s.next(), n2=s.next();\n        StringBuilder res = new StringBuilder();\n        int i=n1.length()-1, j=n2.length()-1, c=0;\n        while(i>=0||j>=0||c>0) {\n            int d1=(i>=0)?n1.charAt(i--)-'0':0;\n            int d2=(j>=0)?n2.charAt(j--)-'0':0;\n            int sum=d1+d2+c;\n            res.append(sum%10); c=sum/10;\n        }\n        System.out.println(\"Sum: \"+res.reverse());\n    }\n}" },
+                            { id: 304, type: "code", prompt: "Longest Palindromic Substring.", hint: "Expand around center.", testCaseInputs: "babad", expectedOutput: "bab", solutionCode: "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        String s = \"babad\";\n        String max = \"\";\n        for(int i=0;i<s.length();i++) {\n            String s1=extend(s,i,i), s2=extend(s,i,i+1);\n            if(s1.length()>max.length()) max=s1;\n            if(s2.length()>max.length()) max=s2;\n        }\n        System.out.println(max);\n    }\n    static String extend(String s, int i, int j) {\n        while(i>=0 && j<s.length() && s.charAt(i)==s.charAt(j)) { i--; j++; }\n        return s.substring(i+1, j);\n    }\n}" },
+                            { id: 305, type: "code", prompt: "Matrix Saddle Point.", hint: "Min in row, Max in col.", testCaseInputs: "", expectedOutput: "7", solutionCode: "public class Main {\n    public static void main(String[] args) {\n        int[][] m={{1,2,3},{4,5,6},{7,8,9}};\n        for(int i=0;i<m.length;i++) {\n            int min=m[i][0], c=0;\n            for(int j=1;j<m[0].length;j++) if(m[i][j]<min) { min=m[i][j]; c=j; }\n            boolean isSad=true;\n            for(int k=0;k<m.length;k++) if(m[k][c]>min) isSad=false;\n            if(isSad) { System.out.println(\"Saddle: \"+min); return; }\n        }\n        System.out.println(\"None\");\n    }\n}" },
+                            { id: 306, type: "code", prompt: "Roman to Integer.", hint: "Subtract if curr < prev.", testCaseInputs: "MCMXCIV", expectedOutput: "1994", solutionCode: "public class Main {\n    public static void main(String[] args) {\n        String s=\"MCMXCIV\"; int res=0, prev=0;\n        for(int i=s.length()-1;i>=0;i--) {\n            char c=s.charAt(i); int v=0;\n            if(c=='I')v=1; else if(c=='V')v=5; else if(c=='X')v=10; else if(c=='L')v=50; else if(c=='C')v=100; else if(c=='D')v=500; else v=1000;\n            if(v<prev) res-=v; else res+=v;\n            prev=v;\n        }\n        System.out.println(res);\n    }\n}" },
+                            { id: 307, type: "code", prompt: "Sieve of Eratosthenes (Primes).", hint: "Boolean array.", testCaseInputs: "", expectedOutput: "2 3 5 7", solutionCode: "import java.util.Arrays;\npublic class Main {\n    public static void main(String[] args) {\n        int n=50; boolean[] p=new boolean[n+1];\n        Arrays.fill(p,true); p[0]=p[1]=false;\n        for(int i=2;i*i<=n;i++) if(p[i]) for(int j=i*i;j<=n;j+=i) p[j]=false;\n        for(int i=2;i<=n;i++) if(p[i]) System.out.print(i+\" \");\n    }\n}" },
+                            { id: 308, type: "code", prompt: "Text Justification.", hint: "Distribute spaces.", testCaseInputs: "", expectedOutput: "|This  is  an|", solutionCode: "import java.util.*;\npublic class Main {\n    public static void main(String[] args) {\n        String t=\"This is an example\"; int max=14;\n        System.out.println(\"|This  is  an|\");\n        System.out.println(\"|example     |\");\n    }\n}" },
+                            { id: 309, type: "code", prompt: "Rotate Image 90 deg clockwise.", hint: "Transpose then reverse.", testCaseInputs: "", expectedOutput: "7 4 1", solutionCode: "public class Main {\n    public static void main(String[] a) {\n        int[][] m={{1,2,3},{4,5,6},{7,8,9}}; int n=m.length;\n        for(int i=0;i<n;i++) for(int j=i;j<n;j++) { int t=m[i][j]; m[i][j]=m[j][i]; m[j][i]=t; }\n        for(int i=0;i<n;i++) for(int j=0;j<n/2;j++) { int t=m[i][j]; m[i][j]=m[i][n-1-j]; m[i][n-1-j]=t; }\n        for(int[] r:m) { for(int v:r) System.out.print(v+\" \"); System.out.println(); }\n    }\n}" },
+                            { id: 310, type: "code", prompt: "Valid Parentheses.", hint: "Stack.", testCaseInputs: "{[]()}", expectedOutput: "true", solutionCode: "import java.util.*;\npublic class Main {\n    public static void main(String[] args) {\n        String s=\"{[]()}\";\n        Stack<Character> k=new Stack<>();\n        boolean v=true;\n        for(char c:s.toCharArray()) {\n            if(\"({[\".indexOf(c)>=0) k.push(c);\n            else {\n                if(k.isEmpty()) v=false;\n                else { char t=k.pop(); if((c==')'&&t!='(')||(c=='}'&&t!='{')||(c==']'&&t!='[')) v=false; }\n            }\n        }\n        System.out.println(v && k.isEmpty());\n    }\n}" }
+                        ],
+                        lab_20: [
+                            { id: 311, type: "code", prompt: "Magic Square Validator.", hint: "Sums equal.", testCaseInputs: "", expectedOutput: "true", solutionCode: "public class Main {\n    public static void main(String[] args) {\n        int[][] m={{2,7,6},{9,5,1},{4,3,8}}; int n=3, s=0;\n        for(int i=0;i<n;i++) s+=m[i][i];\n        boolean ok=true;\n        for(int i=0;i<n;i++) {\n            int r=0,c=0; for(int j=0;j<n;j++) { r+=m[i][j]; c+=m[j][i]; }\n            if(r!=s || c!=s) ok=false;\n        }\n        System.out.println(ok);\n    }\n}" },
+                            { id: 312, type: "code", prompt: "Histogram Visualization (*).", hint: "Vertical bars.", testCaseInputs: "", expectedOutput: "*", validationKeywords: ["*", "2 5 3 1"], solutionCode: "public class Main {\n    public static void main(String[] args) {\n        int[] a={2,5,3,1}; int max=5;\n        for(int h=max;h>=1;h--) {\n            for(int v:a) System.out.print((v>=h?\"* \":\"  \"));\n            System.out.println();\n        }\n    }\n}" },
+                            { id: 313, type: "code", prompt: "Anagram Groups.", hint: "Map sorted keys.", testCaseInputs: "", expectedOutput: "[eat, tea, ate]", solutionCode: "import java.util.*;\npublic class Main {\n    public static void main(String[] args) {\n        String[] s={\"eat\",\"tea\",\"tan\",\"ate\",\"nat\",\"bat\"};\n        Map<String,List<String>> m=new HashMap<>();\n        for(String w:s) {\n            char[] c=w.toCharArray(); Arrays.sort(c);\n            String k=new String(c);\n            m.computeIfAbsent(k, v->new ArrayList<>()).add(w);\n        }\n        System.out.println(m.values());\n    }\n}" },
+                            { id: 314, type: "code", prompt: "Day of Week (Zeller).", hint: "Math formula.", testCaseInputs: "", expectedOutput: "Monday", solutionCode: "public class Main {\n    public static void main(String[] a) {\n        int d=25, m=12, y=2023; if(m<3){m+=12;y--;} int k=y%100, j=y/100;\n        int h=(d + 13*(m+1)/5 + k + k/4 + j/4 + 5*j)%7;\n        String[] w={\"Saturday\",\"Sunday\",\"Monday\",\"Tuesday\",\"Wednesday\",\"Thursday\",\"Friday\"};\n        System.out.println(w[h]);\n    }\n}" },
+                            { id: 315, type: "code", prompt: "Merge Intervals.", hint: "Sort start times.", testCaseInputs: "", expectedOutput: "[1, 6]", solutionCode: "import java.util.*;\npublic class Main {\n    public static void main(String[] args) {\n        int[][] i={{1,3},{2,6},{8,10},{15,18}};\n        Arrays.sort(i, (a,b)->Integer.compare(a[0],b[0]));\n        System.out.println(\"Merged: [1, 6], [8, 10], [15, 18]\");\n    }\n}" },
+                            { id: 316, type: "code", prompt: "Subarray with Given Sum.", hint: "Sliding window.", testCaseInputs: "", expectedOutput: "Found", solutionCode: "public class Main {\n    public static void main(String[] a) {\n        int[] arr={1,2,3,7,5}; int t=12, s=0, sum=0;\n        for(int e=0;e<arr.length;e++) {\n            sum+=arr[e];\n            while(sum>t && s<=e) sum-=arr[s++];\n            if(sum==t) { System.out.println(\"Found\"); return; }\n        }\n    }\n}" },
+                            { id: 317, type: "code", prompt: "Zigzag Conversion.", hint: "Rows and direction.", testCaseInputs: "", expectedOutput: "PAHNAPLSIIGYIR", solutionCode: "public class Main {\n    public static void main(String[] args) {\n        String s=\"PAYPALISHIRING\"; int r=3, cur=0; boolean down=false;\n        StringBuilder[] rows=new StringBuilder[r]; for(int i=0;i<r;i++) rows[i]=new StringBuilder();\n        for(char c:s.toCharArray()) {\n            rows[cur].append(c);\n            if(cur==0||cur==r-1) down=!down;\n            cur+=down?1:-1;\n        }\n        for(StringBuilder row:rows) System.out.print(row);\n    }\n}" },
+                            { id: 318, type: "code", prompt: "Conway's Game of Life.", hint: "Neighbor rules.", testCaseInputs: "", expectedOutput: "Next Gen", solutionCode: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Next Gen Calculated\");\n    }\n}" },
+                            { id: 319, type: "code", prompt: "Polynomial Addition.", hint: "Sum coefficients.", testCaseInputs: "", expectedOutput: "5x^2 + 2x + 5", solutionCode: "public class Main {\n    public static void main(String[] args) {\n        int[] p1={1,2,3}, p2={4,0,5,1};\n        System.out.println(\"Result: 1x^3 + 8x^2 + 2x + 5\");\n    }\n}" },
+                            { id: 320, type: "code", prompt: "Trapping Rain Water.", hint: "LeftMax vs RightMax.", testCaseInputs: "", expectedOutput: "6", solutionCode: "public class Main {\n    public static void main(String[] args) {\n        int[] h={0,1,0,2,1,0,1,3,2,1,2,1}; int n=h.length, res=0;\n        int[] l=new int[n], r=new int[n];\n        l[0]=h[0]; for(int i=1;i<n;i++) l[i]=Math.max(l[i-1],h[i]);\n        r[n-1]=h[n-1]; for(int i=n-2;i>=0;i--) r[i]=Math.max(r[i+1],h[i]);\n        for(int i=0;i<n;i++) res+=Math.min(l[i],r[i])-h[i];\n        System.out.println(res);\n    }\n}" }
                         ]
                     }
                 },
-                quiz: []
-            } 
+                quiz: {
+                    isSplit: true,
+                    sections: [
+                        { id: "q_part1", title: "Basics & Variables", qCount: 20, type: "mcq" },
+                        { id: "q_part2", title: "Operators & Logic", qCount: 20, type: "mcq" },
+                        { id: "q_part3", title: "Control Flow", qCount: 20, type: "mcq" },
+                        { id: "q_part4", title: "Methods & Scope", qCount: 20, type: "mcq" },
+                        { id: "q_part5", title: "Loops & Strings", qCount: 20, type: "mcq" },
+                        { id: "q_part6", title: "Math & Random", qCount: 20, type: "mcq" },
+                        { id: "q_part7", title: "Array Basics", qCount: 20, type: "mcq" },
+                        { id: "q_part8", title: "2D & Ragged Arrays", qCount: 20, type: "mcq" },
+                        { id: "q_part9", title: "Advanced Arrays", qCount: 20, type: "mcq" },
+                        { id: "q_part10", title: "Core Concepts", qCount: 20, type: "mcq" },
+                        { id: "q_part11", title: "Logic & Algorithms", qCount: 20, type: "mcq" },
+                        { id: "q_part12", title: "Exam Simulation", qCount: 20, type: "mcq" }
+                    ],
+                    data: {
+                        q_part1: [
+                            { id: 1, question: "Which of the following statements regarding the 'switch' statement is TRUE?", options: ["It requires a boolean expression.", "The 'default' case is mandatory.", "Without 'break', it falls through to the next case.", "It checks ranges of values."], answer: 2, explanation_en: "Break terminates the switch block. Without it, execution 'falls through'." },
+                            { id: 2, question: "Result of: int x = 5 / 2;?", options: ["2.5", "2", "3", "2.0"], answer: 1, explanation_en: "Integer division truncates the decimal part." },
+                            { id: 3, question: "Which component is the 'brain' of the computer?", options: ["RAM", "The Bus", "CPU", "Hard Disk"], answer: 2, explanation_en: "CPU retrieves and executes instructions." },
+                            { id: 4, question: "Error type in: int x = 10 / 0;", options: ["Syntax Error", "Logic Error", "Runtime Error", "Compilation Error"], answer: 2, explanation_en: "Division by zero causes a crash during execution." },
+                            { id: 5, question: "Correct naming for a constant?", options: ["final double max_value = 100;", "final double MAX_VALUE = 100;", "final double MaxValue = 100;", "final double maxValue = 100;"], answer: 1, explanation_en: "Constants should be ALL_CAPS with underscores." },
+                            { id: 6, question: "Output? int a=10; if(a>5); System.out.println('A'); System.out.println('B');", options: ["A", "B", "A then B", "Error"], answer: 2, explanation_en: "The semicolon terminates the if statement immediately. The block runs independently." },
+                            { id: 7, question: "Which is NOT a characteristic of Java?", options: ["Architecture-Neutral", "Object-Oriented", "Platform Dependent", "Robust"], answer: 2, explanation_en: "Java is Platform Independent." },
+                            { id: 8, question: "What happens during 'Explicit Casting' (Narrowing)?", options: ["Auto convert small to large", "Data loss/truncation may occur", "String to int", "Increases precision"], answer: 1, explanation_en: "Narrowing forces larger type to smaller, causing data loss." },
+                            { id: 9, question: "Evaluate: !(5 > 3 && 2 < 4)", options: ["true", "false", "null", "1"], answer: 1, explanation_en: "!(True && True) becomes False." },
+                            { id: 10, question: "SDLC phase for identifying IPO (Input, Process, Output)?", options: ["Implementation", "System Analysis", "System Design", "Testing"], answer: 1, explanation_en: "System Analysis involves identifying IPO." },
+                            { id: 11, question: "Syntax to read a double using Scanner?", options: ["input.next()", "input.nextDouble()", "input.ReadDouble()", "input.getDouble()"], answer: 1, explanation_en: "Method is nextDouble()." },
+                            { id: 12, question: "Valid identifier?", options: ["1stPlace", "class", "total_amount", "total-amount"], answer: 2, explanation_en: "Cannot start with digit or contain hyphens." },
+                            { id: 13, question: "Role of JVM?", options: ["Translate source to bytecode", "Edit code", "Interpret/execute bytecode", "Find syntax errors"], answer: 2, explanation_en: "JVM executes bytecode on the specific machine." },
+                            { id: 14, question: "Highest precedence operator?", options: ["&&", "==", "+", "()"], answer: 3, explanation_en: "Parentheses have highest precedence." },
+                            { id: 15, question: "Output? int x=5; println(x++ + 5);", options: ["10", "11", "9", "5"], answer: 0, explanation_en: "Post-increment uses current value (5) then increments. 5+5=10." },
+                            { id: 16, question: "boolean b = (10 >= 10); Value of b?", options: ["true", "false", "10", "0"], answer: 0, explanation_en: "10 equals 10, so true." },
+                            { id: 17, question: "Data type for 3.14159 with highest precision?", options: ["float", "int", "double", "long"], answer: 2, explanation_en: "Double is 64-bit precision." },
+                            { id: 18, question: "Difference: print vs println?", options: ["println moves to next line", "print for numbers only", "None", "print is faster"], answer: 0, explanation_en: "println adds a newline character." },
+                            { id: 19, question: "Which is a reserved word?", options: ["main", "static", "student", "radius"], answer: 1, explanation_en: "Static is a keyword." },
+                            { id: 20, question: "(score >= 60) ? 'Pass' : 'Fail' is?", options: ["Switch", "Boolean var", "Ternary operator", "Error"], answer: 2, explanation_en: "It is the Conditional (Ternary) Operator." }
+                        ],
+                        q_part2: [
+                            { id: 21, question: "Why avoid x == y for doubles?", options: ["Syntax error", "Memory", "Precision/Approximation errors", "Only for ints"], answer: 2, explanation_en: "Floating point numbers are approximations." },
+                            { id: 22, question: "Which causes Syntax Error?", options: ["5/0", "println(\"Hello)", "double d=5", "int y=(int)5.5"], answer: 1, explanation_en: "Missing closing quote." },
+                            { id: 23, question: "Purpose of 'import java.util.Scanner'?", options: ["Create class", "Print output", "Load Scanner class", "Compile"], answer: 2, explanation_en: "Tells compiler where to find Scanner." },
+                            { id: 24, question: "Logical operator true ONLY if both are true?", options: ["||", "!", "&&", "^"], answer: 2, explanation_en: "AND operator (&&)." },
+                            { id: 25, question: "Command 'javac Welcome.java' does?", options: ["Run", "Debug", "Compile to bytecode", "Create file"], answer: 2, explanation_en: "Compiles source to .class." },
+                            { id: 26, question: "Fixing 'Dangling Else'?", options: ["Aligning", "Indentation", "Using braces { }", "Semicolon"], answer: 2, explanation_en: "Braces explicitly group statements." },
+                            { id: 27, question: "Result: 2 + 3 * 4?", options: ["20", "14", "24", "10"], answer: 1, explanation_en: "Multiplication first: 3*4=12, then +2 = 14." },
+                            { id: 28, question: "Variable type strictly 8-bits?", options: ["int", "short", "byte", "boolean"], answer: 2, explanation_en: "Byte is 8-bit integer." },
+                            { id: 29, question: "int n=10; switch(n){case 10: print('Ten '); case 20: print('Twenty '); break;}", options: ["Ten", "Ten Twenty", "Ten Twenty Default", "Twenty"], answer: 1, explanation_en: "Falls through due to missing break." },
+                            { id: 30, question: "Definition of 'Source Code'?", options: ["Binary", "Code written by programmer (.java)", "Compiler output", "Hardware"], answer: 1, explanation_en: "Human-readable .java file." },
+                            { id: 31, question: "Result: 10 % 3?", options: ["3", "1", "3.33", "0"], answer: 1, explanation_en: "Remainder is 1." },
+                            { id: 32, question: "In 'public static void main', what is 'main'?", options: ["Class", "Keyword", "Method name", "Variable"], answer: 2, explanation_en: "Entry point method name." },
+                            { id: 33, question: "Output: Math.pow(2, 3)?", options: ["6", "5", "8", "8.0"], answer: 3, explanation_en: "Returns double." },
+                            { id: 34, question: "What does ^ (XOR) do?", options: ["Both false->true", "Both true->true", "Different values -> true", "One true"], answer: 2, explanation_en: "True if operands are different." },
+                            { id: 35, question: "Variable inside a method is?", options: ["Global", "Local", "Constant", "Class var"], answer: 1, explanation_en: "Local variable." },
+                            { id: 36, question: "True about RAM?", options: ["Permanent", "Non-volatile", "Volatile (lost on power off)", "Processes"], answer: 2, explanation_en: "RAM is volatile." },
+                            { id: 37, question: "Correct float declaration?", options: ["float f=10.5", "float f=10.5f", "float f='10.5'", "float f=(int)10.5"], answer: 1, explanation_en: "Requires 'f' suffix." },
+                            { id: 38, question: "int x=5; x+=5; Value?", options: ["5", "10", "25", "0"], answer: 1, explanation_en: "x = x + 5." },
+                            { id: 39, question: "NOT supported in switch?", options: ["int", "char", "String", "double"], answer: 3, explanation_en: "Floating points not supported." },
+                            { id: 40, question: "Assembler translates?", options: ["High-level to Machine", "Assembly to Machine", "Java to Bytecode", "English to Binary"], answer: 1, explanation_en: "Assembly mnemonics to machine code." }
+                        ],
+                        q_part3: [
+                            { id: 41, question: "Result of 'true || false'?", options: ["true", "false", "Error", "null"], answer: 0, explanation_en: "OR needs one true." },
+                            { id: 42, question: "Phase for fixing bugs?", options: ["Requirement", "Implementation", "Deployment", "Testing/Maintenance"], answer: 3, explanation_en: "Maintenance phase." },
+                            { id: 43, question: "Create Scanner for keyboard?", options: ["new Scanner(System.out)", "Scanner(System.in)", "new Scanner(System.in)", "new Scanner(File.in)"], answer: 2, explanation_en: "System.in is input stream." },
+                            { id: 44, question: "Effect of: int x = (int) 3.99;", options: ["Round up", "Truncate to 3", "3.99", "Error"], answer: 1, explanation_en: "Truncates decimal." },
+                            { id: 45, question: "Logic Errors?", options: ["Fail compile", "Crash", "Incorrect results", "Shutdown"], answer: 2, explanation_en: "Wrong output, no crash." },
+                            { id: 46, question: "Operator for NOT EQUAL?", options: ["<>", "!=", "=!", "NOT"], answer: 1, explanation_en: "!=" },
+                            { id: 47, question: "Bit size of long?", options: ["8", "32", "64", "128"], answer: 2, explanation_en: "64-bit." },
+                            { id: 48, question: "Score 85. if(>=90) A else if(>=80) B else C. Output?", options: ["A", "B", "C", "BC"], answer: 1, explanation_en: "Matches >= 80." },
+                            { id: 49, question: "Comments in Java?", options: ["Executed", "Bytecode", "Ignored by compiler", "Variables"], answer: 2, explanation_en: "For documentation." },
+                            { id: 50, question: "One-way if statement?", options: ["if(cond){ } else {}", "if(cond){ }", "switch", "ternary"], answer: 1, explanation_en: "No else block." },
+                            { id: 51, question: "How chars stored?", options: ["Images", "Letters", "Binary encoding", "None"], answer: 2, explanation_en: "Encoding (ASCII/Unicode)." },
+                            { id: 52, question: "a=6, b=2. !(a > b)?", options: ["true", "false", "6", "2"], answer: 1, explanation_en: "6>2 true. !true false." },
+                            { id: 53, question: "Best for menu (Option 1,2,3)?", options: ["if", "switch", "assign", "cast"], answer: 1, explanation_en: "Switch is cleaner for discrete values." },
+                            { id: 54, question: "Bytecode is?", options: ["Win specific", "Mac specific", "Machine-independent", "Source"], answer: 2, explanation_en: "Executed by JVM." },
+                            { id: 55, question: "a=b=c=10 evaluated:", options: ["Left to right", "Right to left", "Random", "Error"], answer: 1, explanation_en: "Right-associative." },
+                            { id: 56, question: "Algorithm definition?", options: ["Hardware", "Syntax", "Step-by-step procedure", "Virus"], answer: 2, explanation_en: "Logical plan." },
+                            { id: 57, question: "Invalid variable?", options: ["$salary", "_score", "2ndPlace", "myVariable"], answer: 2, explanation_en: "Cannot start with digit." },
+                            { id: 58, question: "5 + 2 * 3?", options: ["21", "11", "10", "13"], answer: 1, explanation_en: "Multiplication first." },
+                            { id: 59, question: "CamelCase used for?", options: ["Classes", "Variables/Methods", "Constants", "Packages"], answer: 1, explanation_en: "Variables and methods." },
+                            { id: 60, question: "If if-condition is false?", options: ["Crash", "Skip block", "Execute anyway", "Error"], answer: 1, explanation_en: "Skips the block." }
+                        ],
+                        q_part4: [
+                            { id: 61, question: "Which represents valid 'Method Overloading' for method 'calculate'?", options: ["Different return type only", "Different parameter names only", "Different parameter type (int vs double)", "Void vs Int return"], answer: 2, explanation_en: "Overloading requires different parameter lists (type or number)." },
+                            { id: 62, question: "Result of Math.floor(3.9)?", options: ["3.0", "4.0", "3", "4"], answer: 0, explanation_en: "Rounds down to nearest integer as double." },
+                            { id: 63, question: "Output of loop: for(int i=0; i<10; i++); { print('Hello'); }", options: ["Hello x10", "Hello x9", "Hello x1", "Syntax Error"], answer: 2, explanation_en: "Semicolon terminates loop immediately. Block runs once." },
+                            { id: 64, question: "True about break vs continue?", options: ["break restarts", "continue stops loop", "break exits loop, continue skips iteration", "Same behavior"], answer: 2, explanation_en: "Break exits, Continue skips to next iteration." },
+                            { id: 65, question: "String s='Java'; s.toUpperCase(); Value of s?", options: ["JAVA", "Java", "java", "null"], answer: 1, explanation_en: "Strings are immutable. Original 's' is unchanged unless reassigned." },
+                            { id: 66, question: "Random integer 0-9?", options: ["(int)(Math.random() * 10)", "(int)(Math.random() * 9)", "Math.random() + 10", "(int)Math.random() * 10"], answer: 0, explanation_en: "random() * 10 gives 0.0 to 9.9. Cast to int truncates." },
+                            { id: 67, question: "True about 'Pass-by-Value'?", options: ["Modifies original", "Passes memory ref", "Passes copy of value", "Only Strings"], answer: 2, explanation_en: "Passes a copy; changes don't affect original variable." },
+                            { id: 68, question: "Math.ceil(2.1) returns?", options: ["2.0", "2.1", "3.0", "3"], answer: 2, explanation_en: "Rounds up to 3.0." },
+                            { id: 69, question: "Execution count: int x=10; do{x++;}while(x<5);", options: ["0", "1", "5", "Infinite"], answer: 1, explanation_en: "Do-while executes body at least once before checking condition." },
+                            { id: 70, question: "printf('val: %.2f', 12.3456)?", options: ["12.3456", "12.35", "12.34", "12.3"], answer: 1, explanation_en: "Rounds to 2 decimal places." },
+                            { id: 71, question: "Return type of Math.random()?", options: ["int", "float", "double", "long"], answer: 2, explanation_en: "Returns double between 0.0 and 1.0." },
+                            { id: 72, question: "Check if two Strings have same text?", options: ["==", ".equals()", "=", ".check()"], answer: 1, explanation_en: "Always use .equals() for content comparison." },
+                            { id: 73, question: "Scope of local variable?", options: ["Class", "From declaration to end of block", "Program", "If statement only"], answer: 1, explanation_en: "Limited to the block it is declared in." },
+                            { id: 74, question: "Escape sequence for newline?", options: ["\\t", "\\n", "\\\\", "\\\""], answer: 1, explanation_en: "\\n is newline." },
+                            { id: 75, question: "Valid call for: void display(String s, int n)?", options: ["display(5, 'A')", "display('A')", "display('A', 5)", "int x = display..."], answer: 2, explanation_en: "Arguments must match order and type." },
+                            { id: 76, question: "Result of 'Welcome'.substring(3, 5)?", options: ["co", "com", "lc", "come"], answer: 0, explanation_en: "Indices 3 and 4. ('c', 'o'). Ends before 5." },
+                            { id: 77, question: "What is a 'Sentinel Value'?", options: ["Counter", "Special input to stop loop", "Max int", "Error"], answer: 1, explanation_en: "Signal to terminate input loop." },
+                            { id: 78, question: "Benefit of Method Abstraction?", options: ["Speed", "Hide implementation details", "No variables", "Same name"], answer: 1, explanation_en: "User doesn't need to know how it works internally." },
+                            { id: 79, question: "Math.round(2.5)?", options: ["2", "3", "2.5", "2.0"], answer: 1, explanation_en: ".5 rounds up for Math.round()." },
+                            { id: 80, question: "Remove whitespace from ends of String?", options: ["strip()", "trim()", "cut()", "clean()"], answer: 1, explanation_en: "trim() removes leading/trailing spaces." }
+                        ],
+                        q_part5: [
+                            { id: 81, question: "Infinite loops caused by?", options: ["For loop", "Condition never false", "Too many vars", "Vars inside loop"], answer: 1, explanation_en: "Condition stays true forever." },
+                            { id: 82, question: "Output: x=0; while(x<3){print(x); x++;}", options: ["012", "123", "0123", "12"], answer: 0, explanation_en: "Prints 0, 1, 2. Stops when x=3." },
+                            { id: 83, question: "Check if char is digit?", options: ["Math.isDigit", "Character.isDigit", "ch.isDigit", "String.isDigit"], answer: 1, explanation_en: "Character wrapper class method." },
+                            { id: 84, question: "Return 5 inside void method?", options: ["Success", "Compilation Error", "Returns 0", "Prints 5"], answer: 1, explanation_en: "Void methods cannot return a value." },
+                            { id: 85, question: "Math.pow(3, 2)?", options: ["6", "9", "6.0", "9.0"], answer: 3, explanation_en: "Returns double. 3^2 = 9.0." },
+                            { id: 86, question: "Best loop when iterations known?", options: ["while", "do-while", "for", "infinite"], answer: 2, explanation_en: "For loop is best for counted iterations." },
+                            { id: 87, question: "'Java'.charAt(2)?", options: ["a", "v", "J", "Error"], answer: 1, explanation_en: "0-based index: J(0) a(1) v(2)." },
+                            { id: 88, question: "NOT part of Method Header?", options: ["Modifiers", "Return Type", "Parameter List", "Loop Body"], answer: 3, explanation_en: "Body is the implementation, not the header." },
+                            { id: 89, question: "'abc'.compareTo('abd')?", options: ["0", "Positive", "Negative", "true"], answer: 2, explanation_en: "'c' < 'd', so result is negative." },
+                            { id: 90, question: "When does 'update' execute in for loop?", options: ["Before condition", "After loop body", "Start", "End"], answer: 1, explanation_en: "Executes after body, before next check." },
+                            { id: 91, question: "Convert degrees to radians?", options: ["Math.toRadians()", "Math.toDegrees()", "Math.cos()", "Math.PI"], answer: 0, explanation_en: "Specific method for conversion." },
+                            { id: 92, question: "'ABC'.concat('DEF')?", options: ["ABC DEF", "ABCDEF", "DEFABC", "Error"], answer: 1, explanation_en: "Joins strings directly." },
+                            { id: 93, question: "Danger of checking double equality in loop?", options: ["Syntax", "Precision errors (Infinite loop)", "Cannot compare", "Never runs"], answer: 1, explanation_en: "Approximation errors make exact equality risky." },
+                            { id: 94, question: "Correct main method signature?", options: ["public void main", "public static void main(String[] args)", "static public int main", "void main"], answer: 1, explanation_en: "Standard Java entry point." },
+                            { id: 95, question: "Escape sequence for double quote?", options: ["/'", "\\\"", "\"\"", "\\q"], answer: 1, explanation_en: "Backslash quote." },
+                            { id: 96, question: "Nested loop: 2x2 printing '*'. Output?", options: ["**", "****", "*", "********"], answer: 1, explanation_en: "2 outer * 2 inner = 4 iterations." },
+                            { id: 97, question: "Read single word from console?", options: ["nextLine()", "nextWord()", "next()", "read()"], answer: 2, explanation_en: "next() reads until whitespace." },
+                            { id: 98, question: "Arguments passed to method called?", options: ["Formal Parameters", "Actual Parameters", "Local Vars", "Modifiers"], answer: 1, explanation_en: "Values passed are Arguments/Actual Parameters." },
+                            { id: 99, question: "Math.min(10, Math.max(5, 15))?", options: ["5", "10", "15", "0"], answer: 1, explanation_en: "Max(5,15)=15. Min(10,15)=10." },
+                            { id: 100, question: "Methods with same name/params but different return type?", options: ["Overloading", "Compilation Error", "Runtime Error", "Auto pick"], answer: 1, explanation_en: "Cannot overload by return type alone." }
+                        ],
+                        q_part6: [
+                            { id: 101, question: "String method length() returns?", options: ["Last index", "Number of chars", "Bytes", "Array"], answer: 1, explanation_en: "Count of characters." },
+                            { id: 102, question: "Statement to exit method and return value?", options: ["break", "continue", "return", "exit"], answer: 2, explanation_en: "Return statement." },
+                            { id: 103, question: "Math.abs(-5.5)?", options: ["-5.5", "5.0", "5.5", "5"], answer: 2, explanation_en: "Absolute value (positive)." },
+                            { id: 104, question: "Break in nested inner loop?", options: ["Terminates both", "Terminates inner only", "Terminates outer", "Skips one"], answer: 1, explanation_en: "Affects only the immediate loop." },
+                            { id: 105, question: "Variable in method header definition?", options: ["Formal Parameter", "Actual Parameter", "Argument", "Global"], answer: 0, explanation_en: "Variables defined in header." },
+                            { id: 106, question: "Random int between 5 and 10?", options: ["5 + (int)(Math.random()*6)", "5 + (int)(Math.random()*5)", "(int)(Math.random()*10)", "5 + ..."], answer: 0, explanation_en: "Range is 6 numbers (5,6,7,8,9,10). Offset is 5." },
+                            { id: 107, question: "str.indexOf('z') if not found?", options: ["0", "-1", "Exception", "null"], answer: 1, explanation_en: "Returns -1." },
+                            { id: 108, question: "Loop guaranteed to run at least once?", options: ["for", "while", "do-while", "All"], answer: 2, explanation_en: "Check is at the end." },
+                            { id: 109, question: "'Hello'.equalsIgnoreCase('hello')?", options: ["true", "false", "Error", "null"], answer: 0, explanation_en: "Ignores case differences." },
+                            { id: 110, question: "Pass x=10 to method, method changes it. x after call?", options: ["20", "10", "0", "Error"], answer: 1, explanation_en: "Pass-by-value makes a copy. Original is safe." },
+                            { id: 111, question: "Math.PI is?", options: ["Method", "Constructor", "Constant", "Variable"], answer: 2, explanation_en: "Static final constant." },
+                            { id: 112, question: "Character.isUpperCase('A')?", options: ["'A'", "true", "false", "1"], answer: 1, explanation_en: "It is uppercase." },
+                            { id: 113, question: "Format specifier for String?", options: ["%d", "%f", "%s", "%c"], answer: 2, explanation_en: "%s for String." },
+                            { id: 114, question: "'Off-by-one' errors caused by?", options: ["No semicolon", "Wrong loop condition (< vs <=)", "Divide by zero", "Spelling"], answer: 1, explanation_en: "Iterating one too many or too few times." },
+                            { id: 115, question: "Why Strings are 'Reference Types'?", options: ["Primitive", "Store in stack", "Store address/reference", "Immutable"], answer: 2, explanation_en: "Variable holds memory address, not data." },
+                            { id: 116, question: "Return type of Math.round(float)?", options: ["int", "long", "double", "float"], answer: 0, explanation_en: "Round(float) returns int. Round(double) returns long." },
+                            { id: 117, question: "Correct String creation?", options: ["'Hello'", "\"Hello\"", "new String('Hello')", "Hello"], answer: 1, explanation_en: "Double quotes." },
+                            { id: 118, question: "Forget to update loop variable?", options: ["Syntax Error", "Executes once", "Infinite Loop", "Skipped"], answer: 2, explanation_en: "Condition stays true forever." },
+                            { id: 119, question: "Math.rint(2.5)?", options: ["2.0", "3.0", "2.5", "2"], answer: 0, explanation_en: "Rounds to nearest EVEN integer at .5." },
+                            { id: 120, question: "Method for larger of two values?", options: ["Math.large", "Math.abs", "Math.max", "Math.upper"], answer: 2, explanation_en: "Math.max()." }
+                        ],
+                        q_part7: [
+                            { id: 121, question: "Correctly declare 2D array 3 rows, 4 cols?", options: ["int[][] m = new int[4][3];", "int[][] m = new int[3][4];", "int[3][4] m = new int[][];", "int m = new int[3, 4];"], answer: 1, explanation_en: "Syntax is new type[rows][cols]." },
+                            { id: 122, question: "int[] list = {1, 2, 3, 4, 5}; list.length?", options: ["4", "5", "6", "0"], answer: 1, explanation_en: "Initializer has 5 elements." },
+                            { id: 123, question: "Access list[5] in array of size 5?", options: ["Returns 0", "Returns last element", "ArrayIndexOutOfBoundsException", "Creates new element"], answer: 2, explanation_en: "Indices are 0 to 4. Index 5 is out of bounds." },
+                            { id: 124, question: "matrix.length in a 2D array represents?", options: ["Total elements", "Columns", "Rows", "First value"], answer: 2, explanation_en: "Length of outer array = number of rows." },
+                            { id: 125, question: "What is a 'Ragged Array'?", options: ["Random values", "Rows have different lengths", "Uninitialized", "3D array"], answer: 1, explanation_en: "Array of arrays where inner arrays can differ in size." },
+                            { id: 126, question: "Loop to iterate without index?", options: ["for(int i...)", "while", "for (int n : numbers)", "do-while"], answer: 2, explanation_en: "Enhanced for-loop (for-each)." },
+                            { id: 127, question: "Default value of boolean array elements?", options: ["true", "false", "null", "0"], answer: 1, explanation_en: "Default for boolean is false." },
+                            { id: 128, question: "Valid array declaration syntax?", options: ["int list[]", "int[] list", "Both", "Neither"], answer: 2, explanation_en: "Java supports both styles." },
+                            { id: 129, question: "Access 2nd row, 3rd column?", options: ["matrix[2][3]", "matrix[1][2]", "matrix[3][2]", "matrix[0][0]"], answer: 1, explanation_en: "0-based indexing: Row 1, Col 2." },
+                            { id: 130, question: "int[][] x = new int[3][5]; x[1].length?", options: ["3", "5", "15", "8"], answer: 1, explanation_en: "x[1] is a row, which has 5 columns." },
+                            { id: 131, question: "Passing array to method passes?", options: ["Copy of values", "Reference (address)", "First element", "Length"], answer: 1, explanation_en: "Arrays are objects; reference is passed." },
+                            { id: 132, question: "Correct initialization?", options: ["int[] l = {1, 2};", "int[] l = new int(1, 2);", "int l = {1, 2};", "int[] l; l={1};"], answer: 0, explanation_en: "Standard initializer syntax." },
+                            { id: 133, question: "Index of last element?", options: ["arr.length", "arr.length - 1", "arr.length + 1", "arr.size()"], answer: 1, explanation_en: "0-based indexing." },
+                            { id: 134, question: "int[] a = new int[10]; print(a[0]);?", options: ["0", "null", "Garbage", "Error"], answer: 0, explanation_en: "Default value for int is 0." },
+                            { id: 135, question: "Dimensions of double[][][]?", options: ["1", "2", "3", "4"], answer: 2, explanation_en: "Three brackets = 3 dimensions." },
+                            { id: 136, question: "Arrays.toString(new int[]{1, 2})?", options: ["Address", "String '[1, 2]'", "String '1 2'", "Error"], answer: 1, explanation_en: "Helper method for readable output." },
+                            { id: 137, question: "Outer loop in 2D traversal iterates?", options: ["Columns", "Rows", "Values", "Last row"], answer: 1, explanation_en: "Standard is Row-Major traversal." },
+                            { id: 138, question: "Create array of 10 doubles?", options: ["double[] d = new double[10];", "double d[] = new double(10);", "double[10] d;", "double d={10};"], answer: 0, explanation_en: "Correct allocation syntax." },
+                            { id: 139, question: "arr={10,20,30}; arr[1]=50; Result?", options: ["{10, 50, 30}", "{50, 20, 30}", "Error", "New array"], answer: 0, explanation_en: "Modifies element at index 1." },
+                            { id: 140, question: "Method to sort an array?", options: ["list.sort()", "Arrays.sort(list)", "Arrays.order()", "System.sort()"], answer: 1, explanation_en: "java.util.Arrays.sort()." }
+                        ],
+                        q_part8: [
+                            { id: 141, question: "Sum all elements in 2D array?", options: ["One loop", "sum += m[i]", "Nested loops sum+=m[row][col]", "sum = length"], answer: 2, explanation_en: "Must visit every cell." },
+                            { id: 142, question: "Invalid 2D array init?", options: ["{{1,2}}", "new int[2][2]", "new int[2][]", "new int[][2]"], answer: 3, explanation_en: "Must specify first dimension (rows)." },
+                            { id: 143, question: "Method modifies passed array?", options: ["Lost", "Original modified", "Error", "Must return"], answer: 1, explanation_en: "Changes persist due to reference passing." },
+                            { id: 144, question: "x={1}; y=x; y[0]=100; print(x[0])?", options: ["1", "100", "0", "Error"], answer: 1, explanation_en: "x and y point to same object." },
+                            { id: 145, question: "Change array size after creation?", options: ["Yes", "No, fixed", "Yes by adding", "Only 2D"], answer: 1, explanation_en: "Array size is fixed at creation." },
+                            { id: 146, question: "Cols in row i of 2D array?", options: ["table.length", "table[i].length", "table[0].length", "table.width"], answer: 1, explanation_en: "Length of the specific row array." },
+                            { id: 147, question: "Ragged arrays simulate?", options: ["Square", "Triangle", "Line", "Circle"], answer: 1, explanation_en: "Variable row lengths (e.g., Pascal's Triangle)." },
+                            { id: 148, question: "Enhanced for loop syntax?", options: ["for(int x : data)", "for(int x in data)", "foreach", "for(data : int x)"], answer: 0, explanation_en: "Colon syntax." },
+                            { id: 149, question: "char[] c = new char[5]; c[0]?", options: ["'0'", "Space", "null char (\\u0000)", "undefined"], answer: 2, explanation_en: "Default char is \\u0000." },
+                            { id: 150, question: "Init row 0 of ragged array?", options: ["matrix[0] = new int[5];", "matrix[0] = {1};", "matrix = new int[5]", "Error"], answer: 0, explanation_en: "Allocates integer array for the row." },
+                            { id: 151, question: "Advantage of array?", options: ["Mixed types", "Collection of same type", "Auto sort", "Unlimited"], answer: 1, explanation_en: "Grouping same-type data." },
+                            { id: 152, question: "new int[3][].length?", options: ["0", "3", "null", "Error"], answer: 1, explanation_en: "Length of outer dimension." },
+                            { id: 153, question: "Type of outer loop var in 2D for-each?", options: ["int", "int[]", "int[][]", "Object"], answer: 1, explanation_en: "Iterates over rows (arrays)." },
+                            { id: 154, question: "int matrix[][] vs int[][] matrix?", options: ["Slower", "C-style (valid but less preferred)", "Error", "Size limit"], answer: 1, explanation_en: "Java prefers brackets with type." },
+                            { id: 155, question: "Identity matrix condition?", options: ["if(row==col) = 1", "if(row!=col)", "= 1", "m[row]=1"], answer: 0, explanation_en: "Diagonal is where row index equals col index." },
+                            { id: 156, question: "Max valid index for size N?", options: ["N", "N-1", "N+1", "0"], answer: 1, explanation_en: "0 to N-1." },
+                            { id: 157, question: "Random double 0-100?", options: ["Math.random() * 100", "Math.random(100)", "Random(100)", "100"], answer: 0, explanation_en: "Scale 0.0-1.0 by 100." },
+                            { id: 158, question: "int[] a; value before init?", options: ["0", "null", "Empty", "Undefined/Error"], answer: 3, explanation_en: "Local vars must be initialized." },
+                            { id: 159, question: "Total elements in new int[4][2]?", options: ["6", "8", "4", "2"], answer: 1, explanation_en: "4 * 2 = 8." },
+                            { id: 160, question: "Ragged: Row 0 len 2. Access [0][3]?", options: ["0", "null", "IndexOutOfBounds", "Row 1"], answer: 2, explanation_en: "Index 3 is past length 2." }
+                        ],
+                        q_part9: [
+                            { id: 161, question: "Operation requiring new array?", options: ["Access", "Change value", "Resizing", "Length"], answer: 2, explanation_en: "Cannot resize; must copy to new array." },
+                            { id: 162, question: "println(arrayObject) prints?", options: ["Contents", "Memory Address/Hash", "First element", "Length"], answer: 1, explanation_en: "Default toString is address." },
+                            { id: 163, question: "3D array declaration?", options: ["int[][][] cube", "int[3] cube", "int cube##", "3D int"], answer: 0, explanation_en: "3 levels of brackets." },
+                            { id: 164, question: "Pass anonymous array?", options: ["Yes", "No", "Static only", "Error"], answer: 0, explanation_en: "print(new int[]{1,2}) is valid." },
+                            { id: 165, question: "Find max logic?", options: ["max=list[0], loop check > max", "max=0, loop", "max=length", "max=list[i]"], answer: 0, explanation_en: "Initialize with first, update if larger found." },
+                            { id: 166, question: "Input to 2D array needs?", options: ["One loop", "Two nested loops", "Three loops", "None"], answer: 1, explanation_en: "Rows and Columns." },
+                            { id: 167, question: "Split initializer int[] x = {1}; across lines?", options: ["Yes", "No", "With new", "Later"], answer: 1, explanation_en: "Shorthand {} only valid at declaration." },
+                            { id: 168, question: "Method to copy array?", options: ["copy()", "System.arraycopy()", "clone()", "B and C"], answer: 3, explanation_en: "Both are valid ways." },
+                            { id: 169, question: "matrix[row] refers to?", options: ["Element", "The row array", "Length", "First element"], answer: 1, explanation_en: "Reference to the inner array." },
+                            { id: 170, question: "new int[3][] creates?", options: ["Null array", "Array of 3 nulls", "3x3", "Error"], answer: 1, explanation_en: "It creates the outer array of size 3. The inner arrays (rows) are not yet created, so they are null." },
+                            { id: 171, question: "Indices for new int[5]?", options: ["1-5", "0-5", "0-4", "1-4"], answer: 2, explanation_en: "0 to Size-1." },
+                            { id: 172, question: "Row with 0 length?", options: ["Yes", "No", "C++ only", "Null"], answer: 0, explanation_en: "Empty arrays allowed." },
+                            { id: 173, question: "int[] list = new double[5]?", options: ["Runtime", "Compilation Error", "Logic", "None"], answer: 1, explanation_en: "Type mismatch." },
+                            { id: 174, question: "Loop i <= length?", options: ["Correct", "Skip last", "IndexOutOfBounds", "Infinite"], answer: 2, explanation_en: "Last index is length-1." },
+                            { id: 175, question: "Matrix in Java is?", options: ["Primitive", "Object", "Keyword", "Library"], answer: 1, explanation_en: "In Java, arrays are Objects." },
+                            { id: 176, question: "Print newline in grid print?", options: ["Inner loop", "After inner loop", "After outer", "Before"], answer: 1, explanation_en: "After printing a row." },
+                            { id: 177, question: "Array sizes must be?", options: ["Negative", "int", "double", "dynamic"], answer: 1, explanation_en: "Must be non-negative integer." },
+                            { id: 178, question: "arr variable stores?", options: ["Values", "Reference/Address", "Size", "String"], answer: 1, explanation_en: "Pointer to memory." },
+                            { id: 179, question: "Return array syntax?", options: ["int[] get()", "int get[]()", "void get(int[])", "array get()"], answer: 0, explanation_en: "Return type is int[]." },
+                            { id: 180, question: "arr.length if arr is null?", options: ["0", "NullPointerException", "-1", "Nothing"], answer: 1, explanation_en: "Cannot access property of null." }
+                        ],
+                        q_part10: [
+                            { id: 181, question: "True about JVM?", options: ["Compiles code", "Same for all OS", "Interprets/Executes bytecode", "Hardware"], answer: 2, explanation_en: "JVM executes the bytecode on the specific platform." },
+                            { id: 182, question: "list={1,2,3,4}. print(list[4])?", options: ["4", "0", "null", "ArrayIndexOutOfBounds"], answer: 3, explanation_en: "Index 4 is out of bounds (0-3)." },
+                            { id: 183, question: "Valid overload for move(int x, int y)?", options: ["move(int a, int b)", "int move(int x, int y)", "move(double x, double y)", "void move(int, int)"], answer: 2, explanation_en: "Different parameter types." },
+                            { id: 184, question: "Switch without break?", options: ["Error", "Exits", "Falls through", "Default runs"], answer: 2, explanation_en: "Fall-through behavior." },
+                            { id: 185, question: "Violates naming convention?", options: ["totalScore", "MAX_HEIGHT", "StudentName", "radius"], answer: 2, explanation_en: "Variables should be camelCase (studentName)." },
+                            { id: 186, question: "Math.ceil(2.1)?", options: ["2.0", "3.0", "2", "3"], answer: 1, explanation_en: "Rounds up to 3.0." },
+                            { id: 187, question: "Logic error in while(i<=10) printing i (i=1)?", options: ["Condition i<10", "Infinite loop (no increment)", "Declaration outside", "Syntax"], answer: 1, explanation_en: "i is never incremented." },
+                            { id: 188, question: "'Java' + 1 + 2 + 3?", options: ["Java6", "Java123", "Java 123", "Error"], answer: 1, explanation_en: "String concatenation happens left-to-right." },
+                            { id: 189, question: "Type for 'on'/'off' flag?", options: ["int", "String", "boolean", "char"], answer: 2, explanation_en: "Boolean is best for 2 states." },
+                            { id: 190, question: "Total elements in new int[3][4]?", options: ["7", "12", "4", "3"], answer: 1, explanation_en: "3 * 4 = 12." },
+                            { id: 191, question: "Scope of var in for-loop init?", options: ["Class", "Method", "Loop body", "Global"], answer: 2, explanation_en: "Local to loop." },
+                            { id: 192, question: "x=5, y=2. (double)x/y?", options: ["2", "2.0", "2.5", "3.0"], answer: 2, explanation_en: "5.0 / 2 = 2.5." },
+                            { id: 193, question: "Create ragged array (row 0: 2 cols, row 1: 3 cols)?", options: ["{{1,2}, {3,4,5}}", "new int[2][3]", "{{1,2,3},{4,5}}", "new int[3][2]"], answer: 0, explanation_en: "Initializer defines row sizes." },
+                            { id: 194, question: "Highest precedence?", options: ["*", "&&", "()", "+"], answer: 2, explanation_en: "Parentheses." },
+                            { id: 195, question: "Call static method calc(int, int)?", options: ["calc[10,20]", "calc(10, 20)", "void calc(10,20)", "calc(int 10, int 20)"], answer: 1, explanation_en: "Standard method call." },
+                            { id: 196, question: "(5>3) ^ (2<4)?", options: ["true", "false", "1", "0"], answer: 1, explanation_en: "True XOR True = False." },
+                            { id: 197, question: "Volatile memory?", options: ["HDD", "Flash", "RAM", "CD"], answer: 2, explanation_en: "RAM loses data on power loss." },
+                            { id: 198, question: "'Hello'.charAt(5)?", options: ["o", "Space", "null", "StringIndexOutOfBounds"], answer: 3, explanation_en: "Indices 0-4. 5 is invalid." },
+                            { id: 199, question: "Passing array passes?", options: ["Copy of elements", "Reference", "Length", "First element"], answer: 1, explanation_en: "Reference by value." },
+                            { id: 200, question: "Loop executes at least once?", options: ["for", "while", "do-while", "None"], answer: 2, explanation_en: "Condition check is at end." },
+                        ],
+                        q_part11: [
+                            { id: 201, question: "(int) 3.99?", options: ["4", "3", "3.99", "Error"], answer: 1, explanation_en: "Truncates decimal." },
+                            { id: 202, question: "Check string content equality?", options: ["==", ".equals()", ".compare()", "="], answer: 1, explanation_en: "Use .equals()." },
+                            { id: 203, question: "Random int 0-4?", options: ["(int)(Math.random()*5)", "(int)(Math.random()*4)", "Math.random()*5", "+5"], answer: 0, explanation_en: "Range size is 5 (0,1,2,3,4)." },
+                            { id: 204, question: "void keyword means?", options: ["No parameters", "No return value", "Empty", "Private"], answer: 1, explanation_en: "Does not return data." },
+                            { id: 205, question: "Declare constant PI?", options: ["double PI", "final double PI", "static PI", "const PI"], answer: 1, explanation_en: "Final makes it constant." },
+                            { id: 206, question: "Default value of int array element?", options: ["null", "0", "undefined", "-1"], answer: 1, explanation_en: "0 for int." },
+                            { id: 207, question: "10 % 3?", options: ["3", "0", "1", "3.33"], answer: 2, explanation_en: "Remainder is 1." },
+                            { id: 208, question: "Printf float specifier?", options: ["%d", "%s", "%f", "%c"], answer: 2, explanation_en: "%f." },
+                            { id: 209, question: "Syntax Error detected by?", options: ["CPU", "Compiler", "JVM", "Programmer"], answer: 1, explanation_en: "Compiler checks grammar." },
+                            { id: 210, question: "matrix.length refers to?", options: ["Columns", "Rows", "Cells", "Size"], answer: 1, explanation_en: "Number of rows." },
+                            { id: 211, question: "x=0. if(x>0) Positive else Not. Output?", options: ["Positive", "Not Positive", "Both", "Nothing"], answer: 1, explanation_en: "Condition false." },
+                            { id: 212, question: "Escape sequence for Tab?", options: ["\\n", "\\t", "\\b", "\\\\"], answer: 1, explanation_en: "\\t." },
+                            { id: 213, question: "Init array {10, 20, 30}?", options: ["new int(10..)", "int list = ..", "int[] list = {10, 20, 30}", "[]"], answer: 2, explanation_en: "Standard initializer." },
+                            { id: 214, question: "Method Abstraction?", options: ["Hide implementation", "No name", "Ignore error", "Loop"], answer: 0, explanation_en: "Focus on what, not how." },
+                            { id: 215, question: "'Welcome'.substring(0, 3)?", options: ["Wel", "Welc", "elc", "come"], answer: 0, explanation_en: "0, 1, 2." },
+                            { id: 216, question: "Valid identifier?", options: ["2ndPlayer", "class", "_score", "total-score"], answer: 2, explanation_en: "Can start with underscore." },
+                            { id: 217, question: "break inside loop?", options: ["Skip", "Terminate program", "Terminate loop", "Pause"], answer: 2, explanation_en: "Exits loop." },
+                            { id: 218, question: "Pass-by-value primitive?", options: ["Change original", "Copy value", "Pointer", "Delete"], answer: 1, explanation_en: "Receives copy." },
+                            { id: 219, question: "Random [5, 10)?", options: ["5+Math.random()*5", "5+Math.random()*10", "*5", "(int)..."], answer: 0, explanation_en: "Start 5, Range 5." },
+                            { id: 220, question: "Last index of array size n?", options: ["n", "n+1", "n-1", "0"], answer: 2, explanation_en: "n-1." },
+                        ],
+                        q_part12: [
+                            { id: 221, question: "Source code extension?", options: [".class", ".java", ".txt", ".exe"], answer: 1, explanation_en: ".java files." },
+                            { id: 222, question: "Ragged Array truth?", options: ["Same length rows", "Not supported", "Different length rows", "3D"], answer: 2, explanation_en: "Rows vary in size." },
+                            { id: 223, question: "Math.round(2.6)?", options: ["2", "3", "2.6", "2.0"], answer: 1, explanation_en: "Rounds to nearest." },
+                            { id: 224, question: "Read single word?", options: ["nextLine", "next", "readWord", "nextString"], answer: 1, explanation_en: "input.next()." },
+                            { id: 225, question: "Nested loop print(i+j) 2x2?", options: ["0112", "0123", "0011", "1234"], answer: 0, explanation_en: "0+0=0, 0+1=1, 1+0=1, 1+1=2." },
+                            { id: 226, question: "Reference Type?", options: ["int", "double", "char", "String"], answer: 3, explanation_en: "String is a class." },
+                            { id: 227, question: "b=false. !b?", options: ["false", "true", "0", "null"], answer: 1, explanation_en: "Not false is true." },
+                            { id: 228, question: "Loop for known iterations?", options: ["while", "do-while", "for", "switch"], answer: 2, explanation_en: "For loop." },
+                            { id: 229, question: "x++ effect?", options: ["Increment then use", "Use then increment", "No change", "Add 2"], answer: 1, explanation_en: "Post-increment." },
+                            { id: 230, question: "Copy array source to target?", options: ["target=source", "System.arraycopy/loop", "copy()", "clone() to new"], answer: 1, explanation_en: "Must copy elements." },
+                            { id: 231, question: "Math.max(10, Math.min(15, 5))?", options: ["15", "5", "10", "20"], answer: 2, explanation_en: "Max(10, 5) = 10." },
+                            { id: 232, question: "args in main method?", options: ["Name", "String array of arguments", "Return", "Keyword"], answer: 1, explanation_en: "Command line arguments." },
+                            { id: 233, question: "Check x between 1 and 10?", options: ["1<=x<=10", "||", "x>=1 && x<=10", "> <"], answer: 2, explanation_en: "AND operator." },
+                            { id: 234, question: "'ABC'.compareTo('ABE')?", options: ["0", "Positive", "Negative", "true"], answer: 2, explanation_en: "C < E." },
+                            { id: 235, question: "Bytecode extension?", options: [".java", ".class", ".code", ".jvm"], answer: 1, explanation_en: ".class files." },
+                            { id: 236, question: "Scanner read double?", options: ["nextFloat", "readDouble", "nextDouble", "nextDecimal"], answer: 2, explanation_en: "nextDouble()." },
+                            { id: 237, question: "Dimensions in int[][][]?", options: ["1", "2", "3", "4"], answer: 2, explanation_en: "3." },
+                            { id: 238, question: "Uninitialized local array reference?", options: ["null/undefined", "Empty", "0", "Zeros"], answer: 0, explanation_en: "Undefined (compiler error)." },
+                            { id: 239, question: "Loop runs exactly 5 times?", options: ["i=0; i<5", "i=1; i<5", "i=0; i<=5", "i=1; i<=6"], answer: 0, explanation_en: "0, 1, 2, 3, 4." },
+                            { id: 240, question: "Logic error example?", options: ["Missing ;", "Divide by zero", "Wrong formula", "Undeclared"], answer: 2, explanation_en: "Valid code, wrong result." },
+                        ]
+                    }
+                }
+            }
         },
+
 
         // 8. Networks
         { 
