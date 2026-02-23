@@ -993,3 +993,172 @@ function openPdf(link) {
 
 function formatTime(s) { return new Date(s * 1000).toISOString().substr(14, 5); }
 function renderAdminLogin() { container.innerHTML = `<div class="input-modal-content" style="margin:5rem auto;"><h2 style="color:white; margin-bottom:1rem;">Admin</h2><input type="password" class="custom-input-field" placeholder="Password"><button class="btn-run" onclick="renderHome()">Login</button></div>`; }
+
+// ======================================================
+// PART: BUG REPORTING & TELEGRAM INTEGRATION (FIXED)
+// ======================================================
+// ⚠️ استبدل القيم دي ببياناتك الحقيقية
+const TELEGRAM_BOT_TOKEN = '8661536097:AAGU5-xthbxD_rfEaKT145QzwdlSIBYUqak'; 
+const TELEGRAM_CHAT_ID = '1158505343'; 
+
+let currentScreenshotBlob = null;
+
+// --- 1. Custom Notification System (Toast) ---
+function showToast(message, type = 'success') {
+    // لو فيه توست قديم نشيله
+    const oldToast = document.getElementById('custom-toast');
+    if(oldToast) oldToast.remove();
+
+    const toast = document.createElement('div');
+    toast.id = 'custom-toast';
+    toast.style.cssText = `
+        position: fixed;
+        bottom: 100px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: ${type === 'success' ? 'var(--success)' : 'var(--danger)'};
+        color: white;
+        padding: 12px 24px;
+        border-radius: 50px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        z-index: 10000;
+        font-family: inherit;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        opacity: 0;
+        transition: opacity 0.3s, transform 0.3s;
+    `;
+    toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> <span>${message}</span>`;
+    
+    document.body.appendChild(toast);
+
+    // Animation
+    setTimeout(() => {
+        toast.style.opacity = '1';
+        toast.style.transform = 'translateX(-50%) translateY(-10px)';
+    }, 10);
+
+    // Remove after 3 seconds
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(-50%) translateY(0)';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+// --- 2. Modal Functions ---
+function openReportModal() { document.getElementById('report-modal').style.display = 'flex'; }
+function closeReportModal() {
+    document.getElementById('report-modal').style.display = 'none';
+    document.getElementById('report-text').value = '';
+    document.getElementById('screenshot-preview').style.display = 'none';
+    currentScreenshotBlob = null;
+    const btn = document.getElementById('btn-screenshot');
+    btn.innerHTML = '<i class="fas fa-camera"></i> أخذ لقطة للموقع';
+    btn.classList.remove('btn-disabled'); // Reset style if needed
+}
+
+// --- 3. Screenshot Logic (Fixed) ---
+async function takeScreenshot() {
+    const btn = document.getElementById('btn-screenshot');
+    if(typeof html2canvas === 'undefined') {
+        showToast("خطأ: مكتبة التصوير غير محملة", "error");
+        return;
+    }
+
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري المعالجة...';
+    
+    try {
+        document.getElementById('report-modal').style.display = 'none'; // Hide modal
+        
+        // التغيير هنا: بنصور الكونتينر الأساسي بدل الـ body كله لتجنب المشاكل
+        const target = document.getElementById('app-container') || document.body;
+        
+        const canvas = await html2canvas(target, {
+            useCORS: true,       // عشان الصور الخارجية
+            allowTaint: true,
+            logging: false,
+            scale: 0.8,          // تقليل الجودة قليلاً للسرعة
+            backgroundColor: '#0a192f' // لون الخلفية عشان لو ظهرت شفافة
+        });
+        
+        document.getElementById('report-modal').style.display = 'flex'; // Show modal back
+
+        canvas.toBlob((blob) => {
+            if(!blob) throw new Error("فشل تحويل الصورة");
+            currentScreenshotBlob = blob;
+            const url = URL.createObjectURL(blob);
+            document.getElementById('screenshot-img').src = url;
+            document.getElementById('screenshot-preview').style.display = 'block';
+            btn.innerHTML = '<i class="fas fa-check"></i> تم الالتقاط';
+            showToast("تم التقاط الصورة بنجاح");
+        }, 'image/jpeg', 0.7);
+
+    } catch (error) {
+        console.error(error);
+        document.getElementById('report-modal').style.display = 'flex';
+        btn.innerHTML = '<i class="fas fa-times"></i> إعادة المحاولة';
+        showToast("فشل التقاط الصورة.. جرب مرة أخرى", "error");
+    }
+}
+
+// --- 4. Sending Logic (Enhanced) ---
+async function sendReport() {
+    const text = document.getElementById('report-text').value.trim();
+    if (!text && !currentScreenshotBlob) {
+        showToast("اكتب المشكلة أو خد سكرين شوت الأول!", "error");
+        return;
+    }
+
+    const btn = document.getElementById('btn-send-report');
+    const originalBtnText = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
+    btn.disabled = true;
+
+    const currentPath = `View: ${appState.view} | Subject: ${appState.currentSubjectId || 'N/A'}`;
+    const caption = `🚨 <b>بلاغ جديد</b>\n\n📝 <b>الوصف:</b> ${text || 'بدون'}\n📍 <b>المكان:</b> <code>${currentPath}</code>`;
+
+    try {
+        let response;
+        
+        if (currentScreenshotBlob) {
+            const formData = new FormData();
+            formData.append('chat_id', TELEGRAM_CHAT_ID);
+            formData.append('photo', currentScreenshotBlob, 'screenshot.jpg');
+            formData.append('caption', caption);
+            formData.append('parse_mode', 'HTML');
+
+            response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
+                method: 'POST',
+                body: formData
+            });
+        } else {
+            response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: TELEGRAM_CHAT_ID,
+                    text: caption,
+                    parse_mode: 'HTML'
+                })
+            });
+        }
+
+        const data = await response.json();
+        
+        if (data.ok) {
+            showToast("تم استلام البلاغ.. شكراً لك! 🚀");
+            setTimeout(closeReportModal, 1500);
+        } else {
+            throw new Error(data.description || "خطأ من تيليجرام");
+        }
+
+    } catch (error) {
+        console.error("Telegram Error:", error);
+        showToast("فشل الإرسال: تأكد من الإنترنت", "error");
+    } finally {
+        btn.innerHTML = originalBtnText;
+        btn.disabled = false;
+    }
+}
