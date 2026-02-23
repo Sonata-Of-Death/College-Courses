@@ -2524,10 +2524,177 @@ quiz: {
         },
 
 
+        // Digital Logic - AI - Year 1 - Term 2
+        { 
+            id: "digital_logic", 
+            name_en: "Digital Logic", 
+            name_ar: "تصميم منطقي", 
+            placements: [
+                { major: "ai", year: 1, term: 2 }
+            ],
+            material: ["lecs", "summary", "labs", "quiz"], 
+            content: {
+                lecs: [
+                    { 
+                        title: "Lecture 1", 
+                        link: "https://drive.google.com/file/d/1-A3NUqrOoT3sW1oYH2WA8ocgWKOKql24/view?usp=sharing", 
+                        type: "PDF" 
+                    }
+                ],
+                summary: {
+                    ar: [], // جاهز لإضافة ملخصات العربي
+                    en: []  // جاهز لإضافة ملخصات الإنجليزي
+                },
+                labs: {
+                    material: [], // ملفات الشرح الخاصة باللاب
+                    questions: {} // جاهز لنظام التحديات البرمجية لاحقاً
+                },
+                quiz: [] // جاهز لإضافة بنك الأسئلة
+            }
+        },
+
+
+        // --------------------------------------------------
+        // YEAR 1 - TERM 2 (AI & Cyber Security)
+        // --------------------------------------------------
+        
+        // 1. Discrete Structures
+        { 
+            id: "discrete", 
+            name_en: "Discrete Structures", 
+            name_ar: "هياكل متقطعة", 
+            placements: [
+                { major: "ai", year: 1, term: 2 },
+                { major: "cyber", year: 1, term: 2 }
+            ],
+            material: ["lecs", "summary", "labs", "quiz"], 
+            content: {
+                lecs: [
+                    { title: "Lecture 1", link: "https://drive.google.com/file/d/1SZt0sit042gENyRLZsdYF3jnlbyjvmcf/view?usp=sharing", type: "PDF" },
+                    { title: "Lecture 2", link: "https://drive.google.com/file/d/15B8BBmEXjH6O32HxPHk8nNxaarShLpjm/view?usp=sharing", type: "PDF" }
+                ],
+                summary: { ar: [], en: [] },
+                labs: {
+                    material: [
+                        { title: "Lab 1", link: "https://docs.google.com/document/d/1-Srm-rD5vhSNKSveJtbihuZtJX5WhEJ7/edit?usp=sharing&ouid=115492288787328928533&rtpof=true&sd=true", type: "Sheet" }
+                    ],
+                    questions: {}
+                },
+                quiz: []
+            }
+        },
+
+        // 2. Legal Responsibility
+        { 
+            id: "legal", 
+            name_en: "Legal Responsibility", 
+            name_ar: "المسؤولية القانونية", 
+            placements: [
+                { major: "ai", year: 1, term: 2 },
+                { major: "cyber", year: 1, term: 2 }
+            ],
+            material: ["lecs", "summary", "quiz"], 
+            content: {
+                lecs: [],
+                summary: { ar: [], en: [] },
+                quiz: []
+            }
+        },
+
+        // 3. Math 2
+        { 
+            id: "math2", 
+            name_en: "Math 2", 
+            name_ar: "رياضيات 2", 
+            placements: [
+                { major: "ai", year: 1, term: 2 },
+                { major: "cyber", year: 1, term: 2 }
+            ],
+            material: ["lecs", "tutorials", "summary", "quiz"], 
+            content: {
+                lecs: [
+                    { title: "Chapter 3: Basic Concepts", link: "https://drive.google.com/file/d/1DgKTloARw9RXJVCAxm8DWZKYYBdK6UOt/view?usp=sharing", type: "PDF" },
+                    { title: "Chapter 4: Methods of Integration", link: "https://drive.google.com/file/d/1TIkYtpbdJDBiMOiqYS7Y8llPMudqYRH0/view?usp=sharing", type: "PDF" },
+                    { title: "Chapter 5: Definite Integral", link: "https://drive.google.com/file/d/1DZnTiieVUpYYjbsvsM6ba49yjDwzKWqM/view?usp=sharing", type: "PDF" },
+                    { title: "Chapter 6: Applications on Definite Integral", link: "https://drive.google.com/file/d/1Phm72Ps4vTWDKz7hwuWLSbiN8ffwxW8P/view?usp=sharing", type: "PDF" }
+                ],
+                tutorials: [
+                    { title: "Tutorial 1", link: "https://drive.google.com/file/d/1j4gz7ip663Zx9Hu6afHBgyV8WLqi7Ikx/view?usp=sharing", type: "Sheet" }
+                ],
+                summary: { ar: [], en: [] },
+                quiz: []
+            }
+        },
+
+        // 4. Object Oriented Programming (OOP)
+        { 
+            id: "oop", 
+            name_en: "Object Oriented Programming", 
+            name_ar: "البرمجة كائنية التوجه", 
+            placements: [
+                { major: "ai", year: 1, term: 2 },
+                { major: "cyber", year: 1, term: 2 }
+            ],
+            material: ["lecs", "summary", "labs", "quiz"], 
+            content: {
+                lecs: { main: [], solutions: [] }, // مجهزة بنظام القسمين زي مادة برمجة 1
+                summary: { ar: [], en: [] },
+                labs: {
+                    material: [
+                        { title: "Lab 00 Java (الشرح)", link: "https://drive.google.com/file/d/17E3Qx-MesmjFegfcoQkgeBEki9VeNeEZ/view?usp=sharing", type: "PDF" },
+                        { title: "DNU - OOP - Lab 00 (الأسئلة)", link: "https://drive.google.com/file/d/1lodZjtdyWLSwVGwElvAt9Q4cunoqkkd7/view?usp=sharing", type: "Sheet", note: "Interactive coding challenges coming soon." }
+                    ],
+                    questions: {} // تم تركها فارغة مؤقتاً لتعطيل النظام التفاعلي
+                },
+                quiz: []
+            }
+        },
+
+        // 5. Selected Topics in AI
+        { 
+            id: "selected_ai", 
+            name_en: "Selected Topics in AI", 
+            name_ar: "مواضيع مختارة في الذكاء الاصطناعي", 
+            placements: [
+                { major: "ai", year: 1, term: 2 },
+                { major: "cyber", year: 1, term: 2 }
+            ],
+            material: ["lecs", "summary", "quiz"], 
+            content: {
+                lecs: [
+                    { title: "Chapter 1", link: "https://drive.google.com/file/d/1woqEB6nNr_HiuyYnuR1NEQXUYMTTjZQ6/view?usp=sharing", type: "PDF" }
+                ],
+                summary: { ar: [], en: [] },
+                quiz: []
+            }
+        },
+
+        // 6. Technical Writing
+        { 
+            id: "tech_writing", 
+            name_en: "Technical Writing", 
+            name_ar: "الكتابة التقنية", 
+            placements: [
+                { major: "ai", year: 1, term: 2 },
+                { major: "cyber", year: 1, term: 2 }
+            ],
+            material: ["lecs", "summary", "quiz"], 
+            content: {
+                lecs: [],
+                summary: { ar: [], en: [] },
+                quiz: []
+            }
+        },
+
+        
         // 8. Networks
         { 
             id: "net", name_en: "Networks", name_ar: "شبكات", 
-            type: "ai", year: 1, term: 1, material: ["lecs", "summary", "labs", "quiz"], 
+            placements: [
+                { major: "ai", year: 1, term: 1 },
+                { major: "cyber", year: 1, term: 2 }
+            ],
+            material: ["lecs", "summary", "labs", "quiz"], 
             content: {
                 lecs: [
                     { title: "Lecture 1", link: "https://docs.google.com/presentation/d/1Te8QEuxjnyCLTs0d2pZuMYejLt7e5Cbd/edit?usp=sharing&ouid=115492288787328928533&rtpof=true&sd=true", type: "PPT" },
