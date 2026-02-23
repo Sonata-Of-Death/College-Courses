@@ -39,7 +39,7 @@ const translations = {
         lecs: "Lectures", summary: "Summaries", quiz: "Quiz", labs: "Labs", 
         chapters: "Chapters", core_material: "Core Material",
         arSec: "Arabic Section", enSec: "English Section", backToSelection: "Back to Selection",
-        lecsMain: "Lectures", lecsSol: "Solutions", 
+        lecsMain: "Lectures", lecsSol: "Solutions", tutorials: "Tutorials",
         // --- TABS TRANSLATIONS ---
         labsMaterial: "Lab Slides", 
         labsQuestions: "Lab Questions", 
@@ -72,7 +72,7 @@ const translations = {
         lecs: "محاضرات", summary: "ملخصات", quiz: "اختبار", labs: "لابات", 
         chapters: "فصول الكتاب", core_material: "المحتوى الأساسي",
         arSec: "القسم العربي", enSec: "القسم الإنجليزي", backToSelection: "العودة للاختيار",
-        lecsMain: "شرح المحاضرات", lecsSol: "حلول الأسئلة", 
+        lecsMain: "شرح المحاضرات", lecsSol: "حلول الأسئلة", tutorials: "السكاشن / التمارين",
         // --- TABS TRANSLATIONS ---
         labsMaterial: "ملفات الشرح", 
         labsQuestions: "أسئلة المعامل", 
@@ -200,8 +200,23 @@ function renderTermSelect() {
 function selectTerm(term) { appState.term = term; renderDashboard(); }
 function renderDashboard() {
     appState.view = 'dashboard';
-    const filteredSubjects = db.subjects.filter(sub => (sub.type === 'shared' || sub.type === appState.major) && sub.year === appState.year && sub.term === appState.term);
+    
+    // ⧈ NEW: Smart Filtering System supporting multiple placements
+    const filteredSubjects = db.subjects.filter(sub => {
+        if (sub.placements) {
+            return sub.placements.some(p => 
+                (p.major === 'shared' || p.major === appState.major) && 
+                p.year === appState.year && 
+                p.term === appState.term
+            );
+        }
+        return (sub.type === 'shared' || sub.type === appState.major) && 
+               sub.year === appState.year && 
+               sub.term === appState.term;
+    });
+
     const majorName = appState.lang === 'en' ? db.majors[appState.major].name_en : db.majors[appState.major].name_ar;
+    
     container.innerHTML = `
         <button class="btn-back" onclick="renderTermSelect()"><i class="fas fa-arrow-left"></i> ${t('back')}</button>
         <h2 class="section-title">${majorName}</h2>
