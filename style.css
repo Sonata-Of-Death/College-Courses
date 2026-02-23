@@ -307,3 +307,34 @@ footer.home-footer { padding: 3rem 1rem; font-size: 1rem; }
     border-color: var(--success); /* أخضر */
     background: rgba(16, 185, 129, 0.1); /* أخضر خفيف جداً في الخلفية */
 }
+
+/* --- Bug Report FAB --- */
+.report-fab {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: var(--secondary-accent);
+    color: var(--white);
+    border: none;
+    box-shadow: 0 4px 15px rgba(255, 111, 0, 0.4);
+    font-size: 1.8rem;
+    cursor: pointer;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.3s;
+}
+
+.report-fab:hover {
+    transform: scale(1.15) rotate(-10deg);
+    background-color: var(--accent);
+    box-shadow: 0 6px 20px rgba(0, 169, 255, 0.5);
+}
+
+@media (max-width: 768px) {
+    .report-fab { bottom: 20px; right: 20px; width: 50px; height: 50px; font-size: 1.5rem; }
+}
