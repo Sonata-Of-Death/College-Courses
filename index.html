@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -35,5 +35,36 @@
 
     <script src="data.js"></script>
     <script src="script.js"></script>
+    
+    <button id="report-fab" class="report-fab" onclick="openReportModal()">
+        <i class="fas fa-bug"></i>
+    </button>
+
+    <div id="report-modal" class="modal-overlay" style="display: none;">
+        <div class="input-modal-content" style="border-top: 5px solid var(--secondary-accent);">
+            <div class="large-modal-header" style="margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">
+                <h3 style="color:var(--text-primary); margin:0; display:flex; align-items:center; gap:10px;">
+                    <i class="fas fa-headset" style="color:var(--secondary-accent);"></i> التبليغ عن مشكلة
+                </h3>
+                <button class="btn-close-modal" onclick="closeReportModal()"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <textarea id="report-text" class="code-editor" style="min-height: 120px; width: 100%; margin-bottom: 15px;" placeholder="اشرح المشكلة اللي واجهتك هنا بالتفصيل..."></textarea>
+            
+            <div id="screenshot-preview" style="margin-bottom: 15px; display: none; text-align: center; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px;">
+                <img id="screenshot-img" src="" style="max-width: 100%; max-height: 200px; border-radius: 5px; border: 1px solid var(--border);" />
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                <button class="btn-view" style="flex: 1; justify-content: center;" onclick="takeScreenshot()" id="btn-screenshot">
+                    <i class="fas fa-camera"></i> أخذ لقطة للموقع
+                </button>
+            </div>
+
+            <button class="btn-run" style="width: 100%; justify-content: center; background: var(--secondary-accent); color: var(--white);" onclick="sendReport()" id="btn-send-report">
+                <i class="fas fa-paper-plane"></i> إرسال البلاغ
+            </button>
+        </div>
+    </div>
 </body>
 </html>
