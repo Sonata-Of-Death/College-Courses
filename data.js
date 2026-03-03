@@ -2532,24 +2532,21 @@ quiz: {
             placements: [
                 { major: "ai", year: 1, term: 2 }
             ],
-            material: ["lecs", "summary", "labs", "quiz"], 
+            material: ["lecs", "chapters", "summary", "labs", "quiz"], 
             content: {
                 lecs: [
-                    { 
-                        title: "Lecture 1", 
-                        link: "https://drive.google.com/file/d/1-A3NUqrOoT3sW1oYH2WA8ocgWKOKql24/view?usp=sharing", 
-                        type: "PDF" 
-                    }
+                    { title: "Lecture 1", link: "https://drive.google.com/file/d/1-A3NUqrOoT3sW1oYH2WA8ocgWKOKql24/view?usp=sharing", type: "PDF" },
+                    { title: "Lecture 2", link: "https://drive.google.com/file/d/1TEKJmFETvI40lnGLNnsph45nnkAjc_lm/view?usp=sharing", type: "PDF" }
                 ],
-                summary: {
-                    ar: [], // جاهز لإضافة ملخصات العربي
-                    en: []  // جاهز لإضافة ملخصات الإنجليزي
-                },
+                chapters: [
+                    { title: "Chapter 1 (Part 1)", link: "https://drive.google.com/file/d/1ao1eMaCi-LMIARHmGSVHasSMiX4SYwb_/view?usp=sharing", type: "PDF" }
+                ],
+                summary: { ar: [], en: [] },
                 labs: {
-                    material: [], // ملفات الشرح الخاصة باللاب
-                    questions: {} // جاهز لنظام التحديات البرمجية لاحقاً
+                    material: [], 
+                    questions: {} 
                 },
-                quiz: [] // جاهز لإضافة بنك الأسئلة
+                quiz: [] 
             }
         },
 
@@ -2595,7 +2592,9 @@ quiz: {
             ],
             material: ["lecs", "summary", "quiz"], 
             content: {
-                lecs: [],
+                lecs: [
+                    { title: "Lecture 1", link: "https://docs.google.com/document/d/1SYHRHiRSa_7nONBC_KCl19u5cI6MlDx4/edit?usp=sharing&ouid=115492288787328928533&rtpof=true&sd=true", type: "Sheet" }
+                ],
                 summary: { ar: [], en: [] },
                 quiz: []
             }
@@ -2635,16 +2634,22 @@ quiz: {
                 { major: "ai", year: 1, term: 2 },
                 { major: "cyber", year: 1, term: 2 }
             ],
-            material: ["lecs", "summary", "labs", "quiz"], 
+            material: ["lecs", "chapters", "summary", "labs", "quiz"], 
             content: {
-                lecs: { main: [], solutions: [] }, // مجهزة بنظام القسمين زي مادة برمجة 1
+                lecs: [], // تم إرجاعها لمصفوفة عادية
+                chapters: [
+                    { title: "Methods", link: "https://drive.google.com/file/d/1NoWLwV5yfgbKJrFBoYON0fCMxfqQ1Xr8/view?usp=sharing", type: "PDF" },
+                    { title: "Objects and Classes", link: "https://drive.google.com/file/d/1b7Vn4Cjh1iyxyItPfZwI3QrYpPkHT3T2/view?usp=sharing", type: "PDF" },
+                    { title: "Thinking in Objects", link: "https://drive.google.com/file/d/1Q98LjSXpSR2F7GV7tU0i5yoSmVZnInO_/view?usp=sharing", type: "PDF" }
+                ],
                 summary: { ar: [], en: [] },
                 labs: {
                     material: [
                         { title: "Lab 00 Java (الشرح)", link: "https://drive.google.com/file/d/17E3Qx-MesmjFegfcoQkgeBEki9VeNeEZ/view?usp=sharing", type: "PDF" },
-                        { title: "DNU - OOP - Lab 00 (الأسئلة)", link: "https://drive.google.com/file/d/1lodZjtdyWLSwVGwElvAt9Q4cunoqkkd7/view?usp=sharing", type: "Sheet", note: "Interactive coding challenges coming soon." }
+                        { title: "DNU - OOP - Lab 00 (الأسئلة)", link: "https://drive.google.com/file/d/1lodZjtdyWLSwVGwElvAt9Q4cunoqkkd7/view?usp=sharing", type: "Sheet", note: "Interactive coding challenges coming soon." },
+                        { title: "DNU - OOP - Lab 01 (الأسئلة)", link: "https://drive.google.com/file/d/15ceyX-ofmW1LrlWxYoD9cOMYp9jxLkqC/view?usp=sharing", type: "Sheet" }
                     ],
-                    questions: {} // تم تركها فارغة مؤقتاً لتعطيل النظام التفاعلي
+                    questions: {} 
                 },
                 quiz: []
             }
@@ -2662,7 +2667,8 @@ quiz: {
             material: ["lecs", "summary", "quiz"], 
             content: {
                 lecs: [
-                    { title: "Chapter 1", link: "https://drive.google.com/file/d/1woqEB6nNr_HiuyYnuR1NEQXUYMTTjZQ6/view?usp=sharing", type: "PDF" }
+                    { title: "Lecture 1", link: "https://drive.google.com/file/d/1woqEB6nNr_HiuyYnuR1NEQXUYMTTjZQ6/view?usp=sharing", type: "PDF" }, // تم التعديل من Chapter 1 لـ Lecture 1
+                    { title: "Lecture 2", link: "https://drive.google.com/file/d/1jU8UzPLMvehHPXb2VjApB5DOYrl4iaXN/view?usp=sharing", type: "PDF" }
                 ],
                 summary: { ar: [], en: [] },
                 quiz: []
