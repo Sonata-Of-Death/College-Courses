@@ -2573,7 +2573,8 @@ quiz: {
                 summary: { ar: [], en: [] },
                 labs: {
                     material: [
-                        { title: "Lab 1", link: "https://docs.google.com/document/d/1-Srm-rD5vhSNKSveJtbihuZtJX5WhEJ7/edit?usp=sharing&ouid=115492288787328928533&rtpof=true&sd=true", type: "Sheet" }
+                        { title: "Sheet #1 - Propositional Logic", link: "https://docs.google.com/document/d/1-Srm-rD5vhSNKSveJtbihuZtJX5WhEJ7/edit?usp=sharing&ouid=115492288787328928533&rtpof=true&sd=true", type: "Sheet" },
+                        { title: "Lab 1", link: "https://drive.google.com/file/d/1eLIh40WUEFq98sHnDRnqqsE8UrUS0hcx/view?usp=sharing", type: "PDF" }
                     ],
                     questions: {}
                 },
@@ -3198,3 +3199,4 @@ quiz: {
         }
     ]
 };
+
