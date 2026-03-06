@@ -2536,7 +2536,8 @@ quiz: {
             content: {
                 lecs: [
                     { title: "Lecture 1", link: "https://drive.google.com/file/d/1-A3NUqrOoT3sW1oYH2WA8ocgWKOKql24/view?usp=sharing", type: "PDF" },
-                    { title: "Lecture 2", link: "https://drive.google.com/file/d/1TEKJmFETvI40lnGLNnsph45nnkAjc_lm/view?usp=sharing", type: "PDF" }
+                    { title: "Lecture 2", link: "https://drive.google.com/file/d/1TEKJmFETvI40lnGLNnsph45nnkAjc_lm/view?usp=sharing", type: "PDF" },
+                    { title: "Lecture 3", link: "https://drive.google.com/file/d/16VD4ypqUNkSb_1lrprRvBzpFgC6Efeah/view?usp=sharing", type: "PDF" }
                 ],
                 chapters: [
                     { title: "Chapter 1 (Part 1)", link: "https://drive.google.com/file/d/1ao1eMaCi-LMIARHmGSVHasSMiX4SYwb_/view?usp=sharing", type: "PDF" }
@@ -2594,7 +2595,8 @@ quiz: {
             material: ["lecs", "summary", "quiz"], 
             content: {
                 lecs: [
-                    { title: "Lecture 1", link: "https://docs.google.com/document/d/1SYHRHiRSa_7nONBC_KCl19u5cI6MlDx4/edit?usp=sharing&ouid=115492288787328928533&rtpof=true&sd=true", type: "Sheet" }
+                    { title: "Lecture 1", link: "https://docs.google.com/document/d/1SYHRHiRSa_7nONBC_KCl19u5cI6MlDx4/edit?usp=sharing&ouid=115492288787328928533&rtpof=true&sd=true", type: "Sheet" },
+                    { title: "Lecture 2", link: "https://docs.google.com/document/d/1HTH44rRO7vP3VbjUtYy3q0CaApTY3rAz/edit?usp=sharing&ouid=115492288787328928533&rtpof=true&sd=true", type: "Sheet" }
                 ],
                 summary: { ar: [], en: [] },
                 quiz: []
@@ -3199,4 +3201,5 @@ quiz: {
         }
     ]
 };
+
 
