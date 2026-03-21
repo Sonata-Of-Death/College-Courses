@@ -2532,7 +2532,7 @@ quiz: {
             placements: [
                 { major: "ai", year: 1, term: 2 }
             ],
-            material: ["lecs", "chapters", "summary", "labs", "quiz"], 
+            material: ["lecs", "summary", "labs", "quiz"], 
             content: {
                 lecs: [
                     { title: "Lecture 1", link: "https://drive.google.com/file/d/1-A3NUqrOoT3sW1oYH2WA8ocgWKOKql24/view?usp=sharing", type: "PDF" },
@@ -2564,7 +2564,7 @@ quiz: {
                 { major: "ai", year: 1, term: 2 },
                 { major: "cyber", year: 1, term: 2 }
             ],
-            material: ["lecs", "summary", "labs", "quiz"], 
+            material: ["lecs", "summary", "chapters", "labs", "quiz"], 
             content: {
                 lecs: [
                     { title: "Lecture 1", link: "https://drive.google.com/file/d/1SZt0sit042gENyRLZsdYF3jnlbyjvmcf/view?usp=sharing", type: "PDF" },
