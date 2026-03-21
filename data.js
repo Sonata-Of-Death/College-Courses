@@ -2537,10 +2537,13 @@ quiz: {
                 lecs: [
                     { title: "Lecture 1", link: "https://drive.google.com/file/d/1-A3NUqrOoT3sW1oYH2WA8ocgWKOKql24/view?usp=sharing", type: "PDF" },
                     { title: "Lecture 2", link: "https://drive.google.com/file/d/1TEKJmFETvI40lnGLNnsph45nnkAjc_lm/view?usp=sharing", type: "PDF" },
-                    { title: "Lecture 3", link: "https://drive.google.com/file/d/16VD4ypqUNkSb_1lrprRvBzpFgC6Efeah/view?usp=sharing", type: "PDF" }
+                    { title: "Lecture 3", link: "https://drive.google.com/file/d/16VD4ypqUNkSb_1lrprRvBzpFgC6Efeah/view?usp=sharing", type: "PDF" },
+                    { title: "Lecture 4", link: "https://drive.google.com/file/d/1F1vacf7N-AyrAbprnvfK-BRnTePfiyIS/view?usp=sharing", type: "PDF" },
+                    { title: "Lecture 5", link: "https://drive.google.com/file/d/10QJJm53bPmRGIDnNDXx5AfFckvdpXDP8/view?usp=sharing", type: "PDF" }
                 ],
                 chapters: [
-                    { title: "Chapter 1 (Part 1)", link: "https://drive.google.com/file/d/1ao1eMaCi-LMIARHmGSVHasSMiX4SYwb_/view?usp=sharing", type: "PDF" }
+                    { title: "Chapter 1 (Part 1)", link: "https://drive.google.com/file/d/1ao1eMaCi-LMIARHmGSVHasSMiX4SYwb_/view?usp=sharing", type: "PDF" },
+                    { title: "Chapter 1 (Part 2)", link: "https://drive.google.com/file/d/1UcVwiPVNFzRcHdOmHUd5i4yimsOODxvq/view?usp=sharing", type: "PDF" }
                 ],
                 summary: { ar: [], en: [] },
                 labs: {
@@ -2672,7 +2675,9 @@ quiz: {
             content: {
                 lecs: [
                     { title: "Lecture 1", link: "https://drive.google.com/file/d/1woqEB6nNr_HiuyYnuR1NEQXUYMTTjZQ6/view?usp=sharing", type: "PDF" }, // تم التعديل من Chapter 1 لـ Lecture 1
-                    { title: "Lecture 2", link: "https://drive.google.com/file/d/1jU8UzPLMvehHPXb2VjApB5DOYrl4iaXN/view?usp=sharing", type: "PDF" }
+                    { title: "Lecture 2", link: "https://drive.google.com/file/d/1jU8UzPLMvehHPXb2VjApB5DOYrl4iaXN/view?usp=sharing", type: "PDF" },
+                    { title: "Lecture 3", link: "https://drive.google.com/file/d/18xHu6iy5ihP2k1dRP0wgGHQJZeqnhNAm/view?usp=sharing", type: "PDF" },
+                    { title: "Lecture 4", link: "https://drive.google.com/file/d/1OLTHPcHR21ME_fh3w8Dg6iFiovCFjXnd/view?usp=sharing", type: "PDF" }
                 ],
                 summary: { ar: [], en: [] },
                 quiz: []
