@@ -2541,10 +2541,6 @@ quiz: {
                     { title: "Lecture 4", link: "https://drive.google.com/file/d/1F1vacf7N-AyrAbprnvfK-BRnTePfiyIS/view?usp=sharing", type: "PDF" },
                     { title: "Lecture 5", link: "https://drive.google.com/file/d/10QJJm53bPmRGIDnNDXx5AfFckvdpXDP8/view?usp=sharing", type: "PDF" }
                 ],
-                chapters: [
-                    { title: "Chapter 1 (Part 1)", link: "https://drive.google.com/file/d/1ao1eMaCi-LMIARHmGSVHasSMiX4SYwb_/view?usp=sharing", type: "PDF" },
-                    { title: "Chapter 1 (Part 2)", link: "https://drive.google.com/file/d/1UcVwiPVNFzRcHdOmHUd5i4yimsOODxvq/view?usp=sharing", type: "PDF" }
-                ],
                 summary: { ar: [], en: [] },
                 labs: {
                     material: [], 
@@ -2573,6 +2569,11 @@ quiz: {
                 lecs: [
                     { title: "Lecture 1", link: "https://drive.google.com/file/d/1SZt0sit042gENyRLZsdYF3jnlbyjvmcf/view?usp=sharing", type: "PDF" },
                     { title: "Lecture 2", link: "https://drive.google.com/file/d/15B8BBmEXjH6O32HxPHk8nNxaarShLpjm/view?usp=sharing", type: "PDF" }
+                ],                    
+                chapters: [
+                    { title: "Chapter 1 (Part 1)", link: "https://drive.google.com/file/d/1ao1eMaCi-LMIARHmGSVHasSMiX4SYwb_/view?usp=sharing", type: "PDF" },
+                    { title: "Chapter 1 (Part 2)", link: "https://drive.google.com/file/d/1UcVwiPVNFzRcHdOmHUd5i4yimsOODxvq/view?usp=sharing", type: "PDF" },
+                    { title: "Chapter 1 (Part 3)", link: "https://drive.google.com/file/d/1N7njn6dRL_jtvD9l6Nc9DzK5pSMRxczJ/view?usp=sharing", type: "PDF" }
                 ],
                 summary: { ar: [], en: [] },
                 labs: {
