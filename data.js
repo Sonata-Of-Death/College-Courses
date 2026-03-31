@@ -2541,7 +2541,22 @@ quiz: {
                     { title: "Lecture 4", link: "https://drive.google.com/file/d/1F1vacf7N-AyrAbprnvfK-BRnTePfiyIS/view?usp=sharing", type: "PDF" },
                     { title: "Lecture 5", link: "https://drive.google.com/file/d/10QJJm53bPmRGIDnNDXx5AfFckvdpXDP8/view?usp=sharing", type: "PDF" }
                 ],
-                summary: { ar: [], en: [] },
+                summary: {
+                    ar: [
+                        { title: "المنطق الرقمي المحاضرة 1", link: "https://drive.google.com/file/d/1SL3iCH5GFQ5vbi6r4u_MVJdZmiib4-pC/view?usp=drive_link", type: "PDF" },
+                        { title: "إالمنطق الرقمي المحاضرة 2", link: "https://drive.google.com/file/d/1qz_BBFEJVYWZA44xXMWmLrr7vc6DfA3D/view?usp=drive_link", type: "PDF" },
+                        { title: "إالمنطق الرقمي المحاضرة 3", link: "https://drive.google.com/file/d/14LaSAJP8UxtMT2gK0gbXdVxYr_X3qJsc/view?usp=drive_link", type: "PDF" },
+                        { title: "المنطق الرقمي المحاضرة 4", link: "https://drive.google.com/file/d/1vxCyb36so97TKKllRFXvSN6g-l2O2vsJ/view?usp=drive_link", type: "PDF" },
+                        { title: "المنطق الرقمي المحاضرة 5", link: "https://drive.google.com/file/d/1MnmlVFolCAG5mpo-Bzvh80hFV3ruSIHb/view?usp=drive_link", type: "PDF" }
+                    ],
+                    en: [
+                        { title: "Digital Logic Lecture 1", link: "https://drive.google.com/file/d/1-YlbAc0H-vAoXAspHvgyM5v8_wbi4EJD/view?usp=drive_link", type: "PDF" },
+                        { title: "Digital Logic Lecture 2", link: "https://drive.google.com/file/d/16MImpXJ721XwFMbMhAJqX7T3UesKak68/view?usp=drive_link", type: "PDF" },
+                        { title: "Digital Logic Lecture 3", link: "https://drive.google.com/file/d/1lxmVCkj8KgA_Kg1L34qv0vxmWSApzgg2/view?usp=drive_link", type: "PDF" },
+                        { title: "Digital Logic Lecture 4", link: "https://drive.google.com/file/d/1uYbThzug7-ipwUvGqfjrBMPEV7T6W_7D/view?usp=drive_link", type: "PDF" },
+                        { title: "Digital Logic Lecture 5", link: "https://drive.google.com/file/d/1KfaDDQxXSEYikFlJ9DcAlX9R4xAFCFf6/view?usp=drive_link", type: "PDF" }
+                    ]
+                },
                 labs: {
                     material: [], 
                     questions: {} 
