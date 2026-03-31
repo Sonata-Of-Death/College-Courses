@@ -2593,11 +2593,34 @@ quiz: {
                 summary: { ar: [], en: [] },
                 labs: {
                     material: [
-                        { title: "Lab 1", link: "https://docs.google.com/document/d/1-Srm-rD5vhSNKSveJtbihuZtJX5WhEJ7/edit?usp=sharing&ouid=115492288787328928533&rtpof=true&sd=true", type: "Sheet" },
-                        { title: "Lab 2", link: "https://drive.google.com/file/d/1eLIh40WUEFq98sHnDRnqqsE8UrUS0hcx/view?usp=sharing", type: "PDF" },
-                        { title: "Lab 3", link: "https://drive.google.com/file/d/1qFlWxX_UuslB4t6hp6hoOlje8b-2KZXR/view?usp=sharing", type: "PDF" }                        
+                        { title: "Lab 1", link: "https://drive.google.com/file/d/1eLIh40WUEFq98sHnDRnqqsE8UrUS0hcx/view?usp=sharing", type: "PDF" },
+                        { title: "Lab 5", link: "https://drive.google.com/file/d/1qFlWxX_UuslB4t6hp6hoOlje8b-2KZXR/view?usp=sharing", type: "PDF" },
+                        { title: "Sheet 1", link: "https://docs.google.com/document/d/1-Srm-rD5vhSNKSveJtbihuZtJX5WhEJ7/edit?usp=sharing&ouid=115492288787328928533&rtpof=true&sd=true", type: "Sheet" },
+                        { title: "Sheet 2", link: "https://docs.google.com/document/d/1n29jY1a_QzwqELya118E8xHMglv__dHE/edit?usp=sharing&ouid=115492288787328928533&rtpof=true&sd=true", type: "Sheet" },
+                        { title: "Sheet 3", link: "https://docs.google.com/document/d/1HsiYw72B3QYJSP0lTQPqjG7Tqshwtfrj/edit?usp=sharing&ouid=115492288787328928533&rtpof=true&sd=true", type: "Sheet" },
+                        { title: "Sheet 4", link: "https://docs.google.com/document/d/1IH9b4qK2VjINUv92ldGIGl8NmoYBkK8g/edit?usp=sharing&ouid=115492288787328928533&rtpof=true&sd=true", type: "Sheet" }
+
                     ],
-                    questions: {}
+                },
+                summary: {
+                    ar: [
+                        { title: "ديسكريت محاضرة 1", link: "https://drive.google.com/file/d/1MLzhc6vGkwP9PjpJ7_-JU_ZzQS5BIvio/view?usp=sharing", type: "PDF" },
+                        { title: "ديسكريت محاضرة 2", link: "https://drive.google.com/file/d/1XfnxPzjdYL39H0Nru1W075Kjpss8u_1t/view?usp=sharing", type: "PDF" },
+                        { title: "ديسكريت لاب 1", link: "https://drive.google.com/file/d/15bbCnxIu5hSaZJ41rsQLpBDT9riVJ5MK/view?usp=sharing", type: "PDF" },
+                        { title: "ديسكريت لاب 5", link: "https://drive.google.com/file/d/10KKunrLR_0hcXG7FzArQBnFTqyR_uupV/view?usp=sharing", type: "PDF" },
+                        { title: "ديسكريت الفصل 1 الجزء 1", link: "https://drive.google.com/file/d/1nA5Gl9kq4Sl3TgkPV8l-Pher73_YY9aq/view?usp=sharing", type: "PDF" },
+                        { title: "ديسكريت الفصل 1 الجزء 2", link: "https://drive.google.com/file/d/1xx8W_rHQTQ2cBXldztcKM73EQnjrb0ES/view?usp=sharing", type: "PDF" },
+                        { title: "ديسكريت الفصل 1 الجزء 3", link: "https://drive.google.com/file/d/1cFqGJFq4pNvCWa7iVRYjPXlqKiG1cYAU/view?usp=sharing", type: "PDF" }
+                    ],
+                    en: [
+                        { title: "Discrete Structures Lecture 1", link: "https://drive.google.com/file/d/1fTcF13L12zwTL5Ethl2FxYIwGl7hLEOW/view?usp=sharing", type: "PDF" },
+                        { title: "Discrete Structures Lecture 2", link: "https://drive.google.com/file/d/1ekMe7abYxHqmPq5zrTsTj4dy9qug79xc/view?usp=sharing", type: "PDF" },
+                        { title: "Discrete Structure Lab 1", link: "https://drive.google.com/file/d/1K6yLb1mndEv65tnFwn_753O6wL9WJr0J/view?usp=sharing", type: "PDF" },
+                        { title: "Discrete Structure Lab 5", link: "https://drive.google.com/file/d/1-nl25V3T1iNdB9Fg9u-omUJJ-c6z-wKi/view?usp=sharing", type: "PDF" },
+                        { title: "Discrete Structures Chapter 1 Part 1", link: "https://drive.google.com/file/d/1_Qvk3Tq-yArMJTwEjY0G3ievog6eNWHV/view?usp=sharing", type: "PDF" },
+                        { title: "Discrete Structures Chapter 1 Part 2", link: "https://drive.google.com/file/d/1eDNvbyiSMfBx-nTyxp4b9gVgCZG1ZEfx/view?usp=sharing", type: "PDF" },
+                        { title: "Discrete Structures Chapter 1 Part 3", link: "https://drive.google.com/file/d/1Mc4j6kyp38_wfx7Vm23SQCCNibAtQLeQ/view?usp=sharing", type: "PDF" }
+                    ]
                 },
                 quiz: []
             }
@@ -2616,9 +2639,24 @@ quiz: {
             content: {
                 lecs: [
                     { title: "Lecture 1", link: "https://docs.google.com/document/d/1SYHRHiRSa_7nONBC_KCl19u5cI6MlDx4/edit?usp=sharing&ouid=115492288787328928533&rtpof=true&sd=true", type: "Sheet" },
-                    { title: "Lecture 2", link: "https://docs.google.com/document/d/1HTH44rRO7vP3VbjUtYy3q0CaApTY3rAz/edit?usp=sharing&ouid=115492288787328928533&rtpof=true&sd=true", type: "Sheet" }
+                    { title: "Lecture 2", link: "https://docs.google.com/document/d/1HTH44rRO7vP3VbjUtYy3q0CaApTY3rAz/edit?usp=sharing&ouid=115492288787328928533&rtpof=true&sd=true", type: "Sheet" },
+                    { title: "Lecture 3", link: "https://drive.google.com/file/d/15VDvGCK9oFMgEuTVTa2bAU3oDeK71kZb/view?usp=sharing", type: "PDF" },
+                    { title: "Lecture 4", link: "https://docs.google.com/document/d/1imHH_3FzqGWRrxVDpl6DFyXhT1wlnrG8/edit?usp=sharing&ouid=115492288787328928533&rtpof=true&sd=true", type: "Sheet" }
                 ],
-                summary: { ar: [], en: [] },
+                summary: {
+                    ar: [
+                        { title: "المسئولية القانونية المحاضرة 1", link: "https://drive.google.com/file/d/1-v8z30hQXOxybC3vFzHrMVFscq0qg6Uy/view?usp=sharing", type: "PDF" },
+                        { title: "المسئولية القانونية المحاضرة 2", link: "https://drive.google.com/file/d/1CeWhJkNNaQEYswLdD98G_uTWi8cM5cUM/view?usp=sharing", type: "PDF" },
+                        { title: "المسئولية القانونية المحاضرة 3", link: "https://drive.google.com/file/d/1hxzx5Lc-yXrhlVnwAI1hgke_lTqFPbqV/view?usp=sharing", type: "PDF" },
+                        { title: "المسئولية القانونية المحاضرة 4", link: "https://drive.google.com/file/d/1vrh7-cRAFMoU006vR-tJTlDARorfCyIe/view?usp=sharing", type: "PDF" }
+                    ],
+                    en: [
+                        { title: "Legal Responsibilities Lecture 1", link: "https://drive.google.com/file/d/1LvKoBh6GdzlXo-A8tBTJ9bCs2YZV_Plz/view?usp=sharing", type: "PDF" },
+                        { title: "Legal Responsibilities Lecture 2", link: "https://drive.google.com/file/d/1GI704NvYc4MjwslwOLYbWBEQc-AhENrv/view?usp=sharing", type: "PDF" },
+                        { title: "Legal Responsibilities Lecture 3", link: "https://drive.google.com/file/d/13u8QTuvw5BydeTeQbff01s0ZGUGXkrEL/view?usp=sharing", type: "PDF" },
+                        { title: "Legal Responsibilities Lecture 4", link: "https://drive.google.com/file/d/1xnQ07t_FiomgBQEbxPvB27O7ydU6N-tk/view?usp=sharing", type: "PDF" }
+                    ]
+                },
                 quiz: []
             }
         },
@@ -2659,18 +2697,40 @@ quiz: {
             ],
             material: ["lecs", "chapters", "summary", "labs", "quiz"], 
             content: {
-                lecs: [], // تم إرجاعها لمصفوفة عادية
+                lecs: [
+                    { title: "Object Oriented Programming-java", link: "https://drive.google.com/file/d/1f4QcKja2HnFvnq2Yry5aMh2J99hwetym/view?usp=sharing", type: "PDF" }
+                ],
                 chapters: [
                     { title: "Methods", link: "https://drive.google.com/file/d/1NoWLwV5yfgbKJrFBoYON0fCMxfqQ1Xr8/view?usp=sharing", type: "PDF" },
                     { title: "Objects and Classes", link: "https://drive.google.com/file/d/1b7Vn4Cjh1iyxyItPfZwI3QrYpPkHT3T2/view?usp=sharing", type: "PDF" },
-                    { title: "Thinking in Objects", link: "https://drive.google.com/file/d/1Q98LjSXpSR2F7GV7tU0i5yoSmVZnInO_/view?usp=sharing", type: "PDF" }
+                    { title: "Thinking in Objects", link: "https://drive.google.com/file/d/1Q98LjSXpSR2F7GV7tU0i5yoSmVZnInO_/view?usp=sharing", type: "PDF" },
+                    { title: "INhertance and Polymorphism", link: "https://docs.google.com/presentation/d/1lxLEYFzgACH1gWUC0Saevkb6uKIumMr8/edit?usp=sharing&ouid=115492288787328928533&rtpof=true&sd=true", type: "PPTX" }
                 ],
-                summary: { ar: [], en: [] },
+                summary: {
+                    ar: [
+                        { title: "البرمجة الكائنية المحاضرة 1", link: "https://drive.google.com/file/d/1MizwAxZupLRg_vk03W24DmCR0lkcuFPs/view?usp=sharing", type: "PDF" },
+                        { title: "االدوال في جافا", link: "https://drive.google.com/file/d/1SjjK3SbwUhsKXiwN76q8GTPOGrGeV03o/view?usp=sharing", type: "PDF" },
+                        { title: "االكائنات والفئات في جافا", link: "https://drive.google.com/file/d/10oLSFO7fTT0V8l5UGiEpAyiJ1CQ2Ly6-/view?usp=sharing", type: "PDF" },
+                        { title: "التفكير في الكائنات في جافا", link: "https://drive.google.com/file/d/1M54ZBsjrmL5uEqPKtZVtvs_JZWmfqXE_/view?usp=sharing", type: "PDF" },
+                        { title: "الوراثة وتعددية الأشكال في جاقا", link: "https://drive.google.com/file/d/1ED6qufQeIlJ8Xbpd9k5O60AcCxFg8sYx/view?usp=sharing", type: "PDF" }
+                    ],
+                    en: [
+                        { title: "OOP Lecture 1", link: "https://drive.google.com/file/d/1VuON--HBUsLOnZMygQ0aMwTibeA7penB/view?usp=sharing", type: "PDF" },
+                        { title: "Methods", link: "https://drive.google.com/file/d/1dNnztfxm0sqn4d-wvjOjEbUqX0Pa6Qys/view?usp=sharing", type: "PDF" },
+                        { title: "Objects and Classes", link: "https://drive.google.com/file/d/1isw1AJPpmO-xt1F-Tu_OvMoTNCJpmHhj/view?usp=sharing", type: "PDF" },
+                        { title: "Thinking in Objects", link: "https://drive.google.com/file/d/1zChFBFkeU8ePi7ekB_Utgaatx-sM18-n/view?usp=sharing", type: "PDF" },
+                        { title: "Inheritance & Polymorphism", link: "https://drive.google.com/file/d/1EZoexC9Xkp-7JzFPvNUBEwzKXqtlh2TQ/view?usp=sharing", type: "PDF" }
+                    ]
+                },
                 labs: {
                     material: [
                         { title: "Lab 00 Java (الشرح)", link: "https://drive.google.com/file/d/17E3Qx-MesmjFegfcoQkgeBEki9VeNeEZ/view?usp=sharing", type: "PDF" },
-                        { title: "DNU - OOP - Lab 00 (الأسئلة)", link: "https://drive.google.com/file/d/1lodZjtdyWLSwVGwElvAt9Q4cunoqkkd7/view?usp=sharing", type: "Sheet", note: "Interactive coding challenges coming soon." },
-                        { title: "DNU - OOP - Lab 01 (الأسئلة)", link: "https://drive.google.com/file/d/15ceyX-ofmW1LrlWxYoD9cOMYp9jxLkqC/view?usp=sharing", type: "Sheet" }
+                        { title: "DNU - OOP - Lab 00 (الأسئلة)", link: "https://drive.google.com/file/d/1lodZjtdyWLSwVGwElvAt9Q4cunoqkkd7/view?usp=sharing", type: "PDF", note: "Interactive coding challenges coming soon." },
+                        { title: "DNU - OOP - Lab 01 (الأسئلة)", link: "https://drive.google.com/file/d/15ceyX-ofmW1LrlWxYoD9cOMYp9jxLkqC/view?usp=sharing", type: "PDF", note: "Interactive coding challenges coming soon." },
+                        { title: "lab 02 java (الشرح)", link: "https://docs.google.com/presentation/d/1a6CT61086LykhDFk0ajxHBVX0ODyNrGh/edit?usp=sharing&ouid=115492288787328928533&rtpof=true&sd=true", type: "PPTX" },
+                        { title: "DNU - OOP - Lab 02 (الأسئلة)", link: "https://drive.google.com/file/d/1GwWwUEr4twzN3dnO4X63LmNPhRYI5wIO/view?usp=sharing", type: "PDF", note: "Interactive coding challenges coming soon." },
+                        { title: "DNU - OOP - Lab 03 (الأسئلة)", link: "https://drive.google.com/file/d/1lwSSdH8sPOiH7r9d6231rjN_9hxh9Mjl/view?usp=sharing", type: "PDF", note: "Interactive coding challenges coming soon." },
+                        { title: "DNU - OOP - Lab 04 (الأسئلة)", link: "https://drive.google.com/file/d/1tJfvgQIm20YCXeXSbRm2QwiY23Hh1U-L/view?usp=sharing", type: "PDF", note: "Interactive coding challenges coming soon." }
                     ],
                     questions: {} 
                 },
@@ -2695,7 +2755,20 @@ quiz: {
                     { title: "Lecture 3", link: "https://drive.google.com/file/d/18xHu6iy5ihP2k1dRP0wgGHQJZeqnhNAm/view?usp=sharing", type: "PDF" },
                     { title: "Lecture 4", link: "https://drive.google.com/file/d/1OLTHPcHR21ME_fh3w8Dg6iFiovCFjXnd/view?usp=sharing", type: "PDF" }
                 ],
-                summary: { ar: [], en: [] },
+                summary: {
+                    ar: [
+                        { title: "موضوعات مختارة في الذكاء الإصطناعي المحاضرة 1", link: "https://drive.google.com/file/d/1u7wq8qC0KVNBpiD96Ro4DQv6s3Jt8ZZP/view?usp=sharing", type: "PDF" },
+                        { title: "موضوعات مختارة في الذكاء الإصطناعي المحاضرة 2", link: "https://drive.google.com/file/d/1srfonMMiPUjfBXQWM3p-LMbjj-9kvGRp/view?usp=sharing", type: "PDF" },
+                        { title: "موضوعات مختارة في الذكاء الإصطناعي المحاضرة 3", link: "https://drive.google.com/file/d/1qj7PwpQMY3TJOldtR-jlxcxZ-dyQlbDp/view?usp=sharing", type: "PDF" },
+                        { title: "موضوعات مختارة في الذكاء الإصطناعي المحاضرة 4", link: "https://drive.google.com/file/d/1pnJmdrYll9M1GyCkVnd_gTbYQXUa42S2/view?usp=sharing", type: "PDF" }
+                    ],
+                    en: [
+                        { title: "Selected Topics in AI Lecture 1", link: "https://drive.google.com/file/d/1Npvbx0GfbQ0u1MM4vp6tWyQBD9KqCHyC/view?usp=sharing", type: "PDF" },
+                        { title: "Selected Topics in AI Lecture 2", link: "https://drive.google.com/file/d/1wegKHKhZRXSaQYTAsWUxLRZ_18yHuKxs/view?usp=sharing", type: "PDF" },
+                        { title: "Selected Topics in AI Lecture 3", link: "https://drive.google.com/file/d/1jDvPFm-J0Vda8fVwXoF-voz9B5GkeFWS/view?usp=sharing", type: "PDF" },
+                        { title: "Selected Topics in AI Lecture 4", link: "https://drive.google.com/file/d/1qrr4zcy7hZjP9ZzsoLCoYlXdHQdCthYY/view?usp=sharing", type: "PDF" }
+                    ]
+                },
                 quiz: []
             }
         },
@@ -2711,8 +2784,17 @@ quiz: {
             ],
             material: ["lecs", "summary", "quiz"], 
             content: {
-                lecs: [],
-                summary: { ar: [], en: [] },
+                lecs: [
+                    { title: "Lecture 1", link: "https://drive.google.com/file/d/1FqDZZvQRnTd4u3xdvqXj9cDdsSNPbcV1/view?usp=sharing", type: "PDF" }
+                ],
+                summary: {
+                    ar: [
+                        { title: "الكتابة التقنية المحاضرة 1", link: "https://drive.google.com/file/d/1U_LhadBZDtCDZ6ZHr1_Tlp4j20fPpqk5/view?usp=sharing", type: "PDF" }
+                    ],
+                    en: [
+                        { title: "Technical Writing Lecture 1", link: "https://drive.google.com/file/d/1K2Dw9nqh69nPEAhRz2wVKfY0k1zC8kan/view?usp=sharing", type: "PDF" }
+                    ]
+                },
                 quiz: []
             }
         },
