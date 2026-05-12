@@ -2714,7 +2714,8 @@ quiz: {
                         { title: "المسئولية القانونية المحاضرة 3", link: "https://drive.google.com/file/d/1hxzx5Lc-yXrhlVnwAI1hgke_lTqFPbqV/view?usp=sharing", type: "PDF" },
                         { title: "المسئولية القانونية المحاضرة 4", link: "https://drive.google.com/file/d/1vrh7-cRAFMoU006vR-tJTlDARorfCyIe/view?usp=sharing", type: "PDF" },
                         { title: "المسئولية القانونية المحاضرة 5", link: "https://drive.google.com/file/d/1bYaLyUrktUH4LaANd7bJt-ihw-0t8gqp/view?usp=drive_link", type: "PDF" },
-                        { title: "المسئولية القانونية المحاضرة 6", link: "https://drive.google.com/file/d/1752OEhoYGn-2317xNSrTfluwQoqWoccZ/view?usp=drive_link", type: "PDF" }
+                        { title: "المسئولية القانونية المحاضرة 6", link: "https://drive.google.com/file/d/1752OEhoYGn-2317xNSrTfluwQoqWoccZ/view?usp=drive_link", type: "PDF" },
+                        { title: "مسؤولية قانونية ملخص الملخص", link: "https://drive.google.com/file/d/1MRrIoPsKC2xS-zv5ZiVNq6q34fP-ooFl/view?usp=drive_link", type: "PDF" }
                     ],
                     en: [
                     ]
