@@ -2617,33 +2617,39 @@ quiz: {
                     { title: "Chapter 2 (Part 2 Matrices)", link: "https://drive.google.com/file/d/1dipyIxsE5ZbBPXTfBKcSpPEafi_agCdU/view?usp=drive_link", type: "PDF" },
                     { title: "Graph intro (part 1)", link: "https://drive.google.com/file/d/1rau0VJnf0EsYkXfNvIGE9CcQxxbw9a6g/view?usp=drive_link", type: "PDF" },
                     { title: "Chapter 4", link: "https://drive.google.com/file/d/1iMI8drSSsbCZ2s4CKOkQx4bcKLuEQBbL/view?usp=drive_link", type: "PDF" },
+                    { title: "graph_intro (Part2)", link: "https://drive.google.com/file/d/1gcbu17mRZUmQMWHxhhdCAlA7Vb6aqxWt/view?usp=drive_link", type: "PDF" },
+                    { title: "Trees", link: "https://drive.google.com/file/d/14drlZkcNisZiunvWFSIJKTReB_kophrp/view?usp=drive_link", type: "PDF" }
                 ],
                 summary: {
                     ar: [
-                        { title: "ديسكريت الفصل 1 الجزء 1", link: "https://drive.google.com/file/d/1pftkjirpW5pTw2n1BaeCuiRHzl0JA8pk/view?usp=drive_link", type: "PDF" },
-                        { title: "ديسكريت الفصل 1 الجزء 2", link: "https://drive.google.com/file/d/1cBjiubYnLZ3WeM9Gi-4jVnmsEs1-JWtC/view?usp=drive_link", type: "PDF" },
-                        { title: "ديسكريت الفصل 1 الجزء 3", link: "https://drive.google.com/file/d/1iVJaNQgyWROIfd4mPmSuYoCK6CjZdGYF/view?usp=drive_link", type: "PDF" },
-                        { title: "الفصل 2 الجزء 1", link: "https://drive.google.com/file/d/1ae5gy07DoGsGwz7G3ocgep9mE9o4slpC/view?usp=drive_link", type: "PDF" },
-                        { title: "الفصل 2 الجزء 2 الجزء 1", link: "https://drive.google.com/file/d/1Rw4S7REuvfysxBvb-ZV9rEZli3jVZrK-/view?usp=drive_link", type: "PDF" },
-                        { title: "الفصل 2 الجزء 2 المصفوفات", link: "https://drive.google.com/file/d/1BQUrTChHYnuzkc9_NYsplxj-PlTN46aq/view?usp=drive_link", type: "PDF" },
-                        { title: "نظرية المخططات الجزء الأول", link: "https://drive.google.com/file/d/1D2yIUc0qj1UZE21hqiU29ILovMJAU1re/view?usp=drive_link", type: "PDF" },
-                        { title: "الفصل 4", link: "https://drive.google.com/file/d/1epsidEk1iSJR1bTQRRYIwDJafXTc809u/view?usp=drive_link", type: "PDF" },
-                        { title: "ديسكريت محاضرة 1", link: "https://drive.google.com/file/d/11FwhHqngXg4EsPt6sDBqDepyqGUX0JCs/view?usp=drive_link", type: "PDF" },
-                        { title: "ديسكريت محاضرة 2", link: "https://drive.google.com/file/d/1B1nAkRx11jfdxXbLnrWrTpXKmfo0pD9g/view?usp=drive_link", type: "PDF" },
+                        { title: "ديسكريت الفصل 1 الجزء 1", link: "https://drive.google.com/file/d/1pftkjirpW5pTw2n1BaeCuiRHzl0JA8pk/view?usp=drive_link", type: "PDF", note: "هذا الملخص لا يحتوي على اي رسم تخطيطي او صور." },
+                        { title: "ديسكريت الفصل 1 الجزء 2", link: "https://drive.google.com/file/d/1cBjiubYnLZ3WeM9Gi-4jVnmsEs1-JWtC/view?usp=drive_link", type: "PDF", note: "هذا الملخص لا يحتوي على اي رسم تخطيطي او صور." },
+                        { title: "ديسكريت الفصل 1 الجزء 3", link: "https://drive.google.com/file/d/1iVJaNQgyWROIfd4mPmSuYoCK6CjZdGYF/view?usp=drive_link", type: "PDF", note: "هذا الملخص لا يحتوي على اي رسم تخطيطي او صور." },
+                        { title: "الفصل 2 الجزء 1", link: "https://drive.google.com/file/d/1ae5gy07DoGsGwz7G3ocgep9mE9o4slpC/view?usp=drive_link", type: "PDF", note: "هذا الملخص لا يحتوي على اي رسم تخطيطي او صور." },
+                        { title: "الفصل 2 الجزء 2 الجزء 1", link: "https://drive.google.com/file/d/1Rw4S7REuvfysxBvb-ZV9rEZli3jVZrK-/view?usp=drive_link", type: "PDF", note: "هذا الملخص لا يحتوي على اي رسم تخطيطي او صور." },
+                        { title: "الفصل 2 الجزء 2 المصفوفات", link: "https://drive.google.com/file/d/1BQUrTChHYnuzkc9_NYsplxj-PlTN46aq/view?usp=drive_link", type: "PDF", note: "هذا الملخص لا يحتوي على اي رسم تخطيطي او صور." },
+                        { title: "نظرية المخططات الجزء الأول", link: "https://drive.google.com/file/d/1D2yIUc0qj1UZE21hqiU29ILovMJAU1re/view?usp=drive_link", type: "PDF", note: "هذا الملخص لا يحتوي على اي رسم تخطيطي او صور." },
+                        { title: "نظرية المخططات الجزء الثاني", link: "https://drive.google.com/file/d/1OY5tmRecdfsert_a1Lpj8DSwdyUWHL_t/view?usp=drive_link", type: "PDF", note: "هذا الملخص لا يحتوي على اي رسم تخطيطي او صور." },
+                        { title: "الشجرة", link: "https://drive.google.com/file/d/1WGg53JS1IJ5myCKo0k7eaXlRc6tx_QEK/view?usp=drive_link", type: "PDF", note: "هذا الملخص لا يحتوي على اي رسم تخطيطي او صور." },
+                        { title: "الفصل 4", link: "https://drive.google.com/file/d/1epsidEk1iSJR1bTQRRYIwDJafXTc809u/view?usp=drive_link", type: "PDF", note: "هذا الملخص لا يحتوي على اي رسم تخطيطي او صور." },
+                        { title: "ديسكريت محاضرة 1", link: "https://drive.google.com/file/d/11FwhHqngXg4EsPt6sDBqDepyqGUX0JCs/view?usp=drive_link", type: "PDF", note: "هذا الملخص لا يحتوي على اي رسم تخطيطي او صور." },
+                        { title: "ديسكريت محاضرة 2", link: "https://drive.google.com/file/d/1B1nAkRx11jfdxXbLnrWrTpXKmfo0pD9g/view?usp=drive_link", type: "PDF", note: "هذا الملخص لا يحتوي على اي رسم تخطيطي او صور." },
                         { title: "ديسكريت لاب 1", link: "https://drive.google.com/file/d/1gv__cvRA7InCsAqAgKKfmgMt8ku5MiaS/view?usp=drive_link", type: "PDF" },
                         { title: "ديسكريت لاب 5", link: "https://drive.google.com/file/d/11yig8e0CFmVO6VeSukD5l8c0vovjKt4I/view?usp=drive_link", type: "PDF" }
                     ],
                     en: [
-                        { title: "Chapter 1 Part 1", link: "https://drive.google.com/file/d/1miaFDkzeR8_fL77bh80S92AoR7WcC7q8/view?usp=drive_link", type: "PDF" },
-                        { title: "Chapter 1 Part 2", link: "https://drive.google.com/file/d/1ABHRkSpKmCEsnjKWEy2iNoKFfh29BewQ/view?usp=drive_link", type: "PDF" },
-                        { title: "Chapter 1 Part 3", link: "https://drive.google.com/file/d/1eEX3PXKskikFIqJyV_7MBeUocdxIeOf9/view?usp=drive_link", type: "PDF" },
-                        { title: "Chapter 2 Part 1", link: "https://drive.google.com/file/d/1pO6HnjD5SkkrUDV5UnDct7GJiifF8y7e/view?usp=drive_link", type: "PDF" },
-                        { title: "Chapter 2 Part 2 Part 1", link: "https://drive.google.com/file/d/1RR60E0LXq0QrbdcE5otmzYMfMWJEzqqo/view?usp=drive_link", type: "PDF" },
-                        { title: "Chapter 2 Part 2 Matrices", link: "https://drive.google.com/file/d/17itO7TlvFeJi2EMMo3fCYB0qDjppClrf/view?usp=drive_link", type: "PDF" },
-                        { title: "Graph Theory Part 1", link: "https://drive.google.com/file/d/1MlCLtkUMjRVScYWWXCFkplktglCGPGxq/view?usp=drive_link", type: "PDF" },
-                        { title: "Chapter 4", link: "https://drive.google.com/file/d/1Xo5r8rYwJ5wWPHOfKBM8p1DY1jvJQFgG/view?usp=drive_link", type: "PDF" },
-                        { title: "Discrete Structures Lecture 1", link: "https://drive.google.com/file/d/1uNDsKz_kwqd6p4FGzmDZM5NisR06HGmy/view?usp=drive_link", type: "PDF" },
-                        { title: "Discrete Structures Lecture 2", link: "https://drive.google.com/file/d/1-P67OVfWiDDJoeI7uLFKfS8S1E2n-rTE/view?usp=drive_link", type: "PDF" },
+                        { title: "Chapter 1 Part 1", link: "https://drive.google.com/file/d/1miaFDkzeR8_fL77bh80S92AoR7WcC7q8/view?usp=drive_link", type: "PDF", note: "This summary doesn't contain any graphs or images." },
+                        { title: "Chapter 1 Part 2", link: "https://drive.google.com/file/d/1ABHRkSpKmCEsnjKWEy2iNoKFfh29BewQ/view?usp=drive_link", type: "PDF", note: "This summary doesn't contain any graphs or images." },
+                        { title: "Chapter 1 Part 3", link: "https://drive.google.com/file/d/1eEX3PXKskikFIqJyV_7MBeUocdxIeOf9/view?usp=drive_link", type: "PDF", note: "This summary doesn't contain any graphs or images." },
+                        { title: "Chapter 2 Part 1", link: "https://drive.google.com/file/d/1pO6HnjD5SkkrUDV5UnDct7GJiifF8y7e/view?usp=drive_link", type: "PDF", note: "This summary doesn't contain any graphs or images." },
+                        { title: "Chapter 2 Part 2 Part 1", link: "https://drive.google.com/file/d/1RR60E0LXq0QrbdcE5otmzYMfMWJEzqqo/view?usp=drive_link", type: "PDF", note: "This summary doesn't contain any graphs or images." },
+                        { title: "Chapter 2 Part 2 Matrices", link: "https://drive.google.com/file/d/17itO7TlvFeJi2EMMo3fCYB0qDjppClrf/view?usp=drive_link", type: "PDF", note: "This summary doesn't contain any graphs or images." },
+                        { title: "Graph Theory Part 1", link: "https://drive.google.com/file/d/1MlCLtkUMjRVScYWWXCFkplktglCGPGxq/view?usp=drive_link", type: "PDF", note: "This summary doesn't contain any graphs or images." },
+                        { title: "Graph Theory Part 2", link: "https://drive.google.com/file/d/1YGFifpXQjOcTGhuH2lItO7mTKlERODVm/view?usp=drive_link", type: "PDF", note: "This summary doesn't contain any graphs or images." },
+                        { title: "Trees", link: "https://drive.google.com/file/d/1JDfVpTrbQNSn9W0kqex-kAKxxBF0zcLG/view?usp=drive_link", type: "PDF", note: "This summary doesn't contain any graphs or images." },
+                        { title: "Chapter 4", link: "https://drive.google.com/file/d/1Xo5r8rYwJ5wWPHOfKBM8p1DY1jvJQFgG/view?usp=drive_link", type: "PDF", note: "This summary doesn't contain any graphs or images." },
+                        { title: "Discrete Structures Lecture 1", link: "https://drive.google.com/file/d/1uNDsKz_kwqd6p4FGzmDZM5NisR06HGmy/view?usp=drive_link", type: "PDF", note: "This summary doesn't contain any graphs or images." },
+                        { title: "Discrete Structures Lecture 2", link: "https://drive.google.com/file/d/1-P67OVfWiDDJoeI7uLFKfS8S1E2n-rTE/view?usp=drive_link", type: "PDF", note: "This summary doesn't contain any graphs or images." },
                         { title: "Discrete Structure Lab 1", link: "https://drive.google.com/file/d/16LGaZwEpfVuzr7C2GUExSiAydz09JMMj/view?usp=drive_link", type: "PDF" },
                         { title: "Discrete Structure Lab 5", link: "https://drive.google.com/file/d/1K2oMny08-uDXks56uf5l6gJu6r5IVaIc/view?usp=drive_link", type: "PDF" }
                     ]
@@ -2714,8 +2720,7 @@ quiz: {
                         { title: "المسئولية القانونية المحاضرة 3", link: "https://drive.google.com/file/d/1hxzx5Lc-yXrhlVnwAI1hgke_lTqFPbqV/view?usp=sharing", type: "PDF" },
                         { title: "المسئولية القانونية المحاضرة 4", link: "https://drive.google.com/file/d/1vrh7-cRAFMoU006vR-tJTlDARorfCyIe/view?usp=sharing", type: "PDF" },
                         { title: "المسئولية القانونية المحاضرة 5", link: "https://drive.google.com/file/d/1bYaLyUrktUH4LaANd7bJt-ihw-0t8gqp/view?usp=drive_link", type: "PDF" },
-                        { title: "المسئولية القانونية المحاضرة 6", link: "https://drive.google.com/file/d/1752OEhoYGn-2317xNSrTfluwQoqWoccZ/view?usp=drive_link", type: "PDF" },
-                        { title: "مسؤولية قانونية ملخص الملخص", link: "https://drive.google.com/file/d/1MRrIoPsKC2xS-zv5ZiVNq6q34fP-ooFl/view?usp=drive_link", type: "PDF" }
+                        { title: "المسئولية القانونية المحاضرة 6", link: "https://drive.google.com/file/d/1752OEhoYGn-2317xNSrTfluwQoqWoccZ/view?usp=drive_link", type: "PDF" }
                     ],
                     en: [
                     ]
@@ -2859,7 +2864,8 @@ quiz: {
                         { title: "موضوعات مختارة في الذكاء الإصطناعي المحاضرة 4", link: "https://drive.google.com/file/d/1pnJmdrYll9M1GyCkVnd_gTbYQXUa42S2/view?usp=sharing", type: "PDF" },
                         { title: "موضوعات مختارة في الذكاء الإصطناعي المحاضرة 5", link: "https://drive.google.com/file/d/1DVRfsBamK1lWMiZHnCOQRsTNL0vPo6vm/view?usp=drive_link", type: "PDF" },
                         { title: "موضوعات مختارة في الذكاء الإصطناعي المحاضرة 6", link: "https://drive.google.com/file/d/1pXzP4NvN1VhsJLC1CY4dPHFL227rseRx/view?usp=drive_link", type: "PDF" },
-                        { title: "موضوعات مختارة في الذكاء الإصطناعي المحاضرة 7", link: "https://drive.google.com/file/d/1ZZ3oNf9evujof1pQHSs9T3Ua9rsmhSvA/view?usp=drive_link", type: "PDF" }
+                        { title: "موضوعات مختارة في الذكاء الإصطناعي المحاضرة 7", link: "https://drive.google.com/file/d/1ZZ3oNf9evujof1pQHSs9T3Ua9rsmhSvA/view?usp=drive_link", type: "PDF" },
+                        { title: "ملخص الملخص", link: "https://drive.google.com/file/d/1dk5cxg2KxV5K40IaXAdJhHsH4G8_gYgV/view?usp=drive_link", type: "PDF", note: "تحذير: لا تعتمد عليها وحدها" }
                     ],
                     en: [
                         { title: "Selected Topics in AI Lecture 1", link: "https://drive.google.com/file/d/1Npvbx0GfbQ0u1MM4vp6tWyQBD9KqCHyC/view?usp=sharing", type: "PDF" },
@@ -2868,7 +2874,8 @@ quiz: {
                         { title: "Selected Topics in AI Lecture 4", link: "https://drive.google.com/file/d/1qrr4zcy7hZjP9ZzsoLCoYlXdHQdCthYY/view?usp=sharing", type: "PDF" },
                         { title: "Selected Topics in AI Lecture 5", link: "https://drive.google.com/file/d/1NuZVMqm2KprxyChzQruTrvuOFToTHFmi/view?usp=drive_link", type: "PDF" },
                         { title: "Selected Topics in AI Lecture 6", link: "https://drive.google.com/file/d/1i3PkwBu7KrkjeNjH2luzCmqfn3qYLtxR/view?usp=drive_link", type: "PDF" },
-                        { title: "Selected Topics in AI Lecture 7", link: "https://drive.google.com/file/d/1alC7GWVoJ3__4jjy6_whqErsNIuxix1i/view?usp=drive_link", type: "PDF" }
+                        { title: "Selected Topics in AI Lecture 7", link: "https://drive.google.com/file/d/1alC7GWVoJ3__4jjy6_whqErsNIuxix1i/view?usp=drive_link", type: "PDF" },
+                        { title: "Summary of the summary", link: "https://drive.google.com/file/d/1bp4tUvY34kPULAX15tU4QhpyfG3gqq7y/view?usp=sharing", type: "PDF", note: "WARNING: don't rely on it only." }
                     ]
                 },
                 quiz: []
@@ -2884,7 +2891,7 @@ quiz: {
                 { major: "ai", year: 1, term: 2 },
                 { major: "cyber", year: 1, term: 2 }
             ],
-            material: ["lecs", "chapters", "summary", "labs", "quiz"], 
+            material: ["lecs", "summary", "labs", "quiz"], 
             content: {
                 lecs: [
                     { title: "Lecture 1", link: "https://docs.google.com/presentation/d/1nrPgyt3oNmeOQRjdsyRJvokb-6UCRFjR/edit?usp=drive_link&ouid=115492288787328928533&rtpof=true&sd=true", type: "PPTX" },
