@@ -2597,7 +2597,7 @@ quiz: {
         { 
             id: "discrete", 
             name_en: "Discrete Structures", 
-            name_ar: "هياكل متقطعة", 
+            name_ar: "رياضيات متقطعة", 
             placements: [
                 { major: "ai", year: 1, term: 2 },
                 { major: "cyber", year: 1, term: 2 }
@@ -2669,26 +2669,6 @@ quiz: {
                         { title: "Number Theory & Cryptography", link: "https://drive.google.com/file/d/1hv6zJjZyDqejRKR0W5dgSVx0VeV52sdg/view?usp=drive_link", type: "PDF" }
 
                     ],
-                },
-                summary: {
-                    ar: [
-                        { title: "ديسكريت محاضرة 1", link: "https://drive.google.com/file/d/1MLzhc6vGkwP9PjpJ7_-JU_ZzQS5BIvio/view?usp=sharing", type: "PDF" },
-                        { title: "ديسكريت محاضرة 2", link: "https://drive.google.com/file/d/1XfnxPzjdYL39H0Nru1W075Kjpss8u_1t/view?usp=sharing", type: "PDF" },
-                        { title: "ديسكريت لاب 1", link: "https://drive.google.com/file/d/15bbCnxIu5hSaZJ41rsQLpBDT9riVJ5MK/view?usp=sharing", type: "PDF" },
-                        { title: "ديسكريت لاب 5", link: "https://drive.google.com/file/d/10KKunrLR_0hcXG7FzArQBnFTqyR_uupV/view?usp=sharing", type: "PDF" },
-                        { title: "ديسكريت الفصل 1 الجزء 1", link: "https://drive.google.com/file/d/1nA5Gl9kq4Sl3TgkPV8l-Pher73_YY9aq/view?usp=sharing", type: "PDF" },
-                        { title: "ديسكريت الفصل 1 الجزء 2", link: "https://drive.google.com/file/d/1xx8W_rHQTQ2cBXldztcKM73EQnjrb0ES/view?usp=sharing", type: "PDF" },
-                        { title: "ديسكريت الفصل 1 الجزء 3", link: "https://drive.google.com/file/d/1cFqGJFq4pNvCWa7iVRYjPXlqKiG1cYAU/view?usp=sharing", type: "PDF" }
-                    ],
-                    en: [
-                        { title: "Discrete Structures Lecture 1", link: "https://drive.google.com/file/d/1fTcF13L12zwTL5Ethl2FxYIwGl7hLEOW/view?usp=sharing", type: "PDF" },
-                        { title: "Discrete Structures Lecture 2", link: "https://drive.google.com/file/d/1ekMe7abYxHqmPq5zrTsTj4dy9qug79xc/view?usp=sharing", type: "PDF" },
-                        { title: "Discrete Structure Lab 1", link: "https://drive.google.com/file/d/1K6yLb1mndEv65tnFwn_753O6wL9WJr0J/view?usp=sharing", type: "PDF" },
-                        { title: "Discrete Structure Lab 5", link: "https://drive.google.com/file/d/1-nl25V3T1iNdB9Fg9u-omUJJ-c6z-wKi/view?usp=sharing", type: "PDF" },
-                        { title: "Discrete Structures Chapter 1 Part 1", link: "https://drive.google.com/file/d/1_Qvk3Tq-yArMJTwEjY0G3ievog6eNWHV/view?usp=sharing", type: "PDF" },
-                        { title: "Discrete Structures Chapter 1 Part 2", link: "https://drive.google.com/file/d/1eDNvbyiSMfBx-nTyxp4b9gVgCZG1ZEfx/view?usp=sharing", type: "PDF" },
-                        { title: "Discrete Structures Chapter 1 Part 3", link: "https://drive.google.com/file/d/1Mc4j6kyp38_wfx7Vm23SQCCNibAtQLeQ/view?usp=sharing", type: "PDF" }
-                    ]
                 },
                 quiz: []
             }
