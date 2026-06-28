@@ -2651,7 +2651,8 @@ quiz: {
                         { title: "Discrete Structures Lecture 1", link: "https://drive.google.com/file/d/1uNDsKz_kwqd6p4FGzmDZM5NisR06HGmy/view?usp=drive_link", type: "PDF", note: "This summary doesn't contain any graphs or images." },
                         { title: "Discrete Structures Lecture 2", link: "https://drive.google.com/file/d/1-P67OVfWiDDJoeI7uLFKfS8S1E2n-rTE/view?usp=drive_link", type: "PDF", note: "This summary doesn't contain any graphs or images." },
                         { title: "Discrete Structure Lab 1", link: "https://drive.google.com/file/d/16LGaZwEpfVuzr7C2GUExSiAydz09JMMj/view?usp=drive_link", type: "PDF" },
-                        { title: "Discrete Structure Lab 5", link: "https://drive.google.com/file/d/1K2oMny08-uDXks56uf5l6gJu6r5IVaIc/view?usp=drive_link", type: "PDF" }
+                        { title: "Discrete Structure Lab 5", link: "https://drive.google.com/file/d/1K2oMny08-uDXks56uf5l6gJu6r5IVaIc/view?usp=drive_link", type: "PDF" },
+                        { title: "full subject summary by Dr.Mohamed Osman", link: "https://drive.google.com/file/d/1cdXEDSUfbHCms0hkc4hdayJeDVIWRuxN/view?usp=drive_link", type: "PDF" }
                     ]
             },
                 labs: {
@@ -2743,7 +2744,10 @@ quiz: {
                         { title: "Chapter 6", link: "https://drive.google.com/file/d/1rvFrPiBA5gcZ0Kw4Ykd5GoUiL1PWxf-U/view?usp=drive_link", type: "PDF" }
                      ] 
                     },
-                quiz: []
+                quiz: [
+                    { title: "Questions 1", link: "https://drive.google.com/file/d/1U-ynq4CobBrRFK2ZHwhNHfhodwhLrBKZ/view?usp=drive_link", type: "PDF" },
+                    { title: "Questions 2", link: "https://drive.google.com/file/d/1bA8Xe3_nJuFG2s9_Es5GlI4rpnOBomAz/view?usp=drive_link", type: "PDF", note: "Full subject questions for final exam review (THE MOST IMPORTANT)" }
+                ]
             }
         },
 
@@ -2834,7 +2838,8 @@ quiz: {
                     { title: "Lecture 4", link: "https://drive.google.com/file/d/1OLTHPcHR21ME_fh3w8Dg6iFiovCFjXnd/view?usp=sharing", type: "PDF" },
                     { title: "Lecture 5", link: "https://drive.google.com/file/d/1mIFu4aAXIaXp9gme36i9edeW4GbQ4dPL/view?usp=drive_link", type: "PDF" },
                     { title: "Lecture 6", link: "https://drive.google.com/file/d/1NFCBuO8yJrTC22xvEv9zpE54ZvI_yPQ9/view?usp=drive_link", type: "PDF" },
-                    { title: "Lecture 7", link: "https://drive.google.com/file/d/15bQ1V0xiqElXgMuftXgDql_Ud2uh5tyN/view?usp=drive_link", type: "PDF" }
+                    { title: "Lecture 7", link: "https://drive.google.com/file/d/15bQ1V0xiqElXgMuftXgDql_Ud2uh5tyN/view?usp=drive_link", type: "PDF" },
+                    { title: "Lecture 8", link: "https://drive.google.com/file/d/1G7-MBtM7lSaRuN5qOfgo50Sc5QrYMhmL/view?usp=drive_link", type: "PDF" }
                 ],
                 summary: {
                     ar: [
@@ -2845,7 +2850,8 @@ quiz: {
                         { title: "موضوعات مختارة في الذكاء الإصطناعي المحاضرة 5", link: "https://drive.google.com/file/d/1DVRfsBamK1lWMiZHnCOQRsTNL0vPo6vm/view?usp=drive_link", type: "PDF" },
                         { title: "موضوعات مختارة في الذكاء الإصطناعي المحاضرة 6", link: "https://drive.google.com/file/d/1pXzP4NvN1VhsJLC1CY4dPHFL227rseRx/view?usp=drive_link", type: "PDF" },
                         { title: "موضوعات مختارة في الذكاء الإصطناعي المحاضرة 7", link: "https://drive.google.com/file/d/1ZZ3oNf9evujof1pQHSs9T3Ua9rsmhSvA/view?usp=drive_link", type: "PDF" },
-                        { title: "ملخص الملخص", link: "https://drive.google.com/file/d/1dk5cxg2KxV5K40IaXAdJhHsH4G8_gYgV/view?usp=drive_link", type: "PDF", note: "تحذير: لا تعتمد عليها وحدها" }
+                        { title: "المحاضرة 8", link: "https://drive.google.com/file/d/1XH1rzIcRU3Rh2eoDwfXxsEAhRI3aE0Re/view?usp=drive_link", type: "PDF" },
+                        { title: "ملخص الملخص", link: "https://drive.google.com/file/d/1VPmVWGEr61D1IxhPionkoLYjhWpZHlRO/view?usp=drive_link", type: "PDF", note: "تحذير: لا تعتمد عليها وحدها" }
                     ],
                     en: [
                         { title: "Selected Topics in AI Lecture 1", link: "https://drive.google.com/file/d/1Npvbx0GfbQ0u1MM4vp6tWyQBD9KqCHyC/view?usp=sharing", type: "PDF" },
@@ -2855,7 +2861,8 @@ quiz: {
                         { title: "Selected Topics in AI Lecture 5", link: "https://drive.google.com/file/d/1NuZVMqm2KprxyChzQruTrvuOFToTHFmi/view?usp=drive_link", type: "PDF" },
                         { title: "Selected Topics in AI Lecture 6", link: "https://drive.google.com/file/d/1i3PkwBu7KrkjeNjH2luzCmqfn3qYLtxR/view?usp=drive_link", type: "PDF" },
                         { title: "Selected Topics in AI Lecture 7", link: "https://drive.google.com/file/d/1alC7GWVoJ3__4jjy6_whqErsNIuxix1i/view?usp=drive_link", type: "PDF" },
-                        { title: "Summary of the summary", link: "https://drive.google.com/file/d/1bp4tUvY34kPULAX15tU4QhpyfG3gqq7y/view?usp=sharing", type: "PDF", note: "WARNING: don't rely on it only." }
+                        { title: "Selected Topics in AI Lecture 8", link: "https://drive.google.com/file/d/1Jlo4YqGdsMxEG6qkyZa3oqGkWrnEWHtn/view?usp=drive_link", type: "PDF" },
+                        { title: "Summary of the summary", link: "https://drive.google.com/file/d/1OG8INpfaV6CH88cPBZIaMG7_m9JP29pz/view?usp=drive_link", type: "PDF", note: "WARNING: don't rely on it only." }
                     ]
                 },
                 quiz: []
