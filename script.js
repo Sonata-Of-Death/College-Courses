@@ -271,8 +271,13 @@ function renderSubjectView() {
             }
         }
     } else if(appState.activeTab === 'summary' && !Array.isArray(sub.content.summary)) {
-        if(!appState.subFilter) content = `<div class="grid-center"><div class="selection-card" onclick="appState.subFilter='ar'; renderSubjectView()"><i class="fas fa-language card-icon"></i><h3>${t('arSec')}</h3></div><div class="selection-card" onclick="appState.subFilter='en'; renderSubjectView()"><i class="fas fa-globe card-icon"></i><h3>${t('enSec')}</h3></div></div>`;
-        else content = renderFileList(appState.subFilter === 'ar' ? sub.content.summary.ar : sub.content.summary.en);
+        const hasEnSummary = sub.content.summary.en && sub.content.summary.en.length > 0;
+        if (!hasEnSummary) {
+            content = renderFileList(sub.content.summary.ar);
+        } else {
+            if(!appState.subFilter) content = `<div class="grid-center"><div class="selection-card" onclick="appState.subFilter='ar'; renderSubjectView()"><i class="fas fa-language card-icon"></i><h3>${t('arSec')}</h3></div><div class="selection-card" onclick="appState.subFilter='en'; renderSubjectView()"><i class="fas fa-globe card-icon"></i><h3>${t('enSec')}</h3></div></div>`;
+            else content = renderFileList(appState.subFilter === 'ar' ? sub.content.summary.ar : sub.content.summary.en);
+        }
     } else if(appState.activeTab === 'lecs' && !Array.isArray(sub.content.lecs)) {
         if(!appState.subFilter) content = `<div class="grid-center"><div class="selection-card" onclick="appState.subFilter='main'; renderSubjectView()"><i class="fas fa-chalkboard-teacher card-icon"></i><h3>${t('lecsMain')}</h3></div><div class="selection-card" onclick="appState.subFilter='solutions'; renderSubjectView()"><i class="fas fa-check-circle card-icon"></i><h3>${t('lecsSol')}</h3></div></div>`;
         else content = renderFileList(appState.subFilter === 'main' ? sub.content.lecs.main : sub.content.lecs.solutions);
