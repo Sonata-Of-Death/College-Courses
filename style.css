@@ -338,3 +338,231 @@ footer.home-footer { padding: 3rem 1rem; font-size: 1rem; }
 @media (max-width: 768px) {
     .report-fab { bottom: 20px; right: 20px; width: 50px; height: 50px; font-size: 1.5rem; }
 }
+
+/* ======================================================
+   MARKDOWN + KATEX RENDERING STYLES
+   ====================================================== */
+/* These styles apply to everything wrapped in the `.md-content` class
+   which is set on every element that has been run through renderMarkdown(). */
+
+/* Headings */
+.md-content h1, .md-content h2, .md-content h3,
+.md-content h4, .md-content h5, .md-content h6 {
+    color: var(--white);
+    margin: 1.2em 0 0.6em;
+    line-height: 1.3;
+    font-weight: 700;
+}
+.md-content h1 { font-size: 1.8rem; border-bottom: 1px solid var(--border); padding-bottom: 0.3em; }
+.md-content h2 { font-size: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.3em; }
+.md-content h3 { font-size: 1.25rem; color: var(--accent); }
+.md-content h4 { font-size: 1.1rem; color: var(--accent); }
+.md-content h5, .md-content h6 { font-size: 1rem; color: var(--text-secondary); }
+
+/* Paragraphs */
+.md-content p { margin: 0 0 0.8em; line-height: 1.7; color: var(--text-primary); }
+
+/* Lists */
+.md-content ul, .md-content ol {
+    margin: 0 0 0.8em 1.5em;
+    line-height: 1.7;
+    color: var(--text-primary);
+}
+.md-content li { margin-bottom: 0.25em; }
+.md-content li > p { margin-bottom: 0.3em; }
+
+/* Inline emphasis */
+.md-content strong { color: var(--white); font-weight: 700; }
+.md-content em { color: var(--text-primary); font-style: italic; }
+.md-content del { color: var(--text-secondary); }
+
+/* Links */
+.md-content a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--accent);
+    transition: 0.2s;
+}
+.md-content a:hover { color: var(--white); border-bottom-color: var(--white); }
+
+/* Blockquote */
+.md-content blockquote {
+    border-left: 4px solid var(--accent);
+    background: rgba(0, 169, 255, 0.08);
+    margin: 0.8em 0;
+    padding: 0.6em 1em;
+    color: var(--text-primary);
+    border-radius: 0 6px 6px 0;
+}
+.md-content blockquote p:last-child { margin-bottom: 0; }
+
+/* Horizontal rule */
+.md-content hr {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 1.5em 0;
+}
+
+/* Inline code */
+.md-content :not(pre) > code {
+    background: var(--code-bg);
+    color: #ff7b72;
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    font-family: 'Consolas', 'Fira Code', monospace;
+    font-size: 0.92em;
+    border: 1px solid var(--border);
+}
+
+/* Fenced code blocks */
+.md-content pre {
+    background: var(--code-bg);
+    color: #d4d4d4;
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 0.8em 0;
+    border: 1px solid var(--border);
+    line-height: 1.55;
+    font-family: 'Consolas', 'Fira Code', monospace;
+    font-size: 0.95rem;
+}
+.md-content pre code {
+    background: transparent !important;
+    color: inherit;
+    padding: 0;
+    border: none;
+    font-size: inherit;
+}
+
+/* Markdown tables (GFM) */
+.md-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1em 0;
+    font-size: 0.95rem;
+    background: var(--card-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    display: block;
+    overflow-x: auto;
+    border: 1px solid var(--border);
+}
+.md-content thead { background: rgba(0, 169, 255, 0.1); }
+.md-content th, .md-content td {
+    padding: 0.7em 1em;
+    text-align: left;
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+}
+.md-content th {
+    color: var(--white);
+    font-weight: 700;
+    background: rgba(0, 169, 255, 0.08);
+}
+.md-content tbody tr:nth-child(even) { background: rgba(255, 255, 255, 0.02); }
+.md-content tbody tr:hover { background: rgba(0, 169, 255, 0.05); }
+
+/* Images */
+.md-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 0.5em 0;
+    border: 1px solid var(--border);
+}
+
+/* Task list (GFM) */
+.md-content input[type="checkbox"] { margin-right: 0.5em; transform: scale(1.1); }
+.md-content li:has(> input[type="checkbox"]) { list-style: none; margin-left: -1.2em; }
+
+/* KaTeX display math: give it room to breathe */
+.md-content .katex-display {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0.5em 0;
+    margin: 0.8em 0;
+}
+.md-content .katex { font-size: 1.05em; }
+
+/* RTL support for Arabic content */
+body[dir="rtl"] .md-content ul, body[dir="rtl"] .md-content ol { margin-left: 0; margin-right: 1.5em; }
+body[dir="rtl"] .md-content blockquote { border-left: none; border-right: 4px solid var(--accent); }
+body[dir="rtl"] .md-content table th, body[dir="rtl"] .md-content table td { text-align: right; }
+
+/* Google Drive Redirect Buttons */
+.btn-drive-nav {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(66, 133, 244, 0.12);
+    border: 1px solid rgba(66, 133, 244, 0.3);
+    color: var(--white);
+    padding: 6px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-left: 10px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.btn-drive-nav i {
+    color: #4285F4;
+    font-size: 1.1rem;
+    transition: transform 0.3s ease;
+}
+.btn-drive-nav:hover {
+    background: #4285F4;
+    color: #ffffff;
+    border-color: #4285F4;
+    box-shadow: 0 4px 15px rgba(66, 133, 244, 0.4);
+    transform: translateY(-2px);
+}
+.btn-drive-nav:hover i {
+    color: #ffffff;
+    transform: rotate(15deg);
+}
+
+.btn-drive-course {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, rgba(66, 133, 244, 0.15) 0%, rgba(52, 168, 83, 0.15) 100%);
+    border: 1px solid rgba(66, 133, 244, 0.4);
+    color: var(--white);
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+.btn-drive-course:hover {
+    background: linear-gradient(135deg, #4285F4 0%, #34A853 100%);
+    color: #ffffff;
+    border-color: transparent;
+    box-shadow: 0 6px 20px rgba(66, 133, 244, 0.4);
+    transform: translateY(-2px);
+}
+.btn-drive-course:hover i.fa-google-drive {
+    color: #ffffff !important;
+}
+
+@media (max-width: 600px) {
+    .btn-drive-nav span { display: none; }
+    .btn-drive-nav { padding: 6px 10px; margin-left: 5px; }
+}
+
+/* Disable transitions during language change */
+.no-transition, .no-transition *, .no-transition *::before, .no-transition *::after {
+    transition: none !important;
+    animation: none !important;
+}
+
+/* Arabic mode text styles (keeps layout fixed without flipping cards left-to-right) */
+body.lang-ar .md-content ul, body.lang-ar .md-content ol { margin-left: 0; margin-right: 1.5em; }
+body.lang-ar .md-content blockquote { border-left: none; border-right: 4px solid var(--accent); }
+body.lang-ar .md-content table th, body.lang-ar .md-content table td { text-align: right; }
+
+
