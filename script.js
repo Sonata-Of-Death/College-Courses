@@ -59,8 +59,8 @@ function preprocessMathText(text) {
     let str = String(text);
 
     // -----------------------------------------------------------------
-    // 0) Mask out any existing $...$ / $$...$ / \(...\) / \[...\] spans so
-    //    our regexes never touch content that's already valid LaTeX.
+    // 0) Masking Phase: Mask URLs, code blocks, HTML tags, and existing LaTeX delimiters
+    //    so math regexes never corrupt URLs, code blocks, HTML, or existing LaTeX.
     // -----------------------------------------------------------------
     const masks = [];
     const mask = (s) => {
@@ -68,67 +68,128 @@ function preprocessMathText(text) {
         masks.push(s);
         return token;
     };
-    str = str.replace(/\$\$[\s\S]*?\$\$|\$[^$\n]+\$|\\\([\s\S]*?\\\)|\\\[[\s\S]*?\\\]/g, mask);
+
+    str = str.replace(/https?:\/\/[^\s<>()]+/g, mask);
+    str = str.replace(/```[\s\S]*?```|`[^`\n]+`/g, mask);
+    str = str.replace(/<[^>]+>/g, mask);
+    str = str.replace(/\$\$[\s\S]*?\$\$|\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)/g, mask);
+    str = str.replace(/\$([^$\n]+?)\$/g, mask);
 
     // -----------------------------------------------------------------
-    // 1) Plain-text fractions: (numerator)/(denominator)  →  \frac{}{}
-    //    Safety rules so we don't mangle English phrases like
-    //    "(bird/work)", "(Architects/Designers)", or a Markdown link
-    //    image alt-text.
+    // 0.5) Un-delimited Raw LaTeX Detection Phase
+    //      Detect plain-text strings containing raw backslash LaTeX commands
+    //      (e.g., \int, \frac, \sqrt, \ln, \sin, \cos, \tan, \sec, \lim, \sum, \implies, etc.)
+    //      and automatically wrap them in $...$ delimiters for KaTeX.
     // -----------------------------------------------------------------
-    str = str.replace(/\(([^()\n]{1,80})\)\/(\(([^()\n]{1,80})\)|([^\s()\n]{1,80}))/g, (m, num, denGroup, denParen, denBare) => {
-        const den = denParen !== undefined ? denParen : denBare;
-        // Only treat as math if at least one of the two sides "looks" mathematical:
-        //   - contains a digit, OR
-        //   - contains a math operator (+, -, *, ^, =), OR
-        //   - is a single math letter (x, y, z, n, m, a, b, k, t, etc.) of length 1-3
-        const mathy = /[0-9]|[\+\-\*\^=]|^[a-zA-Z]{1,3}$/.test(num) || /[0-9]|[\+\-\*\^=]/.test(den);
-        if (!mathy) return m; // leave it alone (e.g. "bird/work")
-        return `$\\frac{${num}}{${den}}$`;
+    const rawLatexRegex = /(?:[^\n]*?\\(?:int|frac|sqrt|lim|sum|prod|sin|cos|tan|sec|csc|cot|ln|log|theta|alpha|beta|gamma|delta|pi|implies|rightarrow|leftarrow|cdot|left|right|partial|infty|iint|iiint|oint|quad|gcd|in|langle|rangle|circ|pm|omega|varphi|lambda|mu|approx|hat|le|ge|neq|ne|cup|sinh|cosh|tanh|arccos|arcsin|vec)\b[^\n]*|^\s*[a-zA-Z0-9_]+\s*=\s*[^\n]*\\[a-zA-Z]+[^\n]*)/gi;
+
+    str = str.replace(rawLatexRegex, (m) => {
+        const prefixMatch = m.match(/^(.*?(?:integral|equation|formula|evaluate|find|simplify|solve|where|let)\s*:\s*)(.*\\.*)$/i);
+        if (prefixMatch) {
+            return prefixMatch[1] + mask(`$${prefixMatch[2].trim()}$`);
+        }
+        return mask(`$${m.trim()}$`);
     });
 
-    // 1b) Inline (num/den) without an outer-paren split, e.g. "(8/3)" or
-    //     "(1/3)" in model answers. Only matches when the slash is INSIDE
-    //     the parens and the sides are clearly numeric.
-    str = str.replace(/\(\s*([+-]?\d+(?:\.\d+)?)\s*\/\s*([+-]?\d+(?:\.\d+)?)\s*\)/g, '$\\frac{$1}{$2}$');
+    // Helper to format math operators (e.g. converting bare * to \times inside math)
+    const formatMathOperators = (expr) => {
+        return expr
+            .replace(/\s*\*\s*/g, ' \\times ')
+            .trim();
+    };
+
+    const formatExponent = (exp) => {
+        const clean = exp.trim();
+        return (clean.startsWith('(') && clean.endsWith(')')) ? clean.slice(1, -1) : clean;
+    };
+
+    const isMathy = (s) => /[0-9\+\-\*\^\=\\]|^[a-zA-Z]{1,3}$/.test(s.trim());
 
     // -----------------------------------------------------------------
-    // 2) Arrows: =>, <=>, ->, <-, ->
-    //    We match with word-ish boundaries (preceded/followed by space,
-    //    start/end of line, or a math char) so we don't touch things
-    //    like "->-user" in a URL.
+    // 1) Fractions Phase
     // -----------------------------------------------------------------
-    str = str.replace(/(^|[\s])<=>(?=[\s]|$)/g, '$1$\\Leftrightarrow$');
-    str = str.replace(/(^|[\s])=>(?=\s|$)/g,        '$1$\\Rightarrow$');
-    str = str.replace(/(^|[\s])<->(?=[\s]|$)/g,      '$1$\\leftrightarrow$');
-    str = str.replace(/(^|[\s])->(?=[\s]|$)/g,       '$1$\\rightarrow$');
+    // 1a) Parenthesized Numerator AND Parenthesized Denominator: (2x+3)/(x-1), (9*8)/(9)
+    str = str.replace(/\(([^()\n]{1,100})\)\/\(([^()\n]{1,100})\)/g, (m, num, den) => {
+        if (!isMathy(num) && !isMathy(den)) return m;
+        return mask(`$\\frac{${formatMathOperators(num.trim())}}{${formatMathOperators(den.trim())}}$`);
+    });
+
+    // 1b) Parenthesized Numerator with Bare Denominator: (2x+3)/9, (9*8)/9
+    str = str.replace(/\(([^()\n]{1,100})\)\/([a-zA-Z0-9_\^\-]+)/g, (m, num, den) => {
+        if (!isMathy(num) && !isMathy(den)) return m;
+        return mask(`$\\frac{${formatMathOperators(num.trim())}}{${formatMathOperators(den.trim())}}$`);
+    });
+
+    // 1c) Bare Numerator with Parenthesized Denominator: 9/(x-1), 3^2/(x-1)
+    str = str.replace(/([a-zA-Z0-9_\^\+\-\*\.\s]+)\/\(([^()\n]{1,100})\)/g, (m, num, den) => {
+        if (!isMathy(num) && !isMathy(den)) return m;
+        return mask(`$\\frac{${formatMathOperators(num.trim())}}{${formatMathOperators(den.trim())}}$`);
+    });
+
+    // 1d) Arithmetic products or powers in unparenthesized fraction: 9*8/9, 8*9/3, 3^2/9
+    str = str.replace(/((?:[a-zA-Z0-9_\.]+\s*[\*\^]\s*)+[a-zA-Z0-9_\.]+)\/([a-zA-Z0-9_\^]+)/g, (m, num, den) => {
+        return mask(`$\\frac{${formatMathOperators(num.trim())}}{${formatMathOperators(den.trim())}}$`);
+    });
+
+    // 1e) Inline parenthesized numeric fractions like (8/9) or (1/3)
+    str = str.replace(/\(\s*([+-]?\d+(?:\.\d+)?)\s*\/\s*([+-]?\d+(?:\.\d+)?)\s*\)/g, (m, num, den) => {
+        return mask(`$\\frac{${num}}{${den}}$`);
+    });
+
+    // 1f) Bare numeric fractions: 8/9, 1/3, 9/3
+    str = str.replace(/\b(\d+(?:\.\d+)?)\s*\/\s*(\d+(?:\.\d+)?)\b/g, (m, num, den) => {
+        return mask(`$\\frac{${num}}{${den}}$`);
+    });
 
     // -----------------------------------------------------------------
-    // 3) Set-minus / domain notation: R\{1}, R\{0,1}, Z\{0}
+    // 2) Exponents / Powers Phase
     // -----------------------------------------------------------------
-    str = str.replace(/\bR\s*\\\s*\{([0-9,\s]+)\}/g, '$\\mathbb{R} \\setminus \\{$1\\}$');
-    str = str.replace(/\bZ\s*\\\s*\{([0-9,\s]+)\}/g, '$\\mathbb{Z} \\setminus \\{$1\\}$');
-    str = str.replace(/\bN\s*\\\s*\{([0-9,\s]+)\}/g, '$\\mathbb{N} \\setminus \\{$1\\}$');
+    // 2a) Inverse function notation: f^-1, g^-1, f^-1(y)
+    str = str.replace(/\b([a-zA-Z])\s*\^\s*-\s*1(\([a-zA-Z0-9_]+\))?/g, (m, fn, arg) => {
+        return mask(`$${fn}^{-1}${arg || ''}$`);
+    });
+
+    // 2b) General powers: 3^2, x^2, y^3, (x+1)^2, 2^n
+    str = str.replace(/(\([a-zA-Z0-9_\+\-\s]+\)|\b[a-zA-Z0-9_]+\b)\s*\^\s*(-?\d+|[a-zA-Z]|\([a-zA-Z0-9_\+\-]+\))/g, (m, base, exp) => {
+        const cleanExp = formatExponent(exp);
+        const expStr = (cleanExp.length === 1 && /^\d|[a-zA-Z]$/.test(cleanExp)) ? cleanExp : `{${cleanExp}}`;
+        return mask(`$${base}^${expStr}$`);
+    });
 
     // -----------------------------------------------------------------
-    // 4) Inverse notation: f^-1, g^-1, h^-1, A^-1, M^-1, etc.
-    //    Patterns like f^-1(y)  →  $f^{-1}(y)$
+    // 3) Bare Multiplication Phase (e.g. 9*8, 8*9, 2 * 3 * 4, a*b)
     // -----------------------------------------------------------------
-    str = str.replace(/\b([A-Za-z])\s*\^\s*-\s*1\b/g, '$$$1^{-1}$');
+    str = str.replace(/(?:\b|\d)[a-zA-Z0-9_\.]+(?:\s*\*\s*[a-zA-Z0-9_\.]+)+/g, (m) => {
+        return mask(`$${formatMathOperators(m.trim())}$`);
+    });
 
     // -----------------------------------------------------------------
-    // 5) Common inequality shortcuts: <=  →  ≤,  >=  →  ≥
-    //    (only when they look like math, i.e. surrounded by space/word)
+    // 4) Set notation / Domain constraints: R\{1}, Z\{0}, N\{0}
     // -----------------------------------------------------------------
-    str = str.replace(/(^|[\s])<=($|[\s])/g, '$1$\\leq$');
-    str = str.replace(/(^|[\s])>=($|[\s])/g, '$1$\\geq$');
+    str = str.replace(/\bR\s*\\\s*\{([0-9,\s]+)\}/g, (m, p) => mask(`$\\mathbb{R} \\setminus \\{${p}\\}$`));
+    str = str.replace(/\bZ\s*\\\s*\{([0-9,\s]+)\}/g, (m, p) => mask(`$\\mathbb{Z} \\setminus \\{${p}\\}$`));
+    str = str.replace(/\bN\s*\\\s*\{([0-9,\s]+)\}/g, (m, p) => mask(`$\\mathbb{N} \\setminus \\{${p}\\}$`));
 
     // -----------------------------------------------------------------
-    // 6) Restore the masked LaTeX spans.
+    // 5) Arrows & Inequalities Phase: <=>, =>, <->, ->, <=, >=
     // -----------------------------------------------------------------
-    str = str.replace(/\u0000MATH(\d+)\u0000/g, (_, i) => masks[Number(i)]);
+    str = str.replace(/<=>/g, () => mask('$\\Leftrightarrow$'));
+    str = str.replace(/=>/g,  () => mask('$\\Rightarrow$'));
+    str = str.replace(/<->/g, () => mask('$\\leftrightarrow$'));
+    str = str.replace(/->/g,  () => mask('$\\rightarrow$'));
+    str = str.replace(/<=/g,  () => mask('$\\leq$'));
+    str = str.replace(/>=/g,  () => mask('$\\geq$'));
 
-    return str;
+    // -----------------------------------------------------------------
+    // 6) Unmasking Phase
+    // Restore all masked tokens recursively
+    // -----------------------------------------------------------------
+    let result = str;
+    while (result.includes('\u0000MATH')) {
+        result = result.replace(/\u0000MATH(\d+)\u0000/g, (_, i) => masks[Number(i)]);
+    }
+
+    return result;
 }
 
 /**
@@ -253,25 +314,28 @@ let appState = {
 
 const translations = {
     en: {
-        welcomeTitle: "Welcome to", welcomeSpan: "College Courses", welcomeSub: "", 
+        welcomeTitle: "Welcome to", welcomeSpan: "DNU Computer Science", welcomeSub: "Knowledge Base", 
+        selectTrack: "Select your academic track to proceed", back: "Back", 
         selectYear: "Select Academic Year", selectTerm: "Select Semester", 
-        year: "Year", 
-        year1: "Year 1", year2: "Year 2", year3: "Year 3", year4: "Year 4",
-        term1: "First Semester", term2: "Second Semester", 
+        year: "Year", term1: "First Semester", term2: "Second Semester", 
         t1Range: "Sep - Jan", t2Range: "Feb - Jun", clickAccess: "Click to access material",
         lecs: "Lectures", summary: "Summaries", quiz: "Quiz", labs: "Labs", 
         chapters: "Chapters", core_material: "Core Material",
         arSec: "Arabic Section", enSec: "English Section", backToSelection: "Back to Selection",
         lecsMain: "Lectures", lecsSol: "Solutions", tutorials: "Tutorials",
-        labsMaterial: "Lab Slides", labsQuestions: "Lab Questions", codingTraining: "Coding Training",
+        // --- TABS TRANSLATIONS ---
+        labsMaterial: "Lab Slides", 
+        labsQuestions: "Lab Questions", 
+        codingTraining: "Coding Training",
+        // -------------------------
         startLab: "Start Challenge", runCode: "Run Code", surrender: "Show Solution", 
-        nextQ: "Next Question", prevQ: "Previous Question", finishLab: "Finish Lab", understood: "I Understood",
+        nextQ: "Next Question", understood: "I Understood",
         solving: "Compiling...", showHint: "💡 Show Hint", hideHint: "Hint Visible",
         mainClassAlertTitle: "⚠️ Naming Convention Error", 
         mainClassAlertBody: "The compiler requires the main class to be named <code>Main</code>.<br>Example:<br><code>public class Main { ... }</code>",
         inputPrompt: "This program requires input.",
         inputPlaceholder: "Enter values separated by space (e.g. 5 10)",
-        correctTitle: "Excellent Work!", correctMsg: "Output matches expected result.", incorrectTitle: "Incorrect Answer",
+        correctTitle: "Excellent Work!", correctMsg: "Output matches expected result.",
         nextAuto: "Next question in 3s...",
         preview: "Document Preview", close: "Close",
         adminAccess: "Admin Access", login: "LOGIN", accessDenied: "Access Denied",
@@ -280,76 +344,31 @@ const translations = {
         flagAlertTitle: "Unanswered Questions", flagAlertMsg: "You have flagged questions:", flagAlertBack: "Review", flagAlertAction: "Submit Anyway",
         resultTitle: "Quiz Results", timeTaken: "Time Taken", backCourse: "Back to Course", reason: "Explanation",
         showAnswer: "Show Model Answer", markCorrect: "I Was Correct ✅", markWrong: "I Was Wrong ❌", typeAnswer: "Type your answer here (optional)...",
-        modelAnswer: "Model Answer:", exit: "Exit",
-        
-        driveFolder: "Drive Folder",
-        mcqQuestions: "MCQ Questions",
-        developedBy: "Developed by",
-        questions: "Questions",
-        empty: "No material available.",
-        lab: "Lab",
-        checkAnswer: "Check Answer",
-        correctAnswer: "Correct Answer",
-        writeSolution: "Write / Trace Your Solution Below:",
-        typeNotesPlaceholder: "Type your notes, code trace, or solution here...",
-        showModelSolution: "Show Model Solution",
-        yourSolution: "Your Solution / Notes:",
-        noAnswerEntered: "_No answer entered._",
-        modelAnswerHeader: "Model Solution / Answer:",
-        task: "Task:",
-        codePlaceholder: "// Write Java code here...\n// class MUST be named 'Main'",
-        outputPlaceholder: "// Output...",
-        solutionHeader: "Solution:",
-        yourCodeHeader: "Your Code:",
-        programInputTitle: "⌨️ Program Input",
-        addMoreInput: "Add More Input",
-        submitAndRun: "Submit & Run Code",
-        okFix: "OK, I will fix it",
-        missionAccomplished: "Mission Accomplished! 🏆",
-        labCompletedMsg: "Great job! You have successfully completed this lab.",
-        returnDashboard: "Return to Dashboard",
-        trueBtn: "True",
-        falseBtn: "False",
-        yourAnswer: "Your Answer",
-        none: "None",
-        selfChecked: "Self-Checked",
-        resultWrong: "Result: Incorrect ❌",
-        resultCorrect: "Result: Correct ✅",
-        noExplanation: "No explanation available.",
-        perfectScore: "Perfect Score! Excellent! 🎉",
-        reportIssue: "Report an Issue",
-        explainIssuePlaceholder: "Explain the issue you faced in detail here...",
-        takeScreenshot: "Take Screenshot",
-        takingScreenshot: "Processing...",
-        screenshotTaken: "Screenshot Taken",
-        sendReport: "Send Report",
-        sendingReport: "Sending...",
-        reportReceived: "Report received.. Thank you! 🚀",
-        reportFailed: "Send failed: check connection",
-        viewDoc: "View Document",
-        downloadDoc: "Download Document"
+        modelAnswer: "Model Answer:", exit: "Exit", questionsPalette: "Question Palette"
     },
     ar: {
-        welcomeTitle: "مرحباً بك في", welcomeSpan: "College Courses", welcomeSub: "", 
-        selectTrack: "منصتك الشاملة للمحاضرات والملخصات والاختبارات والتطبيقات العملية", back: "رجوع", 
+        welcomeTitle: "مرحباً بك في", welcomeSpan: "قاعدة معرفة حاسبات DNU", welcomeSub: "", 
+        selectTrack: "اختر المسار الأكاديمي للمتابعة", back: "رجوع", 
         selectYear: "اختر السنة الدراسية", selectTerm: "اختر الفصل الدراسي", 
-        year: "السنة", 
-        year1: "السنة الأولى", year2: "السنة الثانية", year3: "السنة الثالثة", year4: "السنة الرابعة",
-        term1: "الترم الأول", term2: "الترم الثاني", 
+        year: "السنة", term1: "الترم الأول", term2: "الترم الثاني", 
         t1Range: "سبتمبر - يناير", t2Range: "فبراير - يونيو", clickAccess: "اضغط للوصول للمحتوى",
-        lecs: "محاضرات", summary: "ملخصات", quiz: "اختبارات", labs: "لابات", 
+        lecs: "محاضرات", summary: "ملخصات", quiz: "اختبار", labs: "لابات", 
         chapters: "فصول الكتاب", core_material: "المحتوى الأساسي",
         arSec: "القسم العربي", enSec: "القسم الإنجليزي", backToSelection: "العودة للاختيار",
         lecsMain: "شرح المحاضرات", lecsSol: "حلول الأسئلة", tutorials: "السكاشن / التمارين",
-        labsMaterial: "ملفات الشرح", labsQuestions: "أسئلة المعامل", codingTraining: "تدريبات برمجية",
+        // --- TABS TRANSLATIONS ---
+        labsMaterial: "ملفات الشرح", 
+        labsQuestions: "أسئلة المعامل", 
+        codingTraining: "تدريبات برمجية",
+        // -------------------------
         startLab: "بدء التحدي", runCode: "تشغيل الكود", surrender: "إظهار الحل", 
-        nextQ: "السؤال التالي", prevQ: "السؤال السابق", finishLab: "إنهاء اللاب", understood: "فهمت الفكرة",
+        nextQ: "السؤال التالي", understood: "فهمت الفكرة",
         solving: "جاري المعالجة...", showHint: "💡 تلميح", hideHint: "التلميح ظاهر",
         mainClassAlertTitle: "⚠️ خطأ في التسمية", 
         mainClassAlertBody: "عشان الكود يشتغل هنا، لازم اسم الكلاس يكون <code>Main</code>.<br>مثال:<br><code>public class Main { ... }</code>",
         inputPrompt: "البرنامج يحتاج مدخلات (Input).",
         inputPlaceholder: "ادخل القيم وافصل بمسافة (مثال: 5 10)",
-        correctTitle: "عمل رائع!", correctMsg: "النتيجة مطابقة للمطلوب.", incorrectTitle: "إجابة خاطئة",
+        correctTitle: "عمل رائع!", correctMsg: "النتيجة مطابقة للمطلوب.",
         nextAuto: "السؤال التالي خلال 3 ثواني...",
         preview: "عرض الملف", close: "إغلاق",
         adminAccess: "دخول المشرفين", login: "دخول", accessDenied: "بيانات خاطئة",
@@ -358,87 +377,9 @@ const translations = {
         flagAlertTitle: "أسئلة معلقة", flagAlertMsg: "قمت بتحديد الأسئلة التالية:", flagAlertBack: "مراجعة", flagAlertAction: "إنهاء وتصحيح",
         resultTitle: "نتيجة الاختبار", timeTaken: "الوقت المستغرق", backCourse: "عودة للمادة", reason: "التفسير",
         showAnswer: "عرض الإجابة النموذجية", markCorrect: "إجابتي صحيحة ✅", markWrong: "إجابتي خاطئة ❌", typeAnswer: "اكتب إجابتك هنا (اختياري)...",
-        modelAnswer: "الإجابة النموذجية:", exit: "خروج",
-        
-        driveFolder: "مجلد Google Drive",
-        mcqQuestions: "أسئلة الاختيارات المتعددة (MCQs)",
-        developedBy: "تطوير بواسطة",
-        questions: "أسئلة",
-        empty: "لا يوجد محتوى متاح حالياً.",
-        lab: "معمل",
-        checkAnswer: "تحقق من الإجابة",
-        correctAnswer: "الإجابة الصحيحة",
-        writeSolution: "اكتب خطوات حلّك أو ملاحظاتك أدناه:",
-        typeNotesPlaceholder: "اكتب ملاحظاتك أو خطوات الحل هنا...",
-        showModelSolution: "عرض الإجابة النموذجية",
-        yourSolution: "حلّك / ملاحظاتك:",
-        noAnswerEntered: "_لم يتم كتابة إجابة._",
-        modelAnswerHeader: "الإجابة النموذجية:",
-        task: "المطلوب:",
-        codePlaceholder: "// اكتب كود الجافا هنا...\n// اسم الكلاس يجب أن يكون Main",
-        outputPlaceholder: "// ناتج التشغيل...",
-        solutionHeader: "الحل النموذجي:",
-        yourCodeHeader: "كودك:",
-        programInputTitle: "⌨️ مدخلات البرنامج",
-        addMoreInput: "إضافة مدخل آخر",
-        submitAndRun: "تشغيل الكود",
-        okFix: "موافق، سأقوم بالتعديل",
-        missionAccomplished: "تم إنجاز المهمة بنجاح! 🏆",
-        labCompletedMsg: "عمل رائع! لقد أكملت هذا المعمل بنجاح.",
-        returnDashboard: "العودة للقائمة الرئيسية",
-        trueBtn: "صواب",
-        falseBtn: "خطأ",
-        yourAnswer: "إجابتك",
-        none: "لم تُجب",
-        selfChecked: "تصحيح ذاتي",
-        resultWrong: "النتيجة: إجابة خاطئة ❌",
-        resultCorrect: "النتيجة: إجابة صحيحة ✅",
-        noExplanation: "لا يوجد تفسير متاح.",
-        perfectScore: "درجة نهائية ممتاز! 🎉",
-        reportIssue: "التبليغ عن مشكلة",
-        explainIssuePlaceholder: "اشرح المشكلة التي واجهتك بالتفصيل...",
-        takeScreenshot: "أخذ لقطة للموقع",
-        takingScreenshot: "جاري المعالجة...",
-        screenshotTaken: "تم التقاط الصورة",
-        sendReport: "إرسال البلاغ",
-        sendingReport: "جاري الإرسال...",
-        reportReceived: "تم استلام البلاغ.. شكراً لك! 🚀",
-        reportFailed: "فشل الإرسال: تأكد من الاتصال بالإنترنت",
-        viewDoc: "معاينة المستند",
-        downloadDoc: "تحميل المستند"
+        modelAnswer: "الإجابة النموذجية:", exit: "خروج", questionsPalette: "لوحة التنقل بين الأسئلة"
     }
 };
-
-function formatDnuText(str) {
-    if (!str) return '';
-    let text = String(str);
-    if (appState.lang === 'ar') {
-        text = text.replace(/\bDNU\b/gi, 'جامعة دمنهور الأهلية');
-    }
-    return text;
-}
-
-function updateStaticTranslations() {
-    const navDriveText = document.getElementById('nav-drive-text');
-    if (navDriveText) navDriveText.textContent = t('driveFolder');
-    
-    const footerDev = document.getElementById('footer-dev');
-    if (footerDev) footerDev.textContent = t('developedBy');
-    
-    const reportTitle = document.getElementById('report-modal-title');
-    if (reportTitle) reportTitle.innerHTML = `<i class="fas fa-headset" style="color:var(--secondary-accent);"></i> ${t('reportIssue')}`;
-    
-    const reportText = document.getElementById('report-text');
-    if (reportText) reportText.placeholder = t('explainIssuePlaceholder');
-    
-    const btnScreenshot = document.getElementById('btn-screenshot');
-    if (btnScreenshot && !btnScreenshot.classList.contains('captured')) {
-        btnScreenshot.innerHTML = `<i class="fas fa-camera"></i> ${t('takeScreenshot')}`;
-    }
-    
-    const btnSendReport = document.getElementById('btn-send-report');
-    if (btnSendReport) btnSendReport.innerHTML = `<i class="fas fa-paper-plane"></i> ${t('sendReport')}`;
-}
 
 function t(key) { 
     const val = translations[appState.lang][key];
@@ -458,28 +399,11 @@ function setupEventListeners() {
         document.body.classList.toggle('light-mode');
         themeBtn.innerHTML = document.body.classList.contains('light-mode') ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
     });
-        langBtn.addEventListener('click', () => {
-        document.body.classList.add('no-transition');
-        document.documentElement.classList.add('no-transition');
-
+    langBtn.addEventListener('click', () => {
         appState.lang = appState.lang === 'en' ? 'ar' : 'en';
         langBtn.textContent = appState.lang.toUpperCase();
-        document.documentElement.lang = appState.lang;
-        document.documentElement.dir = 'ltr';
-        document.body.dir = 'ltr';
-
-        if (appState.lang === 'ar') {
-            document.body.classList.add('lang-ar');
-        } else {
-            document.body.classList.remove('lang-ar');
-        }
-
+        document.body.dir = appState.lang === 'ar' ? 'rtl' : 'ltr';
         renderCurrentView(); 
-
-        setTimeout(() => {
-            document.body.classList.remove('no-transition');
-            document.documentElement.classList.remove('no-transition');
-        }, 50);
     });
     const logo = document.getElementById('app-logo');
     if(logo) logo.addEventListener('click', () => { clearIntervals(); appState.quiz.active = false; appState.lab.active = false; renderHome(); });
@@ -488,7 +412,6 @@ function clearIntervals() { if(typeof labTimerInterval !== 'undefined') clearInt
 
 // --- Routing ---
 function renderCurrentView() {
-    updateStaticTranslations();
     if (appState.view === 'home') footer.classList.add('home-footer'); else footer.classList.remove('home-footer');
     switch(appState.view) {
         case 'home': renderHome(); break;
@@ -512,7 +435,8 @@ function renderHome() {
     footer.classList.add('home-footer');
     container.innerHTML = `
         <section class="hero">
-            <h1>${t('welcomeTitle')} <span class="highlight">${t('welcomeSpan')}</span>${t('welcomeSub') ? ' ' + t('welcomeSub') : ''}</h1>
+            <h1>${t('welcomeTitle')} <span class="highlight">${t('welcomeSpan')}</span> ${t('welcomeSub')}</h1>
+            <p>${t('selectTrack')}</p>
             <div class="grid-center">
                 <div class="selection-card" onclick="selectMajor('ai')"><i class="fas fa-brain card-icon"></i><h2>${appState.lang === 'en' ? db.majors.ai.name_en : db.majors.ai.name_ar}</h2></div>
                 <div class="selection-card" onclick="selectMajor('cyber')"><i class="fas fa-shield-halved card-icon"></i><h2>${appState.lang === 'en' ? db.majors.cyber.name_en : db.majors.cyber.name_ar}</h2></div>
@@ -523,17 +447,11 @@ function selectMajor(major) { appState.major = major; renderYearSelect(); }
 function renderYearSelect() {
     appState.view = 'year';
     footer.classList.remove('home-footer');
-    const yearNames = {
-        1: t('year1'),
-        2: t('year2'),
-        3: t('year3'),
-        4: t('year4')
-    };
     container.innerHTML = `
         <button class="btn-back" onclick="renderHome()"><i class="fas fa-arrow-left"></i> ${t('back')}</button>
         <h2 class="section-title">${t('selectYear')}</h2>
         <div class="grid-center">
-            ${[1, 2, 3, 4].map(y => `<div class="selection-card" onclick="selectYear(${y})"><div style="font-size: 2.5rem; font-weight: bold; color: var(--accent); margin-bottom: 1rem;">0${y}</div><h3>${yearNames[y]}</h3></div>`).join('')}
+            ${[1, 2, 3, 4].map(y => `<div class="selection-card" onclick="selectYear(${y})"><div style="font-size: 2.5rem; font-weight: bold; color: var(--accent); margin-bottom: 1rem;">0${y}</div><h3>${t('year')} ${y}</h3></div>`).join('')}
         </div>`;
 }
 function selectYear(year) { appState.year = year; renderTermSelect(); }
@@ -588,13 +506,16 @@ function renderSubjectView() {
 
     // ⧈ START: NEW SPLIT LAB LOGIC
     if(appState.activeTab === 'labs') {
-        const hasQuestions = sub.content.labs && sub.content.labs.questions && (Array.isArray(sub.content.labs.questions.labs_list) || sub.id === 'prog' || sub.id === 'oop');
+        const hasQuestions = sub.content.labs.questions && Object.keys(sub.content.labs.questions).length > 0;
         
         if (!hasQuestions) {
             const files = Array.isArray(sub.content.labs) ? sub.content.labs : sub.content.labs.material;
             content = renderFileList(files);
         } else {
             if(!appState.subFilter) {
+                // Determine if coding exercises exist
+                const hasCoding = sub.content.labs.questions.coding_list && sub.content.labs.questions.coding_list.length > 0;
+                
                 content = `
                 <div class="grid-center">
                     <div class="selection-card" onclick="appState.subFilter='material'; renderSubjectView()">
@@ -605,10 +526,16 @@ function renderSubjectView() {
                         <i class="fas fa-flask card-icon"></i>
                         <h3>${t('labsQuestions')}</h3>
                     </div>
+                    ${hasCoding ? `
+                    <div class="selection-card" onclick="appState.subFilter='coding_list'; renderSubjectView()">
+                        <i class="fas fa-laptop-code card-icon"></i>
+                        <h3>${t('codingTraining')}</h3>
+                    </div>` : ''}
                 </div>`;
             } else {
                 if (appState.subFilter === 'material') content = renderFileList(sub.content.labs.material);
                 else if (appState.subFilter === 'labs_list') content = renderLabList(sub.content.labs.questions.labs_list);
+                else if (appState.subFilter === 'coding_list') content = renderLabList(sub.content.labs.questions.coding_list);
             }
         }
     } else if(appState.activeTab === 'summary' && !Array.isArray(sub.content.summary)) {
@@ -623,47 +550,7 @@ function renderSubjectView() {
         if(!appState.subFilter) content = `<div class="grid-center"><div class="selection-card" onclick="appState.subFilter='main'; renderSubjectView()"><i class="fas fa-chalkboard-teacher card-icon"></i><h3>${t('lecsMain')}</h3></div><div class="selection-card" onclick="appState.subFilter='solutions'; renderSubjectView()"><i class="fas fa-check-circle card-icon"></i><h3>${t('lecsSol')}</h3></div></div>`;
         else content = renderFileList(appState.subFilter === 'main' ? sub.content.lecs.main : sub.content.lecs.solutions);
     } else if (appState.activeTab === 'quiz') { 
-        const hasCodingInQuiz = sub.content.quiz && (sub.content.quiz.hasCoding || sub.id === 'prog');
-        
-        if (hasCodingInQuiz) {
-            if (!appState.subFilter) {
-                content = `
-                <div class="grid-center">
-                    <div class="selection-card" onclick="appState.subFilter='coding_list'; renderSubjectView()">
-                        <i class="fas fa-laptop-code card-icon"></i>
-                        <h3>${t('codingTraining')}</h3>
-                    </div>
-                    <div class="selection-card" onclick="appState.subFilter='mcq'; renderSubjectView()">
-                        <i class="fas fa-list-ul card-icon"></i>
-                        <h3>${t('mcqQuestions')}</h3>
-                    </div>
-                </div>`;
-            } else if (appState.subFilter === 'coding_list') {
-                const codingList = (sub.content.quiz && sub.content.quiz.coding_list) || (sub.content.labs && sub.content.labs.questions && sub.content.labs.questions.coding_list);
-                content = renderLabList(codingList);
-            } else if (appState.subFilter === 'mcq') {
-                if (sub.content.quiz && sub.content.quiz.isSplit) {
-                    content = `<div class="dashboard-grid">
-                        ${sub.content.quiz.sections.map(sect => `
-                            <div class="subject-card" onclick="startQuiz('${sect.id}', '${sect.type}')">
-                                <div style="margin-bottom:10px; font-size:2rem; color:var(--accent);">
-                                    <i class="fas ${sect.type === 'text' ? 'fa-pen-alt' : (sect.type === 'tf' ? 'fa-check-double' : 'fa-list-ul')}"></i>
-                                </div>
-                                <h3>${sect.title}</h3>
-                                <p style="color:var(--text-secondary); font-size:0.9rem;">${sect.qCount} ${t('questions')}</p>
-                                <button class="btn-start-lab">${t('startQuiz')}</button>
-                            </div>`).join('')}
-                    </div>`;
-                } else if (Array.isArray(sub.content.quiz) && sub.content.quiz.length > 0 && sub.content.quiz[0].link) {
-                    content = renderFileList(sub.content.quiz);
-                } else {
-                    content = `<div style="text-align:center; padding:3rem;">
-                        <h2 style="margin-bottom:1rem; color:var(--white);">${t('quizReady')}</h2>
-                        <button class="btn-start-lab" style="max-width:200px;" onclick="startQuiz()">${t('startQuiz')}</button>
-                    </div>`;
-                }
-            }
-        } else if (sub.content.quiz && sub.content.quiz.isSplit) {
+        if (sub.content.quiz && sub.content.quiz.isSplit) {
             content = `<div class="dashboard-grid">
                 ${sub.content.quiz.sections.map(sect => `
                     <div class="subject-card" onclick="startQuiz('${sect.id}', '${sect.type}')">
@@ -671,7 +558,7 @@ function renderSubjectView() {
                             <i class="fas ${sect.type === 'text' ? 'fa-pen-alt' : (sect.type === 'tf' ? 'fa-check-double' : 'fa-list-ul')}"></i>
                         </div>
                         <h3>${sect.title}</h3>
-                        <p style="color:var(--text-secondary); font-size:0.9rem;">${sect.qCount} ${t('questions')}</p>
+                        <p style="color:var(--text-secondary); font-size:0.9rem;">${sect.qCount} Questions</p>
                         <button class="btn-start-lab">${t('startQuiz')}</button>
                     </div>`).join('')}
             </div>`;
@@ -704,7 +591,7 @@ function convertDriveToDirectLink(link) {
 }
 
 function renderFileList(list) {
-    if(!list || list.length === 0) return `<p style="text-align:center; color:var(--text-secondary);">${t('empty')}</p>`;
+    if(!list || list.length === 0) return '<p style="text-align:center; color:var(--text-secondary);">Empty.</p>';
     return list.map(f => {
         const downloadLink = convertDriveToDirectLink(f.link);
         const previewLink = f.link.includes('view') ? f.link.replace('/view', '/preview') : f.link;
@@ -720,8 +607,8 @@ function renderFileList(list) {
                 ${f.note ? `<div class="warning-box" style="margin-top:5px; color:var(--warning); font-size:0.8rem;"><i class="fas fa-exclamation-triangle"></i> ${f.note}</div>` : ''}
             </div>
             <div class="file-actions">
-                ${f.link !== '#' ? `<button class="btn-view" onclick="openPdf('${previewLink}')" title="${t('viewDoc')}"><i class="fas fa-eye"></i></button>` : ''}
-                ${f.link !== '#' ? `<a href="${downloadLink}" class="btn-download" title="${t('downloadDoc')}"><i class="fas fa-download"></i></a>` : ''}
+                ${f.link !== '#' ? `<button class="btn-view" onclick="openPdf('${previewLink}')"><i class="fas fa-eye"></i></button>` : ''}
+                ${f.link !== '#' ? `<a href="${downloadLink}" class="btn-download"><i class="fas fa-download"></i></a>` : ''}
             </div>
         </div>`
     }).join('');
@@ -729,7 +616,7 @@ function renderFileList(list) {
 
 function renderLabList(list) {
     if(!list) return '<p>No labs.</p>';
-    return `<div class="dashboard-grid">${list.map(l => `<div class="subject-card" onclick="initLab(${l.id})"><div style="margin-bottom:10px; font-size:2rem; color:var(--accent);"><i class="fas fa-code"></i></div><h3>${l.title}</h3><p style="color:var(--text-secondary); font-size:0.9rem;">${l.qCount} ${t('questions')}</p><button class="btn-start-lab">${t('startLab')}</button></div>`).join('')}</div>`;
+    return `<div class="dashboard-grid">${list.map(l => `<div class="subject-card" onclick="initLab(${l.id})"><div style="margin-bottom:10px; font-size:2rem; color:var(--accent);"><i class="fas fa-code"></i></div><h3>${l.title}</h3><p style="color:var(--text-secondary); font-size:0.9rem;">${l.qCount} Questions</p><button class="btn-start-lab">${t('startLab')}</button></div>`).join('')}</div>`;
 }
 
 // --- Lab & Validation ---
@@ -752,245 +639,55 @@ function initLab(id) {
 
 function renderLabQuestion() {
     appState.view = 'lab';
-    if (!appState.lab.userAnswers) appState.lab.userAnswers = {};
-    const curIdx = appState.lab.currentQIndex;
-    const totalQ = appState.lab.questions.length;
-    const q = appState.lab.questions[curIdx];
-    if (!q) return;
-
-    if (typeof appState.lab.userCode === 'undefined' || appState.lab.userCode === "") appState.lab.userCode = "";
-
-    const headerHtml = `
-        <div class="lab-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-            <h3>${t('lab')} ${appState.lab.id} - ${t('qNum')} ${curIdx + 1} / ${totalQ}</h3>
-            <div style="display:flex; align-items:center; gap:10px;">
-                <div class="timer-box" id="timer">${formatTime(appState.lab.time)}</div>
-                <button class="btn-back" style="margin:0;" onclick="exitLab()"><i class="fas fa-times"></i> ${t('exit')}</button>
-            </div>
-        </div>
-    `;
-
-    if (q.type === 'mcq') {
-        renderLabMcqQuestion(q, curIdx, totalQ, headerHtml);
-    } else if (q.type === 'text') {
-        renderLabTextQuestion(q, curIdx, totalQ, headerHtml);
-    } else {
-        renderLabCodeQuestion(q, curIdx, totalQ, headerHtml);
-    }
-}
-
-function saveLabMcqOption(qIndex, optIdx) {
-    if (!appState.lab.userAnswers) appState.lab.userAnswers = {};
-    if (!appState.lab.userAnswers[qIndex]) appState.lab.userAnswers[qIndex] = {};
-    appState.lab.userAnswers[qIndex].selected = optIdx;
-    renderLabQuestion();
-}
-
-function checkLabMcqAnswer(qIndex) {
-    if (!appState.lab.userAnswers) appState.lab.userAnswers = {};
-    if (!appState.lab.userAnswers[qIndex]) appState.lab.userAnswers[qIndex] = {};
-    appState.lab.userAnswers[qIndex].checked = true;
-    renderLabQuestion();
-}
-
-function saveLabTextAnswer(qIndex, val) {
-    if (!appState.lab.userAnswers) appState.lab.userAnswers = {};
-    if (!appState.lab.userAnswers[qIndex]) appState.lab.userAnswers[qIndex] = {};
-    appState.lab.userAnswers[qIndex].text = val;
-}
-
-function showLabTextAnswer(qIndex) {
-    if (!appState.lab.userAnswers) appState.lab.userAnswers = {};
-    if (!appState.lab.userAnswers[qIndex]) appState.lab.userAnswers[qIndex] = {};
-    appState.lab.userAnswers[qIndex].checked = true;
-    renderLabQuestion();
-}
-
-function prevLabQ() {
-    if (appState.lab.currentQIndex > 0) {
-        appState.lab.currentQIndex--;
-        appState.lab.userCode = "";
-        appState.lab.surrendered = false;
-        renderLabQuestion();
-    }
-}
-
-function renderLabMcqQuestion(q, curIdx, totalQ, headerHtml) {
-    const questionHtml = renderMarkdown(q.prompt || q.question || '');
-    const userState = (appState.lab.userAnswers && appState.lab.userAnswers[curIdx]) || {};
-    const selectedOpt = userState.selected;
-    const isChecked = userState.checked || false;
-
-    let feedbackHtml = '';
-    if (isChecked) {
-        const isCorrect = selectedOpt === q.answer;
-        const explanationText = q.explanation_en || q.explanation_ar || q.explanation || q.model_answer || 'No further explanation provided.';
-        const explanationHtml = renderMarkdown(explanationText);
-
-        feedbackHtml = `
-            <div style="margin-top:20px; padding:15px; border-radius:8px; background:${isCorrect ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)'}; border-left:4px solid ${isCorrect ? 'var(--success)' : 'var(--danger)'};">
-                <h4 style="color:${isCorrect ? 'var(--success)' : 'var(--danger)'}; margin-bottom:8px;">
-                    <i class="fas ${isCorrect ? 'fa-check-circle' : 'fa-times-circle'}"></i> ${isCorrect ? t('correctTitle') : t('incorrectTitle')}
-                </h4>
-                ${!isCorrect && typeof q.answer === 'number' && q.options && q.options[q.answer] ? `
-                    <p style="color:var(--text-secondary); margin-bottom:8px;"><strong>${t('correctAnswer')}:</strong> ${escapeHtml(q.options[q.answer])}</p>
-                ` : ''}
-                <div class="md-content" style="color:var(--text-primary); line-height:1.6;">${explanationHtml}</div>
-            </div>
-        `;
-    }
-
-    const optionsHtml = (q.options || []).map((opt, i) => {
-        let optStyle = '';
-        if (isChecked) {
-            if (i === q.answer) {
-                optStyle = 'background: rgba(16, 185, 129, 0.2); border-color: var(--success); color: var(--white);';
-            } else if (i === selectedOpt) {
-                optStyle = 'background: rgba(239, 68, 68, 0.2); border-color: var(--danger); color: var(--white);';
-            }
-        }
-        return `
-            <label class="option-label" style="${optStyle}">
-                <input type="radio" name="lab_mcq_${curIdx}" value="${i}" 
-                    ${selectedOpt === i ? 'checked' : ''} 
-                    ${isChecked ? 'disabled' : ''}
-                    onchange="saveLabMcqOption(${curIdx}, ${i})"> 
-                <span class="md-content" style="margin-left:10px;">${renderMarkdown(opt || '')}</span>
-            </label>
-        `;
-    }).join('');
-
-    const navButtons = `
-        ${curIdx > 0 ? `<button class="btn-view" onclick="prevLabQ()"><i class="fas fa-chevron-left"></i> ${t('prev')}</button>` : '<div></div>'}
-        ${!isChecked 
-            ? `<button class="btn-run" style="width:auto; padding:8px 24px;" onclick="checkLabMcqAnswer(${curIdx})" ${typeof selectedOpt === 'undefined' ? 'disabled' : ''}><i class="fas fa-check"></i> ${t('checkAnswer')}</button>`
-            : `<button class="btn-run" style="width:auto; padding:8px 24px;" onclick="nextLabQ()">${curIdx < totalQ - 1 ? `${t('nextQ')} <i class="fas fa-chevron-right"></i>` : `${t('finishLab')} <i class="fas fa-flag-checkered"></i>`}</button>`
-        }
-    `;
-
-    container.innerHTML = `
-        <div class="quiz-container" style="max-width:900px;">
-            ${headerHtml}
-            <div class="md-content" style="margin-bottom:1.5rem; color:var(--white); line-height:1.6; font-size:1.1rem;">
-                ${questionHtml}
-            </div>
-            <div class="options-grid" style="margin-bottom:1.5rem;">
-                ${optionsHtml}
-            </div>
-            ${feedbackHtml}
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px;">
-                ${navButtons}
-            </div>
-        </div>
-    `;
-
-    const qBox = container.querySelector('.quiz-container');
-    if (qBox) renderMathInEl(qBox);
-}
-
-function renderLabTextQuestion(q, curIdx, totalQ, headerHtml) {
-    const questionHtml = renderMarkdown(q.prompt || q.question || '');
-    const modelAnswerHtml = renderMarkdown(q.model_answer || q.solutionCode || 'No model answer available.');
-    const hintHtml = renderMarkdown(q.hint || '');
-    const userState = (appState.lab.userAnswers && appState.lab.userAnswers[curIdx]) || {};
-    const savedText = userState.text || '';
-    const isRevealed = userState.checked || false;
-
-    let contentBody = '';
-
-    if (!isRevealed) {
-        contentBody = `
-            <div class="md-content" style="margin-bottom:1.5rem; color:var(--white); line-height:1.6; font-size:1.1rem;">
-                ${questionHtml}
-            </div>
-            ${q.hint ? `
-                <div style="margin-bottom:1.5rem;">
-                    <button class="btn-view" style="width:100%; justify-content:center;" onclick="showHint()" id="hint-btn">${t('showHint')}</button>
-                    <div id="hint-box" class="md-content" style="display:none; margin-top:10px; background:rgba(0,0,0,0.2); padding:1rem; border-radius:8px; border:1px solid var(--border);">
-                        <strong style="color:var(--warning);">Hint:</strong> ${hintHtml}
-                    </div>
-                </div>
-            ` : ''}
-            <div style="margin-bottom:1.5rem;">
-                <label style="display:block; color:var(--text-secondary); margin-bottom:8px; font-weight:bold;">${t('writeSolution')}</label>
-                <textarea id="lab-text-input" class="code-editor" style="height:150px; width:100%; font-family:inherit; padding:12px; font-size:1rem;" 
-                    placeholder="${t('typeNotesPlaceholder')}" 
-                    oninput="saveLabTextAnswer(${curIdx}, this.value)">${escapeHtml(savedText)}</textarea>
-            </div>
-            <div style="text-align:center; margin-bottom:1.5rem;">
-                <button class="btn-run" style="width:auto; display:inline-flex; padding:10px 30px;" onclick="showLabTextAnswer(${curIdx})">
-                    <i class="fas fa-eye"></i> ${t('showModelSolution')}
-                </button>
-            </div>
-        `;
-    } else {
-        contentBody = `
-            <div class="md-content" style="margin-bottom:1.5rem; color:var(--white); line-height:1.6; font-size:1.1rem;">
-                ${questionHtml}
-            </div>
-            <div class="self-check-area">
-                <p style="color:var(--text-secondary); margin-bottom:8px; font-weight:bold;">${t('yourSolution')}</p>
-                <div class="md-content" style="background:rgba(255,255,255,0.05); padding:12px; border-radius:8px; margin-bottom:20px; white-space:pre-wrap;">${renderMarkdown(savedText || t('noAnswerEntered'))}</div>
-                
-                <h4 style="color:var(--success); margin-bottom:10px;"><i class="fas fa-check-circle"></i> ${t('modelAnswerHeader')}</h4>
-                <div class="md-content model-answer-box" style="padding:15px; border-radius:8px; background:rgba(16, 185, 129, 0.08); border:1px solid var(--success); line-height:1.6;">
-                    ${modelAnswerHtml}
-                </div>
-            </div>
-        `;
-    }
-
-    const navButtons = `
-        ${curIdx > 0 ? `<button class="btn-view" onclick="prevLabQ()"><i class="fas fa-chevron-left"></i> ${t('prev')}</button>` : '<div></div>'}
-        <button class="btn-run" style="width:auto; padding:8px 24px;" onclick="nextLabQ()">${curIdx < totalQ - 1 ? `${t('nextQ')} <i class="fas fa-chevron-right"></i>` : `${t('finishLab')} <i class="fas fa-flag-checkered"></i>`}</button>
-    `;
-
-    container.innerHTML = `
-        <div class="quiz-container" style="max-width:900px;">
-            ${headerHtml}
-            ${contentBody}
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px;">
-                ${navButtons}
-            </div>
-        </div>
-    `;
-
-    const qBox = container.querySelector('.quiz-container');
-    if (qBox) renderMathInEl(qBox);
-}
-
-function renderLabCodeQuestion(q, curIdx, totalQ, headerHtml) {
-    const promptHtml  = renderMarkdown(q.prompt || q.question || '');
+    const q = appState.lab.questions[appState.lab.currentQIndex];
+    if(typeof appState.lab.userCode === 'undefined' || appState.lab.userCode === "") appState.lab.userCode = ""; 
+    
+    // Render the prompt and hint as Markdown + sanitized HTML so that tables,
+    // math, code blocks, bold/italic etc. all show up formatted.
+    const promptHtml  = renderMarkdown(q.prompt || '');
     const hintHtml    = renderMarkdown(q.hint   || '');
     
-
+    // ⧈ NEW: Test Case Instruction Block
+    let instructionHtml = '';
+    if (q.testCaseInputs) {
+        // ⧈ USER UX: Show the student what's happening without confusing them ⧈
+        instructionHtml = `
+            <div style="background: rgba(0, 169, 255, 0.1); border-left: 3px solid var(--accent); padding: 10px; margin-bottom: 15px; font-size: 0.9em; color: var(--text-primary); border-radius: 4px;">
+                <i class="fas fa-robot" style="margin-right:8px; color:var(--accent);"></i>
+                <strong>Automated Test:</strong> The system will automatically inject this input:<br>
+                <span style="color:var(--white); font-family:monospace; background:rgba(0,0,0,0.3); padding:2px 6px; border-radius:3px; display:inline-block; margin-top:5px;">${q.testCaseInputs}</span>
+                <div style="margin-top:5px; font-size:0.85em; color:var(--text-secondary);">
+                    <em>(You don't need to type this yourself when running the code)</em>
+                </div>
+            </div>
+        `;
+    }
 
     container.innerHTML = `
         <div class="lab-arena">
-            ${headerHtml}
+            <div class="lab-header"><h3>Lab ${appState.lab.id} - Q ${appState.lab.currentQIndex + 1} / ${appState.lab.questions.length}</h3><div class="timer-box" id="timer">${formatTime(appState.lab.time)}</div><button class="btn-back" style="margin:0;" onclick="exitLab()"><i class="fas fa-times"></i> Exit</button></div>
             <div class="lab-workspace" id="workspace">
                 <div class="problem-pane">
-                    
-                    <h4 style="color:var(--accent); margin-bottom:1rem;">${t('task')}</h4>
+                    ${instructionHtml}
+                    <h4 style="color:var(--accent); margin-bottom:1rem;">Task:</h4>
                     <div class="md-content" style="line-height:1.6; font-size:1.1rem;">${promptHtml}</div>
                     <div style="margin-top:2rem;"><button class="btn-view" style="width:100%; justify-content:center;" onclick="showHint()" id="hint-btn">${t('showHint')}</button><div id="hint-box" class="md-content" style="display:none; margin-top:10px; background:rgba(0,0,0,0.2); padding:1rem; border-radius:8px; border:1px solid var(--border);"><strong style="color:var(--warning);">Hint:</strong> ${hintHtml}</div></div>
-                    ${curIdx > 0 ? `<div style="margin-top:1rem;"><button class="btn-view" style="width:100%; justify-content:center;" onclick="prevLabQ()"><i class="fas fa-chevron-left"></i> ${t('prevQ')}</button></div>` : ''}
                 </div>
                 <div class="editor-pane">
-                    <textarea class="code-editor" id="code-input" spellcheck="false" placeholder="${t('codePlaceholder')}" oninput="appState.lab.userCode = this.value">${appState.lab.userCode}</textarea>
+                    <textarea class="code-editor" id="code-input" spellcheck="false" placeholder="// Write Java code here...\n// class MUST be named 'Main'" oninput="appState.lab.userCode = this.value">${appState.lab.userCode}</textarea>
                     <div class="lab-controls"><button class="btn-surrender" onclick="surrender()"><i class="fas fa-flag"></i> ${t('surrender')}</button><button class="btn-run" onclick="runLabCode()"><i class="fas fa-play"></i> ${t('runCode')}</button></div>
-                    <div class="console-output" id="console-out">${t('outputPlaceholder')}</div>
+                    <div class="console-output" id="console-out">// Output...</div>
                 </div>
             </div>
             
             <div class="compare-container" id="compare-view" style="flex-direction: column; align-items: center;">
                 <div class="lab-compare-box" style="display: flex; gap: 15px; width: 100%; min-height: 400px;">
                     <div class="lab-answer-window correct" style="flex: 1; padding: 15px; border-radius: 8px; background: rgba(16, 185, 129, 0.1); border: 2px solid var(--success); overflow-y: auto; color: var(--text-primary);">
-                        <h4 style="color:var(--success); margin-bottom:10px;">${t('solutionHeader')}</h4>
-                        <pre style="white-space: pre-wrap; margin:0;"><code>${escapeHtml(q.solutionCode || q.model_answer || '')}</code></pre>
+                        <h4 style="color:var(--success); margin-bottom:10px;">Solution:</h4>
+                        <pre style="white-space: pre-wrap; margin:0;"><code>${escapeHtml(q.solutionCode || '')}</code></pre>
                     </div>
                     <div class="lab-answer-window student" style="flex: 1; padding: 15px; border-radius: 8px; background: rgba(239, 68, 68, 0.1); border: 2px solid var(--danger); overflow-y: auto; color: var(--text-primary);">
-                        <h4 style="color:var(--danger); margin-bottom:10px;">${t('yourCodeHeader')}</h4>
+                        <h4 style="color:var(--danger); margin-bottom:10px;">Your Code:</h4>
                         <pre id="static-user-code" style="white-space: pre-wrap; margin:0;"></pre>
                     </div>
                 </div>
@@ -1006,18 +703,21 @@ function renderLabCodeQuestion(q, curIdx, totalQ, headerHtml) {
         <div id="input-modal" class="modal-overlay">
             <div class="input-modal-content" style="max-height: 80vh; overflow-y: auto;">
                 <h3 style="color:var(--white); margin-bottom:1rem; border-bottom:1px solid var(--border); padding-bottom:10px;">
-                    ${t('programInputTitle')}
+                    ⌨️ Program Input
                 </h3>
                 <div id="dynamic-inputs-container"></div>
                 <button id="add-input-btn" class="btn-view" style="width:100%; justify-content:center; margin-bottom:15px; border-style:dashed; display:none;">
-                    <i class="fas fa-plus"></i> ${t('addMoreInput')}
+                    <i class="fas fa-plus"></i> Add More Input
                 </button>
-                <button class="btn-run" onclick="resolveInput()" style="width:100%; justify-content:center;">${t('submitAndRun')}</button>
+                <button class="btn-run" onclick="resolveInput()" style="width:100%; justify-content:center;">Submit & Run</button>
             </div>
         </div>
 
-        <div id="main-class-alert" class="modal-overlay"><div class="input-modal-content warning-modal"><h2 style="color:var(--warning); margin-bottom:1rem;">${t('mainClassAlertTitle')}</h2><p style="color:var(--text-primary); margin-bottom:1.5rem; line-height:1.5;">${t('mainClassAlertBody')}</p><button class="btn-confirm" onclick="document.getElementById('main-class-alert').style.display='none'">${t('okFix')}</button></div></div>
+        <div id="main-class-alert" class="modal-overlay"><div class="input-modal-content warning-modal"><h2 style="color:var(--warning); margin-bottom:1rem;">${t('mainClassAlertTitle')}</h2><p style="color:var(--text-primary); margin-bottom:1.5rem; line-height:1.5;">${t('mainClassAlertBody')}</p><button class="btn-confirm" onclick="document.getElementById('main-class-alert').style.display='none'">OK, I'll Fix it</button></div></div>
     `;
+    // Run KaTeX on the freshly inserted prompt and hint areas only (the rest
+    // of the page has nothing to render and the solution code is inside <pre>
+    // so KaTeX will correctly skip it).
     const problemPane = container.querySelector('.problem-pane');
     if (problemPane) renderMathInEl(problemPane);
 }
@@ -1108,407 +808,29 @@ function showHint() { document.getElementById('hint-box').style.display = 'block
  * Helper function to validate numerical or text answers flexibly.
  */
 function smartCompare(userOutput, expectedOutput) {
-    if (!expectedOutput) return true;
+    if (!expectedOutput) return true; // No requirement check
+    
+    // Clean inputs
+    let uClean = userOutput ? userOutput.toString() : "";
+    let eClean = expectedOutput.toString().trim();
 
-    const uStr = (userOutput || "").toString().trim();
-    const eStr = expectedOutput.toString().trim();
-
-    if (!uStr) return true; // Non-empty check handled by execution status
-
-    const uNorm = uStr.replace(/\r\n/g, '\n').trim().toLowerCase();
-    const eNorm = eStr.replace(/\r\n/g, '\n').trim().toLowerCase();
-
-    // 1. Success indicator in user output OR expected output
-    if (
-        uNorm.includes('completed successfully') || 
-        uNorm.includes('defined successfully') || 
-        uNorm.includes('executed successfully') ||
-        eNorm.includes('completed successfully') || 
-        eNorm.includes('defined successfully') || 
-        eNorm.includes('executed successfully')
-    ) {
-        return true;
+    // 1. Text Check (if expected is not a number)
+    if (isNaN(parseFloat(eClean))) {
+        return uClean.toLowerCase().includes(eClean.toLowerCase());
     }
 
-    // 2. Direct exact or normalized case-insensitive text match
-    if (uNorm === eNorm) return true;
+    // 2. Numeric Check (Regex to find all numbers)
+    let expectedNum = parseFloat(eClean);
+    let userNumbers = uClean.match(/-?\d+(\.\d+)?/g);
 
-    // 3. Complex project menu / system output tolerance
-    if (eNorm.includes('system') || eNorm.includes('inventory') || eNorm.includes('hospital') || eNorm.includes('select an option')) {
-        return true;
-    }
+    if (!userNumbers) return false;
 
-    // 4. Number extraction regex supporting floating point & scientific notation (e.g. 85.0, 6.0E14, 3.978e-19)
-    const numRegex = /-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?/g;
-
-    const uNums = (uStr.match(numRegex) || []).map(Number);
-    const eNums = (eStr.match(numRegex) || []).map(Number);
-
-    function isNumMatch(uNum, eNum) {
-        if (eNum === 0) return Math.abs(uNum) < 1e-5;
-        const relDiff = Math.abs(uNum - eNum) / Math.abs(eNum);
-        const absDiff = Math.abs(uNum - eNum);
-        return relDiff < 0.02 || absDiff < 0.1;
-    }
-
-    if (eNums.length > 0) {
-        if (uNums.length === 0) return false;
-
-        let matchedCount = 0;
-        eNums.forEach(eNum => {
-            if (uNums.some(uNum => isNumMatch(uNum, eNum))) {
-                matchedCount++;
-            }
-        });
-
-        const matchRatio = matchedCount / eNums.length;
-        if (matchRatio >= 0.5 || (uNums.length >= 1 && isNumMatch(uNums[0], eNums[0]))) {
-            return true;
-        }
-    }
-
-    return uNorm.includes(eNorm) || eNorm.includes(uNorm);
-}
-
-function extractMainBody(code) {
-    const mainIdx = code.search(/\bmain\b/);
-    if (mainIdx === -1) return null;
-    const openBraceIdx = code.indexOf('{', mainIdx);
-    if (openBraceIdx === -1) return null;
-
-    let depth = 1;
-    let endBraceIdx = -1;
-    for (let i = openBraceIdx + 1; i < code.length; i++) {
-        if (code[i] === '{') depth++;
-        else if (code[i] === '}') {
-            depth--;
-            if (depth === 0) {
-                endBraceIdx = i;
-                break;
-            }
-        }
-    }
-    if (endBraceIdx === -1) return null;
-    return code.substring(openBraceIdx + 1, endBraceIdx);
-}
-
-function extractHelperMethodsAndClasses(code) {
-    let clean = code;
-    clean = clean.replace(/\/\/.*/g, '').replace(/\/\*[\s\S]*?\*\//g, '');
-    clean = clean.replace(/package\s+[\w.]+;/g, '');
-    clean = clean.replace(/import\s+[\w.*]+;/g, '');
-
-    clean = clean.replace(/\binterface\s+[A-Za-z0-9_]+s*(?:extends\s+[A-Za-z0-9_<>\s,]+)?\s*\{[\s\S]*?\}/g, '');
-    clean = clean.replace(/try\s*\([\s\S]*?\)\s*\{/g, 'try {');
-    clean = clean.replace(/catch\s*\(\s*[A-Za-z0-9_.]+\s+[a-zA-Z0-9_]+\s*\)/g, 'catch (e)');
-    clean = clean.replace(/catch\s*\(\s*e\s*\)\s*\{[\s\S]*?\}(?=\s*catch\s*\(\s*e\s*\))/g, '// collapsed catch\n');
-    clean = clean.replace(/\bfor\s*\(\s*(?:[A-Za-z0-9_<>\[\]]+)\s+([a-zA-Z0-9_]+)\s*:\s*([^)]+)\)/g, 'for (let $1 of $2)');
-
-    clean = clean.replace(/<[A-Za-z0-9_,\s?]+>/g, '');
-    clean = clean.replace(/<>/g, '');
-
-    const mainIdx = clean.search(/\bmain\s*\(/);
-    if (mainIdx !== -1) {
-        const openBrace = clean.indexOf('{', mainIdx);
-        if (openBrace !== -1) {
-            let depth = 1;
-            let closeBrace = -1;
-            for (let i = openBrace + 1; i < clean.length; i++) {
-                if (clean[i] === '{') depth++;
-                else if (clean[i] === '}') {
-                    depth--;
-                    if (depth === 0) {
-                        closeBrace = i;
-                        break;
-                    }
-                }
-            }
-            if (closeBrace !== -1) {
-                const methodStart = clean.lastIndexOf('public', mainIdx);
-                const actualStart = methodStart !== -1 && methodStart > clean.lastIndexOf('}', mainIdx) ? methodStart : mainIdx;
-                clean = clean.substring(0, actualStart) + clean.substring(closeBrace + 1);
-            }
-        }
-    }
-
-    clean = clean.replace(/public\s+class\s+Main\s*\{\s*\}/g, '');
-    clean = clean.replace(/class\s+Main\s*\{\s*\}/g, '');
-
-    const reservedWords = ['class', 'if', 'for', 'while', 'switch', 'catch', 'try', 'return', 'else', 'interface'];
-
-    clean = clean.replace(/\b(?:public|private|protected)?\s*static\s+(?:[a-zA-Z0-9_<>\[\]]+)\s+([a-zA-Z0-9_]+)\s*\(([^)]*)\)\s*\{/g, (match, fnName, params) => {
-        if (reservedWords.includes(fnName)) return match;
-        let cleanParams = params ? params.split(',').map(p => p.trim().split(/\s+/).pop()).join(', ') : '';
-        return `function ${fnName}(${cleanParams}) {`;
+    // Tolerance (0.1 for float differences)
+    const EPSILON = 0.1;
+    return userNumbers.some(numStr => {
+        let detectedNum = parseFloat(numStr);
+        return Math.abs(detectedNum - expectedNum) < EPSILON;
     });
-
-    clean = clean.replace(/\b(?:public|private|protected)?\s*(?:[a-zA-Z0-9_<>\[\]]+)\s+([a-zA-Z0-9_]+)\s*\(([^)]*)\)\s*\{/g, (match, fnName, params) => {
-        if (reservedWords.includes(fnName)) return match;
-        let cleanParams = params ? params.split(',').map(p => p.trim().split(/\s+/).pop()).join(', ') : '';
-        return `function ${fnName}(${cleanParams}) {`;
-    });
-
-    clean = clean.replace(/\bfinal\s+/g, '');
-    clean = clean.replace(/(\w+)\.length\(\)/g, '$1.length');
-    clean = clean.replace(/\(\s*int\s*\)\s*([a-zA-Z0-9_]+)/g, 'Math.floor($1)');
-    clean = clean.replace(/\(\s*long\s*\)\s*([a-zA-Z0-9_]+)/g, 'Number($1)');
-    clean = clean.replace(/\(\s*double\s*\)\s*([a-zA-Z0-9_]+)/g, 'Number($1)');
-
-    clean = clean.replace(/\b(int|double|float|long|boolean|char|String|int\[\]|double\[\]|String\[\])\s+([a-zA-Z0-9_]+)\s*=/g, 'let $2 =');
-    clean = clean.replace(/\b[A-Z][A-Za-z0-9_]*\s+([a-zA-Z0-9_]+)\s*=/g, 'let $1 =');
-    clean = clean.replace(/\blet\s+let\b/g, 'let');
-
-    return clean.trim();
-}
-
-function evaluateJavaInBrowser(userCode, stdinInput) {
-    let output = "";
-    let stdinTokens = (stdinInput || "").trim().split(/\s+/).filter(Boolean);
-    let tokenIndex = 0;
-
-    function nextToken() {
-        if (tokenIndex < stdinTokens.length) {
-            return stdinTokens[tokenIndex++];
-        }
-        return "";
-    }
-
-    const mockSystem = {
-        out: {
-            println: function(...args) {
-                output += args.join('') + '\n';
-            },
-            print: function(...args) {
-                output += args.join('');
-            },
-            printf: function(fmt, ...args) {
-                let i = 0;
-                let formatted = fmt.replace(/%(\.\d+)?f|%d|%s/g, (match) => {
-                    let val = args[i++];
-                    if (match.includes('f') && typeof val === 'number') {
-                        let decimals = match.match(/\.(\d+)/);
-                        return decimals ? val.toFixed(parseInt(decimals[1])) : val.toString();
-                    }
-                    return val !== undefined ? val.toString() : match;
-                });
-                output += formatted;
-            }
-        }
-    };
-
-    class MockScanner {
-        hasNext() { return tokenIndex < stdinTokens.length; }
-        hasNextInt() { return tokenIndex < stdinTokens.length && !isNaN(parseInt(stdinTokens[tokenIndex])); }
-        hasNextDouble() { return tokenIndex < stdinTokens.length && !isNaN(parseFloat(stdinTokens[tokenIndex])); }
-        hasNextFloat() { return this.hasNextDouble(); }
-        hasNextLong() { return this.hasNextInt(); }
-        hasNextLine() { return this.hasNext(); }
-        close() {}
-        nextInt() { return parseInt(nextToken() || "0", 10); }
-        nextDouble() { return parseFloat(nextToken() || "0.0"); }
-        nextFloat() { return parseFloat(nextToken() || "0.0"); }
-        nextLong() { return parseInt(nextToken() || "0", 10); }
-        next() { return nextToken(); }
-        nextLine() { return nextToken(); }
-    }
-
-    class MockFile {
-        constructor(filename) {}
-        exists() { return false; }
-    }
-
-    class MockArrayList extends Array {
-        add(item) { this.push(item); }
-        remove(item) {
-            const idx = this.indexOf(item);
-            if (idx !== -1) this.splice(idx, 1);
-        }
-        isEmpty() { return this.length === 0; }
-        clear() { this.length = 0; }
-    }
-
-    const MockCollections = {
-        sort: function(list) {
-            list.sort((a, b) => {
-                if (a && typeof a.compareTo === 'function') return a.compareTo(b);
-                return 0;
-            });
-        }
-    };
-
-    const MockDouble = {
-        parseDouble: str => parseFloat(str),
-        compare: (d1, d2) => d1 > d2 ? 1 : (d1 < d2 ? -1 : 0)
-    };
-
-    const MockInteger = {
-        parseInt: (str, radix = 10) => parseInt(str, radix)
-    };
-
-    let jsCode = userCode;
-    jsCode = jsCode.replace(/\/\/.*/g, '').replace(/\/\*[\s\S]*?\*\//g, '');
-
-    try {
-        const helpersCode = extractHelperMethodsAndClasses(userCode);
-        let bodyCode = extractMainBody(userCode);
-
-        if (!bodyCode) {
-            return { success: true, output: "Execution completed successfully." };
-        }
-
-        bodyCode = bodyCode.replace(/\binterface\s+[A-Za-z0-9_]+\s*(?:extends\s+[A-Za-z0-9_<>\s,]+)?\s*\{[\s\S]*?\}/g, '');
-        bodyCode = bodyCode.replace(/try\s*\([\s\S]*?\)\s*\{/g, 'try {');
-        bodyCode = bodyCode.replace(/catch\s*\(\s*[A-Za-z0-9_.]+\s+[a-zA-Z0-9_]+\s*\)/g, 'catch (e)');
-        bodyCode = bodyCode.replace(/catch\s*\(\s*e\s*\)\s*\{[\s\S]*?\}(?=\s*catch\s*\(\s*e\s*\))/g, '// collapsed catch\n');
-        bodyCode = bodyCode.replace(/\bfor\s*\(\s*(?:[A-Za-z0-9_<>\[\]]+)\s+([a-zA-Z0-9_]+)\s*:\s*([^)]+)\)/g, 'for (let $1 of $2)');
-        bodyCode = bodyCode.replace(/<[A-Za-z0-9_,\s?]+>/g, '');
-        bodyCode = bodyCode.replace(/<>/g, '');
-        bodyCode = bodyCode.replace(/\bfinal\s+/g, '');
-        bodyCode = bodyCode.replace(/(\w+)\.length\(\)/g, '$1.length');
-        bodyCode = bodyCode.replace(/\(\s*int\s*\)\s*([a-zA-Z0-9_]+)/g, 'Math.floor($1)');
-        bodyCode = bodyCode.replace(/\(\s*long\s*\)\s*([a-zA-Z0-9_]+)/g, 'Number($1)');
-        bodyCode = bodyCode.replace(/\(\s*double\s*\)\s*([a-zA-Z0-9_]+)/g, 'Number($1)');
-        bodyCode = bodyCode.replace(/\bScanner\s+\w+\s*=\s*new\s+Scanner\s*\(\s*System\.in\s*\)\s*;/g, '');
-        bodyCode = bodyCode.replace(/\b\w+\.close\s*\(\s*\)\s*;/g, '');
-        bodyCode = bodyCode.replace(/(\w+)\.hasNext(Double|Int|Float|Long|Line)?\(\)/g, 'sc.hasNext$2()');
-        bodyCode = bodyCode.replace(/(\w+).next(Int|Double|Float|Long|Line|Short|Byte)?\(\)/g, 'sc.next$2()');
-        bodyCode = bodyCode.replace(/\b(int|double|float|long|boolean|char|String|int\[\]|double\[\]|String\[\])\s+([a-zA-Z0-9_]+)\s*=/g, 'let $2 =');
-        bodyCode = bodyCode.replace(/\b[A-Z][A-Za-z0-9_]*\s+([a-zA-Z0-9_]+)\s*=/g, 'let $1 =');
-        bodyCode = bodyCode.replace(/\blet\s+let\b/g, 'let');
-
-        const fullExecutableJs = `${helpersCode}\n\n${bodyCode}`;
-
-        const sc = new MockScanner();
-        const File = MockFile;
-        const ArrayList = MockArrayList;
-        const Collections = MockCollections;
-        const Double = MockDouble;
-        const Integer = MockInteger;
-        const runFn = new Function('System', 'sc', 'Math', 'File', 'ArrayList', 'Collections', 'Double', 'Integer', fullExecutableJs);
-        runFn(mockSystem, sc, Math, File, ArrayList, Collections, Double, Integer);
-        return { success: true, output: output.trim() || "Execution completed successfully." };
-    } catch (e) {
-        // Safe fallback for complex multi-class projects in offline mode
-        return { success: true, output: "Execution completed successfully." };
-    }
-}
-
-function prepareOopRunnableCode(code) {
-    if (!code) return "";
-    let clean = code.trim();
-
-    // Strip comments & normalize syntax
-    clean = clean.replace(/@\s+Override/g, '@Override');
-    clean = clean.replace(/super\s*\(\s*\)/g, 'super()');
-    clean = clean.replace(/java\s*\.\s*util/g, 'java.util');
-    clean = clean.replace(/System\s*\.\s*out/g, 'System.out');
-
-    // Make non-Main public classes package-private so JDK compilation succeeds in 1 file
-    clean = clean.replace(/public\s+class\s+(?!Main\b)/g, 'class ');
-    clean = clean.replace(/public\s+interface\s+/g, 'interface ');
-    clean = clean.replace(/public\s+abstract\s+class\s+/g, 'abstract class ');
-
-    if (!clean.includes('public static void main') && !clean.includes('static void main')) {
-        if (clean.includes('class ') || clean.includes('interface ')) {
-            const classNameMatch = clean.match(/(?:class|interface)\s+([A-Za-z0-9_]+)/);
-            const className = classNameMatch ? classNameMatch[1] : 'TestClass';
-            clean += `\n\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println("Class ${className} defined successfully.");\n    }\n}`;
-        } else {
-            clean = `import java.util.*;\n\npublic class Main {\n    ${clean}\n    public static void main(String[] args) {\n        System.out.println("Method executed successfully.");\n    }\n}`;
-        }
-    } else {
-        clean = clean.replace(/public\s+class\s+([A-Za-z0-9_]+)/g, (match, cName) => {
-            if (cName === 'Main') return match;
-            return `class ${cName}`;
-        });
-        if (!clean.includes('class Main')) {
-            clean += `\n\nclass Main {\n    public static void main(String[] args) {\n        // Main runner\n    }\n}`;
-        }
-    }
-
-    return clean;
-}
-
-async function executeJavaCode(userCode, stdin) {
-    try {
-        const createParams = new URLSearchParams({
-            language: 'java',
-            source_code: prepareOopRunnableCode(userCode),
-            input: stdin || '',
-            api_key: 'guest'
-        });
-
-        const createRes = await fetch('https://api.paiza.io/runners/create', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: createParams.toString()
-        });
-
-        if (createRes.ok) {
-            const createData = await createRes.json();
-            if (createData && createData.id) {
-                const id = createData.id;
-                let status = createData.status;
-                let attempts = 0;
-                const maxAttempts = 15;
-
-                while (status !== 'completed' && attempts < maxAttempts) {
-                    await new Promise(r => setTimeout(r, 600));
-                    attempts++;
-                    const statusRes = await fetch(`https://api.paiza.io/runners/get_status?id=${id}&api_key=guest`);
-                    if (statusRes.ok) {
-                        const statusData = await statusRes.json();
-                        status = statusData.status;
-                    }
-                }
-
-                const detailsRes = await fetch(`https://api.paiza.io/runners/get_details?id=${id}&api_key=guest`);
-                if (detailsRes.ok) {
-                    const details = await detailsRes.json();
-                    let compileError = (details.build_stderr || '').trim();
-                    let runtimeError = (details.stderr || '').trim();
-                    let stdout = (details.stdout || '').trim();
-
-                    if (details.build_result === 'failure' || (details.build_exit_code && details.build_exit_code !== '0' && details.build_exit_code !== 0)) {
-                        return {
-                            success: false,
-                            isCompileError: true,
-                            error: compileError || 'Compilation failed.'
-                        };
-                    }
-
-                    if (runtimeError && details.exit_code && details.exit_code !== '0' && details.exit_code !== 0) {
-                        return {
-                            success: false,
-                            isRuntimeError: true,
-                            error: runtimeError
-                        };
-                    }
-
-                    return {
-                        success: true,
-                        output: stdout,
-                        stderr: runtimeError
-                    };
-                }
-            }
-        }
-    } catch (e) {
-        console.warn('Online compiler API fetch notice: using fast in-browser Java evaluator engine fallback.', e);
-    }
-
-    const evalRes = evaluateJavaInBrowser(userCode, stdin);
-    if (!evalRes.success) {
-        return {
-            success: false,
-            isRuntimeError: true,
-            error: evalRes.error
-        };
-    }
-    return {
-        success: true,
-        output: evalRes.output
-    };
 }
 
 async function runLabCode() {
@@ -1516,11 +838,9 @@ async function runLabCode() {
     const consoleOut = document.getElementById('console-out');
     const q = appState.lab.questions[appState.lab.currentQIndex];
 
-    if (!userCode.match(/class\s+Main\b/)) { 
-        document.getElementById('main-class-alert').style.display = 'flex'; 
-        return; 
-    }
+    if (!userCode.match(/class\s+Main\b/)) { document.getElementById('main-class-alert').style.display = 'flex'; return; }
 
+    // ⧈ Anti-Cheat: Source Code Analysis (NEW 🛡️)
     if (q.codePatterns && q.codePatterns.length > 0) {
         const missingPatterns = q.codePatterns.filter(pattern => !userCode.includes(pattern));
         if (missingPatterns.length > 0) {
@@ -1530,54 +850,54 @@ async function runLabCode() {
     }
 
     let stdin = "";
-    if (typeof q.testCaseInputs !== 'undefined') {
-        stdin = q.testCaseInputs;
-    } else if (userCode.includes("Scanner") || userCode.includes("System.in")) { 
+    // ⧈ AUTO-INJECTION LOGIC ⧈
+    if (q.testCaseInputs) {
+         stdin = q.testCaseInputs;
+         consoleOut.innerHTML = `<span style="color:var(--text-secondary); font-size:0.85em;">> Auto-injecting test inputs...</span>\n`;
+    } 
+    else if (userCode.includes("Scanner") || userCode.includes("System.in")) { 
         const analysis = analyzeInputRequirements(userCode);
         stdin = await getInputFromUser(analysis); 
     }
 
     consoleOut.innerHTML += `<span style="color:var(--accent);">⏳ ${t('solving')}</span>`;
-
     try {
-        const execResult = await executeJavaCode(userCode, stdin);
+        const response = await fetch('https://emkc.org/api/v2/piston/execute', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ language: "java", version: "15.0.2", files: [{ name: "Main.java", content: userCode }], stdin: stdin }) });
+        const result = await response.json();
+        if (result.run) {
+            let output = result.run.output || "";
+            let cleanOutput = output.trim();
 
-        if (!execResult.success) {
-            if (execResult.isCompileError) {
-                consoleOut.innerHTML = `<span style="color:var(--danger);">❌ Compilation Error:\n${escapeHtml(execResult.error)}</span>`;
-            } else {
-                consoleOut.innerHTML = `<span style="color:var(--danger);">❌ Runtime Error:\n${escapeHtml(execResult.error)}</span>`;
+            if (result.run.stderr) { consoleOut.innerHTML = `<span style="color:var(--danger);">❌ Error:\n${result.run.stderr}</span>`; } 
+            else {
+                // ⧈ NEW: Use Smart Judge Logic
+                let isCorrect = false;
+                
+                if (q.expectedOutput) {
+                    isCorrect = smartCompare(cleanOutput, q.expectedOutput);
+                } 
+                else if (q.validationKeywords && q.validationKeywords.length > 0) { 
+                    const normOut = cleanOutput.toLowerCase(); 
+                    const allKeywordsFound = q.validationKeywords.every(k => normOut.includes(k.toLowerCase()));
+                    const isLengthReasonable = cleanOutput.length < 500; 
+                    isCorrect = allKeywordsFound && isLengthReasonable;
+                } 
+                else { 
+                    consoleOut.innerHTML = `<span style="color:var(--warning);">⚠️ Executed (No Validation):</span>\n${output}`; return; 
+                }
+                
+                if (isCorrect) { 
+                    consoleOut.innerHTML = `<span style="color:var(--success);">✅ ${t('correctMsg')}</span>\n${output}\n<span style="color:var(--accent); display:block; margin-top:10px; font-weight:bold;">${t('nextAuto')}</span>`; 
+                    celebrateSuccess(); 
+                    // Auto-Next Logic
+                    setTimeout(() => { if(appState.lab.active) nextLabQ(); }, 3000); 
+                } 
+                else { 
+                    consoleOut.innerHTML = `<span style="color:var(--warning);">⚠️ Output Mismatch. Check requirements.</span>\nYour Output:\n${output}`; 
+                }
             }
-            return;
         }
-
-        let output = execResult.output || "";
-        let cleanOutput = output.trim();
-
-        let isCorrect = false;
-        if (q.expectedOutput) {
-            isCorrect = smartCompare(cleanOutput, q.expectedOutput);
-        } else if (q.validationKeywords && q.validationKeywords.length > 0) { 
-            const normOut = cleanOutput.toLowerCase(); 
-            const allKeywordsFound = q.validationKeywords.every(k => normOut.includes(k.toLowerCase()));
-            const isLengthReasonable = cleanOutput.length < 500; 
-            isCorrect = allKeywordsFound && isLengthReasonable;
-        } else { 
-            consoleOut.innerHTML = `<span style="color:var(--warning);">⚠️ Executed (No Validation):</span>\n${escapeHtml(output)}`; 
-            return; 
-        }
-        
-        if (isCorrect) { 
-            consoleOut.innerHTML = `<span style="color:var(--success);">✅ ${t('correctMsg')}</span>\n${escapeHtml(output)}\n<span style="color:var(--accent); display:block; margin-top:10px; font-weight:bold;">${t('nextAuto')}</span>`; 
-            celebrateSuccess(); 
-            setTimeout(() => { if(appState.lab.active) nextLabQ(); }, 3000); 
-        } else { 
-            consoleOut.innerHTML = `<span style="color:var(--warning);">⚠️ Output Mismatch. Check requirements.</span>\nYour Output:\n${escapeHtml(output)}\nExpected Output:\n${escapeHtml(q.expectedOutput || '')}`; 
-        }
-
-    } catch (e) {
-        consoleOut.innerHTML = `<span style="color:var(--danger);">❌ Execution Error:</span> ${escapeHtml(e.message || 'Unable to connect to compiler service.')}`;
-    }
+    } catch (e) { consoleOut.innerHTML = `❌ Connection Error`; }
 }
 
 function celebrateSuccess() {
@@ -1613,12 +933,12 @@ function showLabCompletionModal() {
     modal.innerHTML = `
         <div class="input-modal-content" style="text-align:center; border-top: 5px solid var(--success);">
             <div style="font-size: 4rem; margin-bottom: 10px;">🏆</div>
-            <h2 style="color:var(--white); margin-bottom:0.5rem; font-size:1.8rem;">${t('missionAccomplished')}</h2>
+            <h2 style="color:var(--white); margin-bottom:0.5rem; font-size:1.8rem;">Mission Accomplished!</h2>
             <p style="color:var(--text-secondary); margin-bottom:2rem; font-size:1.1rem;">
-                ${t('labCompletedMsg')}
+                Excellent work. You have successfully completed this lab module.
             </p>
             <button class="btn-run" onclick="finishLab()" style="width:100%; justify-content:center; padding:12px; font-size:1.1rem;">
-                ${t('returnDashboard')} <i class="fas fa-arrow-right" style="margin-left:10px;"></i>
+                Return to Dashboard <i class="fas fa-arrow-right" style="margin-left:10px;"></i>
             </button>
         </div>
     `;
@@ -1734,7 +1054,7 @@ function renderQuestion(index) {
             contentBody = `
                 <div class="md-content" style="margin-bottom:1rem; color:var(--white); line-height:1.5;">${questionHtml}</div>
                 <div class="self-check-area">
-                    <p style="color:var(--text-secondary); margin-bottom:5px;">${t('yourAnswer')}:</p>
+                    <p style="color:var(--text-secondary); margin-bottom:5px;">Your Answer:</p>
                     <div class="md-content" style="background:rgba(255,255,255,0.05); padding:10px; border-radius:5px; margin-bottom:15px;">${renderMarkdown(savedAnswer || 'No answer typed.')}</div>
                     
                     <p style="color:var(--success); margin-bottom:5px;">${t('modelAnswer')}</p>
@@ -1756,7 +1076,7 @@ function renderQuestion(index) {
         let feedbackHtml = '';
         if (isAnswered) {
             const isCorrect = userAnswer.isCorrect;
-            const explanationHtml = renderMarkdown(q.explanation || t('noExplanation'));
+            const explanationHtml = renderMarkdown(q.explanation || 'No explanation available.');
             feedbackHtml = `
                 <div class="tf-feedback ${isCorrect ? 'success' : 'error'}" style="margin-top:20px; padding:15px; border-radius:8px; background:${isCorrect ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)'}; border-left:4px solid ${isCorrect ? 'var(--success)' : 'var(--danger)'};">
                     <h4 style="color:${isCorrect ? 'var(--success)' : 'var(--danger)'}; margin-bottom:5px;">
@@ -1804,6 +1124,8 @@ function renderQuestion(index) {
                     </button>
                 </div>
             </div>
+            
+            <div id="quiz-palette-wrapper">${renderQuestionPalette()}</div>
             
             ${appState.quiz.type === 'mcq' ? `
             <button class="btn-view ${isFlagged ? 'flag-active' : ''}" onclick="toggleFlag(${index})" style="margin-bottom:1rem;">
@@ -1856,7 +1178,10 @@ function toggleFlag(index) {
     if(appState.quiz.flagged.has(index)) appState.quiz.flagged.delete(index); else appState.quiz.flagged.add(index); 
     renderQuestion(index); 
 }
-function saveAnswer(qIndex, ansIndex) { appState.quiz.userAnswers[qIndex] = ansIndex; }
+function saveAnswer(qIndex, ansIndex) { 
+    appState.quiz.userAnswers[qIndex] = ansIndex; 
+    updatePaletteDOM();
+}
 function attemptSubmit() { 
     const flags = Array.from(appState.quiz.flagged).map(i => i + 1); 
     if (flags.length > 0) showFlagAlert(flags); else finalizeQuiz(); 
@@ -1892,13 +1217,13 @@ function renderQuizResult() {
         
         if (appState.quiz.type === 'mcq') {
             isCorrect = appState.quiz.userAnswers[index] === q.answer;
-            userAnswerText = q.options[appState.quiz.userAnswers[index]] || t('none');
+            userAnswerText = q.options[appState.quiz.userAnswers[index]] || 'None';
         } else if (appState.quiz.type === 'tf') {
             isCorrect = appState.quiz.userAnswers[index]?.isCorrect === true;
-            userAnswerText = appState.quiz.userAnswers[index]?.val ? t('trueBtn') : t('falseBtn');
+            userAnswerText = appState.quiz.userAnswers[index]?.val ? "True" : "False";
         } else {
             isCorrect = appState.quiz.userAnswers[index]?.isCorrect === true;
-            userAnswerText = t('selfChecked');
+            userAnswerText = "Self-Checked";
         }
 
         if(isCorrect) score++; 
@@ -1908,8 +1233,8 @@ function renderQuizResult() {
             reportHtml += `
                 <div class="file-item" style="display:block; border-color:var(--danger); margin-bottom:1rem;">
                     <h4 class="md-content" style="margin-bottom:0.5rem; color:var(--text-primary);">Q${index+1}: ${renderMarkdown(q.question || '')}</h4>
-                    <p class="md-content" style="color:var(--danger); margin-bottom:0.3rem;">${t('yourAnswer')}: ${renderMarkdown(userAnswerText)}</p>
-                    <p class="md-content" style="color:var(--success); margin-bottom:0.5rem;">${t('correctAnswer')}: ${renderMarkdown(q.options[q.answer] || '')}</p>
+                    <p class="md-content" style="color:var(--danger); margin-bottom:0.3rem;">Your Answer: ${renderMarkdown(userAnswerText)}</p>
+                    <p class="md-content" style="color:var(--success); margin-bottom:0.5rem;">Correct Answer: ${renderMarkdown(q.options[q.answer] || '')}</p>
                     <small style="color:var(--text-secondary); display:block; background:rgba(255,255,255,0.05); padding:10px; border-radius:5px;">
                         <i class="fas fa-info-circle"></i> ${t('reason')}: <span class="md-content" style="display:inline;">${renderMarkdown(explanationRaw || '')}</span>
                     </small>
@@ -1918,16 +1243,16 @@ function renderQuizResult() {
             reportHtml += `
                 <div class="file-item" style="display:block; border-color:var(--danger); margin-bottom:1rem;">
                     <h4 class="md-content" style="margin-bottom:0.5rem; color:var(--text-primary);">Q${index+1}: ${renderMarkdown(q.question || '')}</h4>
-                    <p style="color:var(--danger); margin-bottom:0.3rem;">${t('resultWrong')}</p>
+                    <p style="color:var(--danger); margin-bottom:0.3rem;">Result: Wrong ❌</p>
                     <small style="color:var(--text-secondary); display:block; background:rgba(255,255,255,0.05); padding:10px; border-radius:5px;">
-                        <i class="fas fa-info-circle"></i> ${t('reason')}: <span class="md-content" style="display:inline;">${renderMarkdown(q.explanation || t('noExplanation'))}</span>
+                        <i class="fas fa-info-circle"></i> ${t('reason')}: <span class="md-content" style="display:inline;">${renderMarkdown(q.explanation || 'No explanation')}</span>
                     </small>
                 </div>`;
         } else if (appState.quiz.type === 'text') {
              reportHtml += `
                 <div class="file-item" style="display:block; border-color:${isCorrect ? 'var(--success)' : 'var(--danger)'}; margin-bottom:1rem;">
                     <h4 class="md-content" style="margin-bottom:0.5rem; color:var(--text-primary);">Q${index+1}: ${renderMarkdown(q.question || '')}</h4>
-                    <p style="color:${isCorrect ? 'var(--success)' : 'var(--danger)'};">${isCorrect ? t('resultCorrect') : t('resultWrong')}</p>
+                    <p style="color:${isCorrect ? 'var(--success)' : 'var(--danger)'};">Result: ${isCorrect ? 'Correct ✅' : 'Wrong ❌'}</p>
                 </div>`;
         }
     }); 
@@ -1939,7 +1264,7 @@ function renderQuizResult() {
             <div style="font-size:4rem; color:${percentage >= 50 ? 'var(--success)' : 'var(--danger)'}; margin:1rem 0; font-weight:bold;">${percentage}%</div>
             <p style="color:var(--text-secondary);">${t('timeTaken')}: ${formatTime(appState.quiz.time)}</p>
             <button class="btn-back" onclick="exitQuiz()" style="margin-top:2rem;">${t('backCourse')}</button>
-            <div style="text-align:left; margin-top:3rem;">${reportHtml || `<p style="text-align:center; color:var(--success);">${t('perfectScore')}</p>`}</div>
+            <div style="text-align:left; margin-top:3rem;">${reportHtml || '<p style="text-align:center; color:var(--success);">Perfect Score! 🎉</p>'}</div>
         </div>`; 
     // Run KaTeX over the whole result area (questions, options, explanations).
     const resultArea = container.querySelector('.quiz-container');
@@ -2134,5 +1459,88 @@ async function sendReport() {
     } finally {
         btn.innerHTML = originalBtnText;
         btn.disabled = false;
+    }
+}
+
+// --- Question Navigation Palette Helpers ---
+function renderQuestionPalette() {
+    let totalQuestions = 0;
+    let currentIndex = 0;
+    let userAnswers = {};
+    let flaggedSet = new Set();
+    let isLab = false;
+
+    if (appState.view === 'quiz' && appState.quiz && appState.quiz.active) {
+        totalQuestions = appState.quiz.questions.length;
+        currentIndex = appState.quiz.currentQuestionIndex;
+        userAnswers = appState.quiz.userAnswers || {};
+        flaggedSet = appState.quiz.flagged || new Set();
+    } else if (appState.view === 'lab' && appState.lab && appState.lab.active) {
+        totalQuestions = appState.lab.questions.length;
+        currentIndex = appState.lab.currentQIndex;
+        userAnswers = appState.lab.userAnswers || {};
+        isLab = true;
+    }
+
+    if (totalQuestions <= 1) return '';
+
+    let badgesHtml = '';
+    for (let i = 0; i < totalQuestions; i++) {
+        let isCurrent = (i === currentIndex);
+        let isFlagged = flaggedSet.has(i);
+        let isAnswered = false;
+
+        if (isLab) {
+            isAnswered = (userAnswers[i] !== undefined && userAnswers[i] !== null && userAnswers[i] !== "");
+        } else {
+            const ans = userAnswers[i];
+            if (ans !== undefined && ans !== null) {
+                if (typeof ans === 'object') {
+                    isAnswered = ans.checked || (ans.text && ans.text.trim().length > 0) || (ans.val !== undefined);
+                } else {
+                    isAnswered = true;
+                }
+            }
+        }
+
+        let stateClass = 'badge-unanswered';
+        if (isCurrent) {
+            stateClass = 'badge-current';
+        } else if (isFlagged) {
+            stateClass = 'badge-flagged';
+        } else if (isAnswered) {
+            stateClass = 'badge-answered';
+        }
+
+        const onClickAttr = isLab ? `onclick="goToLabQuestion(${i})"` : `onclick="renderQuestion(${i})"`;
+
+        badgesHtml += `
+            <div class="palette-badge ${stateClass}" ${onClickAttr} title="${t('qNum')} ${i + 1}">
+                ${i + 1}
+                ${isFlagged ? '<i class="fas fa-flag palette-flag-icon"></i>' : ''}
+            </div>
+        `;
+    }
+
+    return `
+        <div class="quiz-palette-container">
+            <div class="quiz-palette-grid">
+                ${badgesHtml}
+            </div>
+        </div>
+    `;
+}
+
+function updatePaletteDOM() {
+    const wrapper = document.getElementById('quiz-palette-wrapper');
+    if (wrapper) {
+        wrapper.innerHTML = renderQuestionPalette();
+    }
+}
+
+function goToLabQuestion(index) {
+    if (appState.lab && appState.lab.active) {
+        appState.lab.currentQIndex = index;
+        renderLabQuestion();
     }
 }
