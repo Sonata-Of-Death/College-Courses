@@ -565,4 +565,118 @@ body.lang-ar .md-content ul, body.lang-ar .md-content ol { margin-left: 0; margi
 body.lang-ar .md-content blockquote { border-left: none; border-right: 4px solid var(--accent); }
 body.lang-ar .md-content table th, body.lang-ar .md-content table td { text-align: right; }
 
+/* --- QUESTION NAVIGATION PALETTE --- */
+.quiz-palette-container {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 15px;
+    margin-bottom: 1.25rem;
+    transition: all 0.3s ease;
+}
+
+.quiz-palette-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.quiz-palette-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    max-height: 130px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+/* Custom scrollbar for palette */
+.quiz-palette-grid::-webkit-scrollbar {
+    width: 5px;
+}
+.quiz-palette-grid::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+.quiz-palette-grid::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border-radius: 4px;
+}
+
+.palette-badge {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 6px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid var(--border);
+    background: rgba(0, 0, 0, 0.2);
+    color: var(--text-secondary);
+    user-select: none;
+}
+
+.palette-badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    border-color: var(--accent);
+    color: var(--text-primary);
+}
+
+/* Current Question Badge */
+.palette-badge.badge-current {
+    background: var(--accent) !important;
+    color: #ffffff !important;
+    border-color: var(--accent) !important;
+    font-weight: bold;
+    box-shadow: 0 0 12px rgba(0, 210, 255, 0.4);
+    transform: scale(1.05);
+}
+
+/* Answered Question Badge */
+.palette-badge.badge-answered {
+    background: rgba(16, 185, 129, 0.2);
+    border-color: var(--success);
+    color: var(--success);
+}
+.palette-badge.badge-answered.badge-current {
+    background: var(--success) !important;
+    color: #ffffff !important;
+    border-color: var(--success) !important;
+    box-shadow: 0 0 12px rgba(16, 185, 129, 0.5);
+}
+
+/* Flagged Question Badge */
+.palette-badge.badge-flagged {
+    border-color: var(--secondary-accent) !important;
+    color: var(--secondary-accent) !important;
+}
+.palette-badge.badge-flagged.badge-current {
+    background: var(--secondary-accent) !important;
+    color: #ffffff !important;
+}
+
+.badge-flag-icon {
+    font-size: 0.6rem;
+    position: absolute;
+    top: 2px;
+    right: 3px;
+    color: var(--secondary-accent);
+}
+.palette-badge.badge-current .badge-flag-icon {
+    color: #ffffff;
+}
+
 
